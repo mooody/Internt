@@ -1,0 +1,12 @@
+
+*{
+shows all groups the users has
+params user
+}*
+
+
+<ul>
+#{list items:_user.groups, as: 'group'}
+<li>${group.name}</li>
+#{/list}
+</ul>

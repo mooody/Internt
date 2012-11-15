@@ -1,0 +1,27 @@
+#{extends 'main.html' /}
+#{stylesheet 'login.html.css' /}
+#{set title:sessionuser.language.getString("handle.user") /}
+
+<br />
+<a href="@{admin.UsersController.create()}">#{lang user:sessionuser, tag:'create.user' /}</a>
+<br />
+<hr />
+#{list items:users, as:'user'}
+
+#{if user.id!=sessionuser.id }
+<!-- NEW USER -->
+<div>
+    ${user.name}
+    [${user.company.name}]
+    
+    <a href="@{admin.UsersController.edit(user.id)}">${sessionuser.language.getString("edit")}</a>
+     #{form @admin.UsersController.deleteUser(user.id), class:'delete'}
+        <input type="submit" class="deletebutton" alt="${sessionuser.language.getString("delete")}" value="" />
+     #{/form}
+            
+    <br />
+   
+    <hr />
+  </div>
+#{/if}
+#{/list}

@@ -1,0 +1,24 @@
+#{mainpage title:'Handle.modules' /}
+
+#{if sessionuser.getClass() == models.SuperAdmin.class}
+#{form @SuperAdminController.addAdminToModule() }
+<h2>Alla admins</h2>
+<ul>
+#{list items:sessionuser.modules, as:'module'}  
+    <li>
+        <input type="radio" id="module.id" name="module.id" value="${module.id}" />
+        <label for="module.id">${module.name}</id>
+    </li>
+#{/list}
+</ul>
+
+<select name="user.id" >
+    <option value="">choose.admin:</option>
+    #{list items:models.Admin.findAll(), as:'user'}
+    <option value="${user.id}">${user.name}</option>
+    #{/list}
+</select>
+<input type="submit" value="spara" />
+
+#{/form}
+#{/if}

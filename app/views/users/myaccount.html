@@ -1,0 +1,22 @@
+#{mainpage title:'My page' /}
+
+#{form @Users.myaccount(), method:'post' }
+<input type="hidden" name="user.id" value="${user.id}" />
+<table>
+    <tr>
+        <td>Namn:</td><td><input type="text" name="user.name" value="${user.name}" /></td>
+    </tr>
+    <tr>
+        <td>Mail:</td><td><input type="text" name="user.email" value="${user.email}" /></td>
+    </tr>
+    <tr>
+        <td>Lösen:</td><td><input type="password" name="password1" /></td>
+    </tr>
+     <tr>
+        <td>Lösen:</td><td><input type="password" name="password2" /></td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="submit" value="Spara" /></td>
+    </tr>
+</table>
+#{/form}

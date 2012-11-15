@@ -1,0 +1,28 @@
+#{mainpage title:'Signup' /}
+
+#{form @Application.createAccount()}
+
+<table>
+    <tr>
+        <td>Namn:</td>
+        <td><input type="text" name="user.name" /></td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td><input type="text" name="user.email" /></td>
+    </tr>
+    <tr>
+        <td>Lösen</td>
+        <td><input type="password" name="user.password" /></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" value="signup" /></td>
+    </tr>
+</table>
+
+
+
+
+
+#{/form}

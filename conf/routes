@@ -1,0 +1,80 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# ApplicationController
+GET     /                                       Application.index
+GET     /login                                  Application.loginform
+POST     /login                                 Application.login
+*       /logout                                 Application.logout
+GET     /signup                                 Application.signup
+POST    /account                                Application.createAccount
+
+#AdminController 
+# - user
+GET     /users                                    admin.UsersController.index
+GET     /users/create                             admin.UsersController.create
+POST    /users/save                               admin.UsersController.save
+POST    /users/delete/{id}                        admin.UsersController.deleteUser
+POST    /users/type                               admin.UsersController.setUserType
+GET     /users/edit/{id}                          admin.UsersController.edit
+POST    /users/addgrouptouser                     admin.UsersController.addGroupToUser
+POST    /users/removefromgroup                    admin.UsersController.removeUserFromGroup
+
+
+#AdminController
+# - groups
+GET     /admin/groups                           admin.GruppController.index
+POST    /admin/groups/save                      admin.GruppController.save
+POST    /admin/groups/delete                    admin.GruppController.delete
+
+#Admincontroller
+# - Company
+GET     /company                                admin.CompanyController.index
+POST    /company/company                        admin.CompanyController.create
+
+#AdminController
+# - Modules
+GET     /modules                                admin.AdminController.modules
+POST    /modules/addUser                        admin.AdminController.addUserToModule
+
+#SuperAdminController
+# - modules
+GET     /super/index                            SuperAdminController.index
+GET     /super/users                            SuperAdminController.users
+GET     /super/modules                          SuperAdminController.modules
+GET     /super/groups                           SuperAdminController.groups
+POST    /super/modules/addAdmin                 SuperAdminController.addAdminToModule
+
+
+#user regular
+GET     /mypage                                 Users.mypage
+GET     /myaccount                              Users.myaccount
+POST    /myaccount                              Users.save
+
+#ModuleController
+GET     /getmodule/{moduleId}                     ModuleController.index                  
+GET     /getpeek/{moduleId}                       ModuleController.peek 
+
+#Modules
+*   /messages                                   module:messages
+*   /reminder                                   module:reminder
+*   /booking                                    module:booking
+
+#----------------------
+#groups
+
+
+
+
+
+
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+# Catch all
+#*       /{controller}/{action}                  {controller}.{action}

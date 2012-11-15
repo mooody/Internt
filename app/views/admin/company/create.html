@@ -1,0 +1,100 @@
+#{extends 'main.html' /}
+#{stylesheet 'login.html.css' /}
+#{set title:'Hantera företag' /}
+
+*{<!-- Kontrollera att user = admin och att den inte har ett företag -->}*
+#{if sessionuser.isAdmin() }
+*{<!--#{if sessionuser.getClass() == models.Admin.class}-->}*
+
+    #{if sessionuser.company == null}
+    
+    Var vänlig att fyll i nedanstående uppgifter.
+    
+    #{/if}
+
+    #{form @admin.CompanyController.create()}
+
+    #{if sessionuser.company != null}
+        <input type="hidden" name="company.id" value="${sessionuser.company?.id}" />
+    #{/if}
+    
+    <table>
+        <tr>  
+            <td colspan="2"><b>Företagsuppgifter</b></td>
+        <tr>
+            <td>
+                <label for="company.name">Organisationsnamn:</label>
+            </td>
+            <td>
+                <input id="company.name" type="text" name="company.name" value="${company?.name}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="company.orgnr">Organisationsnummer:</label>
+            </td>
+            <td>
+                <input id="company.orgnr" type="text" name="company.orgnr" value="${company?.orgnr}"/>
+            </td>
+        </tr>
+      *{<!--  <tr>
+            <td colspan="2">
+                <b>Adressuppgifter</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="company.contact.address">Adress:</label>
+            </td>
+            <td>
+                <input id="company.contact.address" type="text" name="company.contact.address" value="${company?.contact?.address}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="company.contact.adress">Postnr:</label>
+            </td>
+            <td>
+                <input id="company.contact.zipcode" type="text" name="company.contact.zipcode" value="${company?.contact?.zipcode}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="company.contact.adress">Stad:</label>
+            </td>
+            <td>
+                <input id="company.contact.city" type="text" name="company.contact.city" value="${company?.contact?.city}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="company.contact.phone">Telefon:</label>
+            </td>
+            <td>
+                <input id="company.contact.phone" type="text" name="company.contact.phone" value="${company?.contact?.phone}"/>
+            </td>
+        </tr>-->}*
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="&{'save'}" />
+            </td>
+        </tr> 
+    </table>
+    
+    
+    
+    
+    
+    
+    
+    
+   
+   
+    
+    
+    
+    
+    
+    
+    #{/form}
+#{/if}

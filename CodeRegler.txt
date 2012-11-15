@@ -1,0 +1,56 @@
+Skapa en ny module
+
+    - Stå i mainappens katalog
+    - skriv play new-module {modulensnamn}
+    - lägg till det nedan inom måsvingar, messages som exempel
+
+---------------------------------------------
+    require:
+    - play
+    - messages -> messages 0.1
+    {- modulnamn -> modulenamn}
+    
+    repositories:
+    - My modules:
+        type:     local
+        artifact: ${application.path}/[module]
+        contains:
+            - messages
+            {- modulenamn}
+---------------------------------------------
+
+          
+    -  Lägg även till i mainappens routefil
+    *  /{modulname}    module/{modulnamn}
+
+Kör play dependencies
+
+Routing måste köras med ex messages.MessagesController.index
+
+
+Modulen ska installeras. Skapa en Job fil i roten på filträdet för modulen.
+ex install.java
+
+@OnApplicationStart
+public class install extends Job{
+    
+    private String name = "Messages"; //valfritt -> det som visas för användaren
+    private String controllerName = "MessagesController";
+    private String moduleName = "messages"; //packagename
+    
+    public void doJob()
+    {
+        //Statisk metod i core.Module som installerar
+        Module.install(this.name, this.controllerName, this.moduleName);
+    }
+}
+
+Kodregler moduler
+-----------------
+
+skapa new module
+skapa controller [ModuleName]controller 
+controllern innehåller action index som startsida
+lägg till modulen i mainappen routesfile
+
+

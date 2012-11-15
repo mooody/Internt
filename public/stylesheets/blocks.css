@@ -1,0 +1,22 @@
+/* 
+    Document   : blocks.css
+    Created on : 2012-jul-12, 12:52:20
+    Author     : weetech
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.fullwidth{
+    display:block;
+    width:98%;
+}
+
+.halfwidth{
+    display:inline;
+    width:49%;
+}
+
+.right{
+    text-align:right;
+}
+

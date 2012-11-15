@@ -1,0 +1,26 @@
+
+#{extends 'main.html' /}
+#{stylesheet 'login.html.css' /}
+#{set title:'Logga in' /}
+
+<ul>
+#{list items:groups, as:'grupp'}
+<li>
+#{if grupp.parent!= null && grupp.parent.companyId == sessionuser.company.id}
+    ${grupp.parent.name}:
+#{/if}
+${grupp.name} 
+
+#{form @admin.GruppController.delete(), class:'delete'}
+    <input type="hidden" name="groupid" value="${grupp.id}" />
+    <input type="submit" class="deletebutton" value="" alt="delete group" />
+#{/form}
+</li>
+#{/list}
+</ul>
+<h2>skapa ny grupp</h2>
+#{include "admin/groups/show.html" /}
+
+<hr />
+
+

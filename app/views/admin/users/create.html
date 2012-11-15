@@ -1,0 +1,36 @@
+#{mainpage title:sessionuser.language.getString("Create.user") /}
+
+<style>
+    span.halfwidth{
+        width:49%;
+    }
+    span.fullwidth{
+        width:100%;
+    }
+    
+    input.deleteSubmitButton{
+        background-image: url();
+        width:20px;
+        height:15px;
+    }
+</style>
+
+#{form @admin.UsersController.save() } 
+<span class="fullwidth">
+    ${sessionuser.language.getString("Name")}:<input name="user.name" />
+</span>
+<span class="fullwidth">
+    ${sessionuser.language.getString("Password")}:<input name="user.password"/>
+</span>
+<span class="fullwidth">
+    ${sessionuser.language.getString("Email")}:<input name="user.email"/>
+</span>
+<span class="fullwidth">
+    <input type="submit" value="Spara" />
+</span>
+
+#{list items:utils.language.Language.languageAvalible(), as:'lang'}
+<input type="radio" id="lang" value="${lang}" name="user.lang" /><label for="lang">${lang}</label>
+#{/list}
+#{/form}
+

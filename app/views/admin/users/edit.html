@@ -1,0 +1,59 @@
+#{mainpage title:sessionuser.language.getString("edit.user") /}
+#{stylesheet 'login.html.css' /}
+
+
+
+*{<!-- Visa / ändra användaruppgifter -->}*
+#{form @admin.UsersController.save()}
+
+<input type="hidden" name="user.id" value="${user.id}" />
+<label for="user.name">${sessionuser.language.getString("name")}:</label>
+<input type="text" name="user.name" value="${user.name}"/>
+
+<br />
+
+<label for="user.email">${sessionuser.language.getString("email")}:</label>
+<input type="text" name="user.email" value="${user.email}"/>
+
+<br />
+
+<input type="submit" value="${sessionuser.language.getString("save")}" />
+#{/form}
+
+    *{<!-- Visa alla grupper som användaren har -->}*
+    <ul>
+    #{list items:user.groups, as:'group'}
+        <li>[${group.parent!=null?group.parent.name+' -> ':''}${group.name}] 
+            #{form @admin.UsersController.removeUserFromGroup(user.id, group.id), class:'delete'}
+            <input type="submit" class="deletebutton" alt="remove group" value="" />
+            #{/form}
+        </li>
+    #{/list}
+    </ul>
+    #{else}
+        ${sessionuser.language.getString("user.has.no.groups")}
+    #{/else}
+    
+    *{<!-- Lägg till användaren i ny grupp -->}*
+    #{form @admin.UsersController.addGroupToUser()}
+        <input type="hidden" name="userid" value="${user.id}" />
+        #{group.showgroups groups:sessionuser.getAllGroups(), key:'groupId', option:sessionuser.language.getString("choose")+"..." /}
+        <input type="submit" class="button" value="${sessionuser.language.getString("add.user.to.group")}" />
+    #{/form}
+    <hr />
+    *{<!-- Ändra användartype -->}*
+    #{form @admin.UsersController.setUserType()}
+    <input type="hidden" name="user.id" value="${user.id}" />
+    <input type="hidden" name="admin" value="true" />
+    <label for="user">${sessionuser.language.getString("regular.user")}</label>
+    <input type="radio" id="user" name="usertype" value="user" />
+    <label for="admin">${sessionuser.language.getString("admin.user")}</label>
+    <input type="radio" id="admin" name="usertype" value="admin" />
+    <input type="submit" value="${sessionuser.language.getString("change.usertype")}"/>
+    #{/form}
+    
+    
+    <hr />
+
+
+

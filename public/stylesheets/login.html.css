@@ -1,0 +1,22 @@
+fieldset.loginform{
+    width:350px;
+    margin:auto;
+    background-color: #ddd;
+    padding:  50px;
+}
+div.loginform{
+    width:348px;
+}
+input.inputbox{
+    width:140px;
+    font-size: 14px;
+}
+
+input.inputbutton{
+    width:140px;
+    alignment-adjust: central;
+}
+
+span.label{
+    width:100px;
+}

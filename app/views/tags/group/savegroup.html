@@ -1,0 +1,9 @@
+*{<!--
+  params groups. (fetch group-data from models.group)
+  -->}*
+
+  <select name="group">
+      #{list items:_groups: group}
+      <option value="group.id">$(group.name)</option>
+      #{/list}
+  </select>

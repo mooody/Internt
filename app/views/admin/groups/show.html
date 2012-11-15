@@ -1,0 +1,14 @@
+#{form @admin.GruppController.save() }
+    
+    <input type="text" name="grupp.name" value=""/>
+    <select name="grupp.parent.id">
+        #{list items:groups, as:'group'}
+        <option value="${group.id}">${group.name}</option>
+        #{/list}
+    </select>
+    <input type="submit" value="spara" />
+#{/form}
+
+#{list items:sessionuser.groups, as:'group'}
+
+#{/list}

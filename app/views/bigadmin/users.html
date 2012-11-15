@@ -1,0 +1,5 @@
+#{mainpage title:'Handle.users' /}
+
+#{list items:users, as:'user'}
+${user.name} - ${user.company?.name} (${user.getClass().getName()})<br />
+#{/list}

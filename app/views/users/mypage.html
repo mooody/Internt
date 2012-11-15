@@ -1,0 +1,31 @@
+#{extends 'main.html' /}
+#{set title:'MyPage' /}
+#{script 'jquery-1.6.4.min.js' /}
+
+
+<h1>MyPage</h1>
+
+<h2>Grupper</h2>
+
+#{users.showgroups user:sessionuser /}
+*{<!-- #{include 'Booking/Booking.html' /} -->}*
+
+
+
+<h2>Modules</h2>
+<ul>
+
+#{list items:sessionuser.modules, as:'module'}
+<li><a href="@{ModuleController.index(module.id)}" />${module.name}</a></li>
+
+<div id="${module.name}"></div>
+
+<script type="text/javascript">
+    $(document).ready(
+    function(){
+        $("#${module.name}").load("@{ModuleController.peek(module.id)}");
+    });
+</script>
+#{/list}
+</ul>
+

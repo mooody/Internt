@@ -1,0 +1,29 @@
+/* 
+    Document   : menu
+    Created on : 2012-jul-28, 16:29:58
+    Author     : weetech
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+ul.menu{
+    
+}
+
+ul.menu li{
+    list-style: none;
+    padding: 0 5px 0 5px;
+    float:left;
+}
+
+ul.menu a{
+    text-decoration: none;
+    padding:3px;
+}
+
+ul.menu a:hover{
+    text-decoration: none;
+    background:#ddd;
+    border:solid 1px #aaa;
+    padding:2px;
+}

@@ -1,0 +1,17 @@
+# Application dependencies
+
+require:
+    - play
+    - messages -> messages 0.1
+    - reminder -> reminder 0.1
+    - booking -> booking 0.1
+
+repositories:
+  - components:
+      type:     local
+      artifact: ${application.path}/planningmodules/[module]
+      contains:
+        - booking
+        - messages
+        - reminder
+   

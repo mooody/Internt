@@ -1,0 +1,12 @@
+#{mainpage title:'Handle.groups' /}
+
+#{if sessionuser.getClass() == models.SuperAdmin.class}
+    #{list items:groups, as:'group'}
+    ${group.name}<br />
+    #{/list}
+
+#{/if}
+
+
+
+

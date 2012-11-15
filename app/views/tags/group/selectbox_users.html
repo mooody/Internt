@@ -1,0 +1,17 @@
+*{
+params:
+    groups (Mandatory)
+    select_name: (default:group.id)
+    first_option_text (default:välj...)
+    first_option_value (default:0)
+    selected:   (default:0)
+}*
+
+<select name="${_select_name!=null?_select_name:'group.id'}">
+    <option value="${_first_option_value!=null?_first_option_value:'0'}">
+        ${_first_option_text!=null?_first_option_text:'Välj...'}
+    </option>
+#{list items:_groups, as:'group'}
+<option value="${group.id}" ${_selected!=null && _selected==group.id ? 'selected="selected"':''}>${group.name}</option>
+#{/list}
+</select>
