@@ -12,9 +12,13 @@
     
     #{/if}
 
+	*{<!-- Lista alla företag -->}*
+	#{list items:companies, as:'companyObject'}
+		${companyObject.name}<br />
+	#{/list}
     #{form @admin.CompanyController.create()}
 
-    #{if sessionuser.company != null}
+    #{if company && company.id != null}
         <input type="hidden" name="company.id" value="${sessionuser.company?.id}" />
     #{/if}
     
@@ -80,6 +84,11 @@
             </td>
         </tr> 
     </table>
+	
+	*{<!-- om vi laddar vårt nuvarande företag visa länken till att skapa ett nytt -->}*
+	#{if company}
+		<a href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
+	#{/if}
     
     
     

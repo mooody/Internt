@@ -46,9 +46,8 @@ public class UserBase extends Model{
     @Transient
     public Language language;
     
-    //@ManyToOne
-    //@JoinColumn(name="user_company")
-	@Transient
+    @ManyToOne
+    @JoinColumn(name="user_company")
     public Company company;
     
 	@ManyToMany(cascade=CascadeType.ALL)
@@ -185,7 +184,7 @@ public class UserBase extends Model{
 		//ladda in företaget
 		if(this.companies!=null && this.companies.size() > 0)
 		{
-			this.company = this.companies.get(0);
+			Logger.info("LOOOAD COMPANY");
 		}
         String name = this.lang;
        if(name==null)

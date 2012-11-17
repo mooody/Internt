@@ -9,6 +9,10 @@ POST     /login                                 Application.login
 *       /logout                                 Application.logout
 GET     /signup                                 Application.signup
 POST    /account                                Application.createAccount
+#Om användaren har flera företag gå till valfälten
+GET		/selectCompany							Application.selectCompany
+#När användaren valt vilket företag han ska logga in i	
+GET		/loadCompany							Application.loadCompany
 
 #AdminController 
 # - user
@@ -32,6 +36,7 @@ POST    /admin/groups/delete                    admin.GruppController.delete
 # - Company
 GET     /company                                admin.CompanyController.index
 POST    /company/company                        admin.CompanyController.create
+GET    /company/addcompany                     admin.CompanyController.addCompany
 
 #AdminController
 # - Modules

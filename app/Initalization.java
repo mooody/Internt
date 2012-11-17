@@ -46,6 +46,8 @@ public class Initalization extends Job {
             company.name = companyName;
            
             company.addUser(user);
+			if(user.companies == null) user.companies = new ArrayList<Company>();
+			user.companies.add(company);
             company.save();
             
             String defaultgrupp = play.Play.configuration.getProperty("defaultuser.grupp");

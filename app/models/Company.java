@@ -28,13 +28,15 @@ public class Company extends Model{
     /**
      * Användare som är kopplade till företaget
      */
-    //@OneToMany(fetch=FetchType.LAZY, targetEntity=UserBase.class)
-    //@JoinColumn(name="user_company", referencedColumnName="id")
+    @OneToMany(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_company", referencedColumnName="id")
+	public List<UserBase> users;
+	
 	@ManyToMany
 	 @JoinTable(name = "multiple_companies", 
         inverseJoinColumns = {@JoinColumn(name ="user_id") }, 
         joinColumns = { @JoinColumn(name = "company_id") })
-    public List<UserBase> users;
+    public List<UserBase> usersWithMultipleAccounts;
 
     /**
      * 
@@ -54,8 +56,14 @@ public class Company extends Model{
      */
     public void addUser(UserBase user)
     {
-        if(this.users == null) this.users = new ArrayList();
+        if(this.users == null) this.users = new ArrayList<UserBase>();
         this.users.add(user);
     }
+	
+	@Override
+	public String toString()
+	{
+		return "Company:"+this.name;
+	}
 
 }
