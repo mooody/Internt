@@ -46,10 +46,16 @@ public class UserBase extends Model{
     @Transient
     public Language language;
     
-    @ManyToOne
-    @JoinColumn(name="user_company")
+    //@ManyToOne
+    //@JoinColumn(name="user_company")
+	@Transient
     public Company company;
     
+	@ManyToMany(cascade=CascadeType.ALL)
+	 @JoinTable(name = "multiple_companies", 
+        joinColumns = {@JoinColumn(name ="user_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "company_id") })
+	public List<Company> companies;
     
     @Basic(fetch=FetchType.LAZY)
     @ManyToMany(targetEntity=Content.class)
@@ -176,7 +182,11 @@ public class UserBase extends Model{
     @PostLoad
     public void loadLanguage() throws ClassNotFoundException, InstantiationException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException
     {
-        
+		//ladda in företaget
+		if(this.companies!=null && this.companies.size() > 0)
+		{
+			this.company = this.companies.get(0);
+		}
         String name = this.lang;
        if(name==null)
            name = "Sv";

@@ -44,15 +44,16 @@ public class PlanController extends Controller{
             Application.loginform();
         }
         
+		//DENNA LIGGER I ADMINCONTROLLER
         //kontroll om användaren tillhör ett företag. Annars skicka till vyn där vi skapar ett företag
-        if(user.company == null && !(
+        /*if(user.company == null && !(
                 (Controller.request.action.equals("CompanyController.index")) 
                 ||(Controller.request.action.equals("CompanyController.create"))
                 ))
         {
             flash.put("message", Messages.get("you.need.to.create.a.company.before.you.can.continue"));
             CompanyController.index();
-        }
+        }*/
         
         //om användaren inte är null så 
         if(user!=null)
@@ -62,7 +63,7 @@ public class PlanController extends Controller{
            renderArgs.put("sessionuser",updateduser);
            Cache.set("sessionuser", updateduser);
            //user = UserBase.findById(new Long(session.get("userid")).longValue());
-           Logger.info("%s", user.company.name);
+           Logger.info("PlanController.before Company:%s", user.company);
         }
         
         

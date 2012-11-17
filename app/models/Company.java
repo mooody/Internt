@@ -28,8 +28,12 @@ public class Company extends Model{
     /**
      * Användare som är kopplade till företaget
      */
-    @OneToMany(fetch=FetchType.LAZY, targetEntity=UserBase.class)
-    @JoinColumn(name="user_company", referencedColumnName="id")
+    //@OneToMany(fetch=FetchType.LAZY, targetEntity=UserBase.class)
+    //@JoinColumn(name="user_company", referencedColumnName="id")
+	@ManyToMany
+	 @JoinTable(name = "multiple_companies", 
+        inverseJoinColumns = {@JoinColumn(name ="user_id") }, 
+        joinColumns = { @JoinColumn(name = "company_id") })
     public List<UserBase> users;
 
     /**

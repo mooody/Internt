@@ -29,6 +29,10 @@ import play.mvc.Router;
  */
 public class AdminController extends PlanController {
     
+	/**
+	* Kontrollerar så användaren är admin.
+	* Samt om användaren ej har ett företag, gå in och fixa ett företag
+	*/
     @Before
     public static void authority() throws NoAdminException
     {
@@ -36,13 +40,16 @@ public class AdminController extends PlanController {
             //if(PlanController.user.getClass() == Admin.class)
            if(PlanController.user instanceof Admin)
             {
+				Logger.info("AdminController.authority: ADMIN");
                 //Om användaren ännu inte skapat ett företag. Gå och hantera detta!
-                if(PlanController.user.company == null)
+				if(user.company == null && !(
+                (Controller.request.action.equals("admin.CompanyController.index")) 
+                ||(Controller.request.action.equals("admin.CompanyController.create"))
+                ))
                 {
                     CompanyController.index();
                 }
-                
-                Logger.info("AdminController.authority: ADMIN");
+
             }
             else{
                 flash.put("message", "You.need.to.login.as.administrator");
