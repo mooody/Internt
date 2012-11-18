@@ -65,7 +65,7 @@ GET     /getpeek/{moduleId}                       ModuleController.peek
 *   /messages                                   module:messages
 *   /reminder                                   module:reminder
 *   /booking                                    module:booking
-
+*   /project                                    module:project
 #----------------------
 #groups
 
