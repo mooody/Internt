@@ -36,6 +36,9 @@ public class UsersController extends AdminController {
         render("admin/users/create.html", groups);
     }
     
+	/**
+	* Sparar en ny användar till ett företag
+	*/
     public static void save()
     {
         //hämta ut administratörens företag

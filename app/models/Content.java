@@ -147,11 +147,7 @@ public abstract class Content extends GenericModel{
     public Content delete()
     {
         Logger.info("content.delete");
-        
-      
-        
         super.delete();
-        
         return this;      
     }
      

@@ -73,10 +73,15 @@ public class Application extends Controller {
             {
                 Logger.info("User OK");
                 message = Messages.get("login.ok");
-                //Cache.set("sessionuser",user);  
+                //Vi sätter användaren som inloggad
                 session.put("userid", user.id);
                 
                 flash.put("message", message);
+				if(user.companies.size() > 1)
+				{
+					selectCompany(user);
+					Logger.info("More Companys");
+				}
                 redirect("users.mypage");
             }   
         }
@@ -88,8 +93,6 @@ public class Application extends Controller {
     public static void logout()
     {
         Logger.info("Logout");
-        //Cache.safeDelete("sessionuser");
-        
         session.clear();
         
         flash.put("message", Messages.get("you.have.been.logged.out"));
@@ -100,6 +103,29 @@ public class Application extends Controller {
     {
         render();
     }
+	
+	private static void selectCompany(UserBase user)
+	{
+		List<Company> companies = null;
+		if(user.companies != null)
+        {
+            companies = Company.find("select c from Company c left join c.usersWithMultipleAccounts u where u.id = :uid")
+				.bind("uid", user.id)
+				.fetch();
+				
+			Logger.info("Application.selectCompany_ size:%s", companies.size());
+        }
+		render("Application/selectcompany.html", companies);
+	}
+	
+	public static void loadCompany(long id)
+	{
+		UserBase user = UserBase.findById(new Long(session.get("userid")).longValue());
+		Company company = Company.findById(id);
+		user.company = company;
+		user.save();
+		redirect("users.mypage");
+	}
     
     /**
      * Create an adminaccount

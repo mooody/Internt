@@ -5,8 +5,14 @@ require:
     - messages -> messages 0.1
     - reminder -> reminder 0.1
     - booking -> booking 0.1
+    - pdf -> pdf 0.9
 
 repositories:
+  - pdf09:
+   type:	local
+   artifact: ${application.path}/pdf-0.9
+   contains:
+   - pdf
   - components:
       type:     local
       artifact: ${application.path}/planningmodules/[module]
