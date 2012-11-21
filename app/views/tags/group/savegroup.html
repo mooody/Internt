@@ -3,7 +3,7 @@
   -->}*
 
   <select name="group">
-      #{list items:_groups: group}
+      #{list items:_groups,as:'group'}
       <option value="group.id">$(group.name)</option>
       #{/list}
   </select>
