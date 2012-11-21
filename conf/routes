@@ -62,10 +62,10 @@ GET     /getmodule/{moduleId}                     ModuleController.index
 GET     /getpeek/{moduleId}                       ModuleController.peek 
 
 #Modules
-*   /messages                                   module:messages
-*   /reminder                                   module:reminder
-*   /booking                                    module:booking
-*   /project                                    module:project
+#*   /messages                                   module:messages
+#*   /reminder                                   module:reminder
+#*   /booking                                    module:booking
+#*   /project                                    module:project
 #----------------------
 #groups
 
