@@ -1,8 +1,12 @@
+#{extends 'main.html' /}
+#{set title:'ChooseCompany' /}
 
-<div style="width:100%; height:100%; background-color:#ccc;"/>
+<div style="width:100%; height:100%;"/>
 <div style="width:500px; height:400px; margin:auto;"> 
-<h1>&{'YouGotMultipleCompaniesChooseYourToday'}<h1>
+<h1>&{'YouGotMultipleCompanies'}</h1>
+<h3>-&{'ChooseCompany'}</h3>
+<ul>
 #{list items:companies,as:'company'}
-<a href="@{Application.loadCompany(company.id)}"><b>${company.name}<b></a><br />
+<li><a href="@{Application.loadCompany(company.id)}">${company.name}</a></li>
 #{/list}
-</div>
+</ul>

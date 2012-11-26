@@ -7,3 +7,16 @@ users.not.saved = Det misslyckades och spara användaren
 user.logout = Logga ut
 user.login = Logga in
 login.failed = Inloggningen misslyckades
+user.signup = Registrera dig
+login.as.user = Logga in som användare
+YouGotMultipleCompanies = Du är kopplad till flera företag
+ChooseCompany = Välj det du vill agera i 
+logged.in.as = Inloggad som
+Company = Företag
+
+buttons.login = Logga in
+email = Emailadress
+password = Lösenord
+you.have.been.logged.out = Du är utloggad
+you.need.to.type.pass.and.name = Du måste skriva in din emailadress och lösenord
+

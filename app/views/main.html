@@ -7,17 +7,17 @@
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/blocks.css'}">
         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/menu.css'}">
+		<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/modules.css'}">
         #{get 'moreStyles' /}
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-        *{<script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>}*
-        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/jquery-ui/jquery-ui.css'}">
-<script src="@{'/public/javascripts/jquery-1.8.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
-<script src="@{'/public/javascripts/jquery-ui/jquery-ui.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/jquery-ui/jquery-ui.css'}">
+		<script src="@{'/public/javascripts/jquery-1.8.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+		<script src="@{'/public/javascripts/jquery-ui/jquery-ui.js'}" type="text/javascript" charset="${_response_encoding}"></script>
 
         #{get 'moreScripts' /}
         #{script 'main.js' /}
-    </head>
-    
+	</head>
+
     <style>
         
     </style>
@@ -27,44 +27,56 @@
         <div class="logo">
             
         </div>
-*{<!-- Messagebox -->}*
-    #{if flash['message'] }
-        <div class="message">${flash['message']}</div>
-    #{/if}
-*{<!-- User -->}*
-<div id="menu">
-        <ul id="mainmenu">   
-        #{if sessionuser}
-            #{include 'users/menu.html' /}
-        #{/if}
-        #{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
-            #{include 'admin/menu.html' /}
-        #{/if}
-        #{if sessionuser.getClass() == models.SuperAdmin.class}
-            #{include 'bigadmin/menu.html' /}
-        #{/if}
-        #{if sessionuser}
-            <li>&{'logged.in.as'} ${sessionuser.name}</li>
-            <li><a class="button" href="@{Application.logout()}">&{'user.logout'}</a></li>
-        #{/if}
-        #{elseif !loginform}
-        <li><a class="button" href="@{Application.loginform()}">&{'user.login'}</a></li
-        <li><a class="button" href="@{Application.signup()}">&{'user.signup'}</a></li>
-        #{/elseif}
-        
-        </ul>
-
-</div>
+		
+		*{<!-- User -->}*
+		<div id="menu">
+			<ul id="headmenu">   
+			#{if sessionuser}
+				#{include 'users/menu.html' /}
+			#{/if}
+			#{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
+				#{include 'admin/menu.html' /}
+			#{/if}
+			#{if sessionuser.getClass() == models.SuperAdmin.class}
+				#{include 'bigadmin/menu.html' /}
+			#{/if}
+			#{if sessionuser}
+				<li><a href="@{Application.logout()}">&{'user.logout'}</a></li>
+			#{/if}
+			#{elseif !loginform}
+			<li><a href="@{Application.loginform()}">&{'user.login'}</a></li>
+			<li><a href="@{Application.signup()}">&{'user.signup'}</a></li>
+			#{/elseif}
+			</ul>
+		</div>
        
-    <div class="content">
-        #{doLayout /}
-    </div>
+	   <div style="clear:both;"></div>
+	   *{<!-- Messagebox -->}*
+		#{if flash['message'] }
+			<div class="message ui-state-highlight ui-corner-all">
+				<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+				${flash['message']}
+			</div>
+		#{/if}
+		*{<!-- Messagebox ERROR -->}*
+		#{if errors }
+			<div class="message ui-state-error ui-corner-all">
+				#{errors}
+					<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> ${error}<br />
+				#{/errors}
+			</div>
+		#{/if}
+		<div class="content">
+			#{doLayout /}
+		</div>
         
-    
-    <div class="footer">
-    Usertype: ${sessionuser.getClass().getName()}<br />
-	Company: ${sessionuser?.company?.name}
-    </div>
+		<div class="footer">
+			#{if sessionuser}
+				&{'logged.in.as'} ${sessionuser.name}
+				( ${sessionuser.getClass().getSimpleName()} )<br />
+				&{'Company'}: ${sessionuser?.company?.name}
+			#{/if}
+		</div>
 
     </div>
     </body>

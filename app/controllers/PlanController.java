@@ -29,13 +29,16 @@ public class PlanController extends Controller{
     @Before
     private static void getArgs()
     {
-        //Kör skräpinsamlaren ==> debug test
-        Runtime r = Runtime.getRuntime();
-        r.gc();
+
 
         //user = Cache.get("sessionuser", UserBase.class);
             
+		try{
         user = UserBase.findById(new Long(session.get("userid")).longValue());
+		} catch (NumberFormatException ne)
+		{
+			user = null;
+		}
         
         Logger.info("userid: %s", session.get("userid"));
         if(user==null)
