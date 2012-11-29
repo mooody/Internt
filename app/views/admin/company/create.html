@@ -23,8 +23,11 @@
     #{/if}
     
     <table>
+		*{}*
         <tr>  
             <td colspan="2"><b>Företagsuppgifter</b></td>
+		</tr>
+		*{<!-- Organisationsnamn -->}*
         <tr>
             <td>
                 <label for="company.name">Organisationsnamn:</label>
@@ -41,43 +44,116 @@
                 <input id="company.orgnr" type="text" name="company.orgnr" value="${company?.orgnr}"/>
             </td>
         </tr>
-      *{<!--  <tr>
-            <td colspan="2">
-                <b>Adressuppgifter</b>
-            </td>
-        </tr>
+		<tr>
+			<td colspan="2">Nedanstående uppgifter skrivs default på fakturor</td>
+		</tr>
         <tr>
             <td>
-                <label for="company.contact.address">Adress:</label>
+                <label for="company.name">Gatuadress:</label>
             </td>
             <td>
-                <input id="company.contact.address" type="text" name="company.contact.address" value="${company?.contact?.address}"/>
+                <input id="company.name" type="text" name="company.street" value="${company?.street}"/>
             </td>
         </tr>
-        <tr>
+		 *{<!-- zip -->}*
+		<tr>
             <td>
-                <label for="company.contact.adress">Postnr:</label>
+                <label for="company.name">Postnr:</label>
             </td>
             <td>
-                <input id="company.contact.zipcode" type="text" name="company.contact.zipcode" value="${company?.contact?.zipcode}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="company.contact.adress">Stad:</label>
-            </td>
-            <td>
-                <input id="company.contact.city" type="text" name="company.contact.city" value="${company?.contact?.city}"/>
+                <input id="company.name" type="text" name="company.zipcode" value="${company?.zipcode}"/>
             </td>
         </tr>
-        <tr>
+		*{<!-- city -->}*
+		<tr>
             <td>
-                <label for="company.contact.phone">Telefon:</label>
+                <label>Stad:</label>
             </td>
             <td>
-                <input id="company.contact.phone" type="text" name="company.contact.phone" value="${company?.contact?.phone}"/>
+                <input id="company.name" type="text" name="company.city" value="${company?.city}"/>
             </td>
-        </tr>-->}*
+        </tr>
+		*{<!-- mail -->}*
+		<tr>
+            <td>
+                <label>Kontaktmail:</label>
+            </td>
+            <td>
+                <input type="text" name="company.mail" value="${company?.mail}"/>
+            </td>
+        </tr>
+		*{<!-- phone -->}*
+		<tr>
+            <td>
+                <label>Företagstelefon (fast): </label>
+            </td>
+            <td>
+                <input type="text" name="company.phone" value="${company?.phone}"/>
+            </td>
+        </tr>
+		*{<!-- cellphone -->}*
+		<tr>
+            <td>
+                <label>Företagstelefon (mobil):</label>
+            </td>
+            <td>
+                <input type="text" name="company.cellphone" value="${company?.cellphone}"/>
+            </td>
+        </tr>
+		*{<!-- plusgiro -->}*
+		<tr>
+            <td>
+                <label>Plusgiro:</label>
+            </td>
+            <td>
+                <input type="text" name="company.plusgiro" value="${company?.plusgiro}"/>
+            </td>
+        </tr>
+		*{<!-- bankgiro -->}*
+		<tr>
+            <td>
+                <label>Bankgiro:</label>
+            </td>
+            <td>
+                <input type="text" name="company.bankgiro" value="${company?.bankgiro}"/>
+            </td>
+        </tr>
+		*{<!-- cellphone -->}*
+		<tr>
+            <td>
+                <label>Debitering (default):</label>
+            </td>
+            <td>
+                <input type="text" name="company.defaultDebitation" value="${company?.defaultDebitation}"/>
+            </td>
+        </tr>
+		*{<!-- defaultReferens -->}*
+		<tr>
+            <td>
+                <label>Debitering (default):</label>
+            </td>
+            <td>
+                <input type="text" name="company.defaultReferens" value="${company?.defaultReferens}"/>
+            </td>
+        </tr>
+		*{<!-- first invoice number -->}*
+		<tr>
+            <td>
+                <label>Första fakturanr:</label>
+            </td>
+            <td>
+                <input type="text" name="company.invoiceNumber" value="${company?.invoiceNumber}"/>
+            </td>
+        </tr>
+		*{<!-- f-skatt -->}*
+		<tr>
+            <td>
+                <label for="fskatt">Innehar F-Skatt:</label>
+            </td>
+            <td>
+                <input id="fskatt" type="checkbox" name="company.fskatt" ${company!=null&&company.fskatt?'checked="checked"'.raw():''}"/>
+            </td>
+        </tr>
         <tr>
             <td colspan="2">
                 <input type="submit" value="&{'save'}" />

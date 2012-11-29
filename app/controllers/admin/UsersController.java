@@ -13,6 +13,7 @@ import models.UserBase;
 import play.Logger;
 import play.i18n.Messages;
 import play.mvc.Controller;
+import java.util.ArrayList;
 
 /**
  *
@@ -48,13 +49,10 @@ public class UsersController extends AdminController {
         
         Controller.notFoundIfNull(user, Messages.get("user.not.found"));
         
-        String message = "User created OK";
-        
         if(update)
         {
             user.save();
-            message = "User updated OK";
-            flash.put("message", message);
+            flash.put("message", Messages.get("user.updated"));
             edit(user.id);
         }
         else
@@ -62,14 +60,15 @@ public class UsersController extends AdminController {
             Company company = PlanController.user.company;
 
             user.company = company;
+			if(user.companies == null) user.companies = new ArrayList<Company>();
+			user.companies.add(company);
 
             if(user!=null)
             {
                 user.save();
             }
             
-            message = "User created OK";
-            flash.put("message", message);
+            flash.put("message", Messages.get("user.created"));
             index();
 
         }        

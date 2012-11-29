@@ -41,7 +41,8 @@ div.userinfo{
 div.content{
     border: 1px solid #ddd;
     clear:both;
-   margin: 10px 20px;
+	margin: 10px 20px;
+	height: 100%;
 }
 div.footer{
     border:1px solid #ddd;

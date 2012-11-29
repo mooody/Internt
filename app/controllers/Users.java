@@ -25,8 +25,6 @@ public class Users extends PlanController{
     public static void mypage()
     {
         render();
-    
-        
     }
     
     public static void myaccount()
@@ -49,7 +47,7 @@ public class Users extends PlanController{
         {
             if(!pw2.equals(pw1))
             {
-                flash.put("message", "password dont match");
+                flash.put("message", Messages.get("user.password.dont.match"));
                 myaccount();
             }
              
@@ -57,14 +55,14 @@ public class Users extends PlanController{
         }
         else if(pw1.isEmpty()^pw2.isEmpty())
         {
-            flash.put("message", "password dont match 2");
+            flash.put("message", Messages.get("user.password.dont.match"));
             myaccount();
         }
         
         
         
         user.save();
-        flash.put("message", "Information updated");
+        flash.put("message", Messages.get("user.updated"));
         myaccount();
         
     }

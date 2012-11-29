@@ -24,7 +24,21 @@ public class Company extends Model{
      * Företagets orgnr
      */
     public String orgnr;
-    
+	public boolean fskatt;
+	public double defaultDebitation = 0.0;
+	public String bankgiro;
+	public String plusgiro;
+	public String mail;
+	public String street;
+	public String zipcode;
+	public String city;
+	public String phone;
+	public String cellphone;
+	public String defaultReferens = "";
+	public int invoiceNumber = 0;
+	public String website;
+	
+ 
     /**
      * Användare som är kopplade till företaget
      */
