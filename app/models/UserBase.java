@@ -41,6 +41,10 @@ public class UserBase extends Model{
     @Required
     public String email;
     
+	public String address;
+	public String zipcode;
+	public String city;
+	
     public String lang;
     
     @Transient
