@@ -208,7 +208,18 @@ public class UserBase extends Model{
     }
     
     
-    
+	//Skapa initialer av användaren
+	public String getSignature()
+	{
+		String[] initials_arr = this.name.split(" ");
+		StringBuilder sb = new StringBuilder();
+		for(String s: initials_arr)
+		{
+			sb.append(s.charAt(0));
+		}
+		
+		return sb.toString();
+    }
     //<editor-fold defaultstate="collapsed" desc=" Grupper">
     
     /**
