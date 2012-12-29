@@ -34,7 +34,7 @@ public class Application extends Controller {
         render();
     }
     
-  public static void loginform()
+	public static void loginform()
     {
         renderArgs.put("loginform",true);
         Logger.info("Loginform");

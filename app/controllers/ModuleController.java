@@ -42,6 +42,7 @@ public class ModuleController extends PlanController{
     
     /**
      * Fixar en länk till indexmetoden för modulen
+	 * - Här inne ser du även till och hämtar in aktuella sessionvariabler till modulen.
      * @param moduleId 
      */
     public static void index(Long moduleId)
@@ -50,18 +51,21 @@ public class ModuleController extends PlanController{
         redirect(module.getModuleControllerActionRoute("index"));
     }
     
-    //Laddar in peek från modulen
+   
+	/*
+	* Laddar in en liten "peek"-vy från modulen. I denna är det även bra att anropa clearSession().
+	*   - private void clearSession()
+		- Programeringsmetod. Denna metod ska finnas i huvudcontrollern till modulen. 
+		- Anropa denna från peek där du rensar modulens sessionvariabler.
+	*
+	*/
     public static void peek(Long moduleId)
     {
         Logger.info("Loading peek from %s", moduleId);
         Module module = Module.findById(moduleId);
         redirect(module.getModuleControllerActionRoute("peek"));
         //render(module.name+"/peek.html");
-    }
-    
-
-   
-            
+    }  
      
     
 }
