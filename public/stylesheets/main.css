@@ -19,8 +19,8 @@ div.wrapper{
     margin:auto;
     padding-top: 10px;
     border: 1px solid #ccc;
-    width:1000px;
-    
+    width:1000px;   
+	/*height:100%;*/
 }
 
 div.logo{

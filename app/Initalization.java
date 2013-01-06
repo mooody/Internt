@@ -35,7 +35,7 @@ public class Initalization extends Job {
             SuperAdmin user = new SuperAdmin();
             user.email = play.Play.configuration.getProperty("defaultuser.email");
             user.name = play.Play.configuration.getProperty("defaultuser.name");
-            user.password = play.Play.configuration.getProperty("defaultuser.pass");
+            user.setPassword(play.Play.configuration.getProperty("defaultuser.pass"));
             
             Logger.info("Creating default user %s", user.email);
             

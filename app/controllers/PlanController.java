@@ -29,14 +29,11 @@ public class PlanController extends Controller{
     @Before
     private static void getArgs()
     {
-
-
         //user = Cache.get("sessionuser", UserBase.class);
             
 		try{
-        user = UserBase.findById(new Long(session.get("userid")).longValue());
-		} catch (NumberFormatException ne)
-		{
+			user = UserBase.findById(new Long(session.get("userid")).longValue());
+		} catch (NumberFormatException ne) {
 			user = null;
 		}
         
@@ -75,19 +72,9 @@ public class PlanController extends Controller{
     @After
     private static void saveArgs()
     {
-        /*user = Cache.get("sessionuser", UserBase.class);
-       
-        if(user!=null)
-        {
-           UserBase updateduser = UserBase.findById(user.id);
-           renderArgs.put("sessionuser",updateduser);
-           //Cache.set("sessionuser", updateduser);
-        }
-        */
         if(flash.contains("message"))
         {
             String msg = flash.get("message");
-            
             renderArgs.put("message", msg);
         }
         

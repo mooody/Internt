@@ -19,4 +19,8 @@ email = Emailadress
 password = Lösenord
 you.have.been.logged.out = Du är utloggad
 you.need.to.type.pass.and.name = Du måste skriva in din emailadress och lösenord
+admin.you.need.to.create.a.company.first = Du måste skapa ett företag innan du kan gå vidare
+user.password.dont.match = Lösenorden är inte lika
+user.updated = Användaren är uppdaterad
+login.ok = Inloggad korrekt
 

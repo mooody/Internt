@@ -47,6 +47,7 @@ public class AdminController extends PlanController {
                 ||(Controller.request.action.equals("admin.CompanyController.create"))
                 ))
                 {
+					flash.put("message","admin.you.need.to.create.a.company.first");
                     CompanyController.index();
                 }
 

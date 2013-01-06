@@ -19,7 +19,7 @@ import play.mvc.Controller;
  *
  * @author weetech
  */
-public class GruppController extends PlanController{
+public class GruppController extends AdminController{
   
     public static void index() throws Exception
     {

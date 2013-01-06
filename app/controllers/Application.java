@@ -17,6 +17,9 @@ import play.i18n.Messages;
  */
 public class Application extends Controller {
 
+	/**
+	* Om sessionen finns med ett userid så blir det en redirect till User.mypage
+	*/
     public static void index() {
         
         //Om sessionen lever så redirect till mypage
@@ -38,24 +41,30 @@ public class Application extends Controller {
     {
         renderArgs.put("loginform",true);
         Logger.info("Loginform");
-        render("Application/login.html");
+        render("application/login.html");
     }
     
+	/**
+	* Inloggning.
+	* 1: om det inte finns mail och lösen skickas med direkt tillbaka
+	* 2: om det finns mail och lösen inskrivet hämtas användaren ut.
+	* 3: om användaren är null skickas man direkt tillbaka igen
+	* 4: om den uthämtade användaren inte är null kontrolleras om det finns flera företag kopplade
+	* 5: om det finns flera företag kopplade skickas man till selectCompany för att välja
+	* 6: 
+	*/
     public static void login()      
     {
+		//lägger in till routingen så vi vet att vi kommer från loginform
         renderArgs.put("loginform",true);
+		//Hämtar ut email
         String email = params.get("email", String.class);
         String password = params.get("password", String.class);
         
-        Logger.info("******");
-        for(String s:params.allSimple().keySet())
-        {
-            Logger.info("key:%s value:%s", s, params.get(s));
-        }
-        Logger.info("******");
-        
+        //fördefiniera resultatmeddelande
         String message = Messages.get("login.failed");
         
+		//Om email eller lösen inte existerar, avbryt
         if(email==null||password==null||email.isEmpty()||password.isEmpty())
         {
             message = Messages.get("you.need.to.type.pass.and.name");
@@ -64,24 +73,31 @@ public class Application extends Controller {
             render("Application/login.html");
         }
         
+		//om email och lösen finns kontrollera användaren
         if(email!=null&&!email.isEmpty()&&password!=null&&!password.isEmpty())
         {
             Logger.info("check username %s", email);
-            
-            UserBase user = UserBase.login(email,password);
+            UserBase user = null;
+			try {
+				user = UserBase.login(email,password);
+			} catch(Exception ex) {
+				message = "some.error.occord.contact.site.help";
+			}
             if(user != null)
             {
-                Logger.info("User OK");
                 message = Messages.get("login.ok");
                 //Vi sätter användaren som inloggad
                 session.put("userid", user.id);
                 
                 flash.put("message", message);
+				
+				//om användaren har mera än 1 företag kopplat till sig, gå till välj företag
 				if(user.companies.size() > 1)
 				{
 					selectCompany(user);
 					Logger.info("More Companys");
 				}
+				//gå till inloggningen
                 redirect("users.mypage");
             }   
         }
@@ -90,6 +106,9 @@ public class Application extends Controller {
         render("Application/login.html");
     }
     
+	/**
+	* Logger ut och skickar vidare till startsidan.
+	*/
     public static void logout()
     {
         Logger.info("Logout");
@@ -104,6 +123,10 @@ public class Application extends Controller {
         render();
     }
 	
+	/**
+	* Om användaren har mera än 1 företag kopplat till sig så kommer denna vy att visas. 
+	* Användaren får här välja vilket företag denne vill agera i
+	*/
 	private static void selectCompany(UserBase user)
 	{
 		List<Company> companies = null;
@@ -118,6 +141,7 @@ public class Application extends Controller {
 		render("Application/selectcompany.html", companies);
 	}
 	
+	//Sätter användarens företag till valt företag
 	public static void loadCompany(long id)
 	{
 		UserBase user = UserBase.findById(new Long(session.get("userid")).longValue());
@@ -129,7 +153,7 @@ public class Application extends Controller {
     
     /**
      * Create an adminaccount
-     * 
+     * Skapar ett adminkonto. Detta för registreringen
      * @param user 
      */
     public static void createAccount(Admin user)

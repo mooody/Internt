@@ -18,14 +18,17 @@
         #{script 'main.js' /}
 	</head>
 
-    <style>
-        
-    </style>
+    <script>
+		//stäng av all autocomplete i HTML5 kompitibla webbläsare
+        jQuery(document).ready(function(){
+			jQuery("input").attr("autocomplete","off");
+		});
+    </script>
     <body>
 
     <div class="wrapper">
         <div class="logo">
-            
+            <h1>${sessionuser!=null?sessionuser?.company?.name:'Internt.nu'}</h1>
         </div>
 		
 		*{<!-- User -->}*

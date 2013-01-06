@@ -19,6 +19,12 @@ import play.data.validation.Required;
 //import play.db.jpa.JPASupport;
 import play.db.jpa.Model;
 import utils.language.Language;
+import play.*;
+import utils.Cryptography;
+import java.security.InvalidKeyException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import java.io.IOException;
 
 
 /**
@@ -31,11 +37,21 @@ import utils.language.Language;
 @Table(name="User")
 public class UserBase extends Model{
  
- 
+	private static final String DES_ENCRYPTION_KEY = Play.configuration.getProperty("application.secret");
+	
     @Required
     public String name;
     @Required
-    public String password;
+    private String password;
+	public String getPassword() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException
+	{
+		return Cryptography.decrypt(this.password,DES_ENCRYPTION_KEY);
+	}
+	
+	public void setPassword(String _pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+	{
+		this.password =Cryptography.encrypt(_pw,DES_ENCRYPTION_KEY);
+	}
 
     @Column(unique = true)
     @Required
@@ -136,10 +152,15 @@ public class UserBase extends Model{
         }
         return null;
     }
+	
+	public static String getCryptedPassword(String _pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException
+	{
+		return Cryptography.encrypt(_pw,DES_ENCRYPTION_KEY);
+	}
     
-    public static UserBase login(String email, String pw)
+    public static UserBase login(String email, String pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException
     {
-        UserBase user = UserBase.find("select u from UserBase u where u.email = :email and u.password = :pw").bind("email", email).bind("pw", pw).first();
+        UserBase user = UserBase.find("select u from UserBase u where u.email = :email and u.password = :pw").bind("email", email).bind("pw", UserBase.getCryptedPassword(pw)).first();
         return user;
     }       
     

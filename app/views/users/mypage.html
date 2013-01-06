@@ -16,7 +16,7 @@
 <ul>
 
 #{list items:sessionuser.modules, as:'module'}
-<li><a href="@{ModuleController.index(module.id)}" />${module.name}</a></li>
+<li><a href="@{ModuleController.index(module.id)}" />&{module.name}</a></li>
 
 <div id="${module.name}"></div>
 

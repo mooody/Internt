@@ -15,6 +15,7 @@ import play.cache.Cache;
 import play.db.jpa.GenericModel;
 import play.i18n.Messages;
 import play.mvc.Controller;
+import play.*;
 
 /**
  *
@@ -51,7 +52,12 @@ public class Users extends PlanController{
                 myaccount();
             }
              
-            user.password = pw1;
+			try {
+				user.setPassword(pw1);
+			} catch (Exception ex) {
+				flash.put("message", Messages.get("could.not.set.new.password.contact.site.helpdesk"));
+            myaccount();
+			}	
         }
         else if(pw1.isEmpty()^pw2.isEmpty())
         {
