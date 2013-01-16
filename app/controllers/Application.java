@@ -6,7 +6,7 @@ import java.util.*;
 import models.*;
 import play.cache.Cache;
 import play.i18n.Messages;
-
+import models.Core.CompanyUserSettings;
 
 /**
  * Application controllern har hand om inloggning. 
@@ -89,7 +89,13 @@ public class Application extends Controller {
                 Cache.set(session.getId()+"user", user);
 				
                 flash.put("message", message);
-				
+				//om användaren har varit användare i flera företag och borttaget från ett.
+				//fixa med företaget
+				if(user.company==null && user.companies.size()==1)
+				{
+					user.company = user.companies.get(0);
+					user.save();
+				}
 				//om användaren har mera än 1 företag kopplat till sig, gå till välj företag
 				if(user.companies.size() > 1)
 				{
@@ -143,10 +149,20 @@ public class Application extends Controller {
 	//Sätter användarens företag till valt företag
 	public static void loadCompany(long id)
 	{
-		UserBase user = UserBase.findById(new Long(session.get("userid")).longValue());
+		long userid = new Long(session.get("userid")).longValue();
+		UserBase user = UserBase.findById(userid);
 		Company company = Company.findById(id);
 		user.company = company;
 		user.save();
+		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
+		
+		if(cus!=null){
+			String usertype = cus.getUserType();
+			play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")
+			.setParameter("type",usertype).setParameter("id",userid)
+			.executeUpdate();
+		}
+		
 		redirect("users.mypage");
 	}
     

@@ -6,6 +6,8 @@ import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 
 import models.booking.*;
+import models.*;
+import models.Core.*;
 import java.util.List;
 
 /*
@@ -67,7 +69,8 @@ public class Initalization extends Job {
             
        
         }
-		ver();
+		//ver();
+		//setCompanyUserSettings();
     }
 	
 	public void ver()
@@ -82,6 +85,27 @@ public class Initalization extends Job {
 		}
 		Logger.info("%s", verifications.size());
 	}
+	/*
+	public void setCompanyUserSettings()
+	{
+		List<UserBase> users = UserBase.find("select u from UserBase u").fetch();
+		for(UserBase user: users)
+		{
+			for(Company company: user.companies)
+			{
+				CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
+				if(cus==null)
+				{
+					Logger.info("Creating cus for %s in %s", user.name, company.name);
+					cus = new CompanyUserSettings(user, company);
+					if(user.email.equals("mikael.forsberg@weetech.se"))
+					{
+						cus.setUserType("SuperAdmin");
+					}
+				}
+			}
+		}
+	}*/
     
     
     

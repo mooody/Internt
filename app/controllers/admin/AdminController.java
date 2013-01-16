@@ -47,13 +47,13 @@ public class AdminController extends PlanController {
                 ||(Controller.request.action.equals("admin.CompanyController.create"))
                 ))
                 {
-					flash.put("message","admin.you.need.to.create.a.company.first");
+					flash.put("message",Messages.get("admin.you.need.to.create.a.company.first"));
                     CompanyController.index();
                 }
 
             }
             else{
-                flash.put("message", "You.need.to.login.as.administrator");
+                flash.put("message", Messages.get("You.need.to.login.as.administrator"));
                 Application.loginform();
             }
             

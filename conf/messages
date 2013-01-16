@@ -2,8 +2,7 @@
 # For example, for French create a messages.fr file
 #
 
-users.saved.ok = Användaren sparad
-users.not.saved = Det misslyckades och spara användaren
+#Application
 user.logout = Logga ut
 user.login = Logga in
 login.failed = Inloggningen misslyckades
@@ -13,7 +12,6 @@ YouGotMultipleCompanies = Du är kopplad till flera företag
 ChooseCompany = Välj det du vill agera i 
 logged.in.as = Inloggad som
 Company = Företag
-
 buttons.login = Logga in
 email = Emailadress
 password = Lösenord
@@ -23,4 +21,27 @@ admin.you.need.to.create.a.company.first = Du måste skapa ett företag innan du
 user.password.dont.match = Lösenorden är inte lika
 user.updated = Användaren är uppdaterad
 login.ok = Inloggad korrekt
+You.need.to.login.as.administrator = Du måste logga in som administratör
+#Users
+add.user.to.group = Lägg till användaren till gruppen
+users.saved.ok = Användaren sparad
+users.not.saved = Det misslyckades och spara användaren
+user.deleted = Användaren raderad
+user.created = Användaren skapad
+user.removed.from.company = Användaren raderad från företaget
+send.invite = Mailadressen finns redan i systemet. Du måste skicka en inbjudan.
+user.has.no.groups = Användaren har inte kopplad till någon grupp ännu
+admin.user = Admin
+regular.user = Användare
+super.user = SuperAdmin
+#Company
+
+
+
+
+
+
+
+
+
 

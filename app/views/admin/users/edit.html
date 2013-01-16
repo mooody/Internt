@@ -4,8 +4,8 @@
 
 
 *{<!-- Visa / ändra användaruppgifter -->}*
+&{'UserType'}: ${user.getClass().getSimpleName()}<br />
 #{form @admin.UsersController.save()}
-
 <input type="hidden" name="user.id" value="${user.id}" />
 <label for="user.name">${sessionuser.language.getString("name")}:</label>
 <input type="text" name="user.name" value="${user.name}"/>
@@ -24,34 +24,45 @@
     <ul>
     #{list items:user.groups, as:'group'}
         <li>[${group.parent!=null?group.parent.name+' -> ':''}${group.name}] 
+		*{<!-- en admin kan inte ta bort en grupp från en superadmin -->}*
+		#{if (sessionuser.getClass() == models.Admin.class && user.getClass() != models.SuperAdmin.class) || sessionuser.getClass() == models.SuperAdmin.class }
             #{form @admin.UsersController.removeUserFromGroup(user.id, group.id), class:'delete'}
-            <input type="submit" class="deletebutton" alt="remove group" value="" />
+				<input type="submit" class="deletebutton" alt="remove group" value="" />
             #{/form}
+		#{/if}
         </li>
     #{/list}
     </ul>
     #{else}
-        ${sessionuser.language.getString("user.has.no.groups")}
+        &{"user.has.no.groups"}
     #{/else}
     
     *{<!-- Lägg till användaren i ny grupp -->}*
     #{form @admin.UsersController.addGroupToUser()}
         <input type="hidden" name="userid" value="${user.id}" />
         #{group.showgroups groups:sessionuser.getAllGroups(), key:'groupId', option:sessionuser.language.getString("choose")+"..." /}
-        <input type="submit" class="button" value="${sessionuser.language.getString("add.user.to.group")}" />
+        <input type="submit" class="button" value="&{'add.user.to.group'}" />
     #{/form}
     <hr />
     *{<!-- Ändra användartype -->}*
+	#{if (sessionuser.getClass() == models.Admin.class && user.getClass() != models.SuperAdmin.class) || sessionuser.getClass() == models.SuperAdmin.class}
+	
     #{form @admin.UsersController.setUserType()}
-    <input type="hidden" name="user.id" value="${user.id}" />
-    <input type="hidden" name="admin" value="true" />
-    <label for="user">${sessionuser.language.getString("regular.user")}</label>
-    <input type="radio" id="user" name="usertype" value="user" />
-    <label for="admin">${sessionuser.language.getString("admin.user")}</label>
-    <input type="radio" id="admin" name="usertype" value="admin" />
-    <input type="submit" value="${sessionuser.language.getString("change.usertype")}"/>
-    #{/form}
+    <input type="hidden" name="id" value="${user.id}" />
+	
+    <label for="user">&{'regular.user'}</label>
+    <input type="radio" id="usertype" name="usertype" value="0" #{if user.getClass() == models.UserBase.class}checked="checked"#{/if} />
+
+	<label for="admin">&{'admin.user'}</label>
+	<input type="radio" id="usertype" name="usertype" value="1" #{if user.getClass() == models.Admin.class}checked="checked"#{/if}/>
     
+	#{if sessionuser.getClass() == models.SuperAdmin.class}
+		<label for="admin">&{'super.user'}</label>
+		<input type="radio" id="usertype" name="usertype" value="2" #{if user.getClass() == models.SuperAdmin.class}checked="checked"#{/if}/>
+    #{/if}
+	<input type="submit" value="${sessionuser.language.getString("change.usertype")}"/>
+    #{/form}
+    #{/if}
     
     <hr />
 

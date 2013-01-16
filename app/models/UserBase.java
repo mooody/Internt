@@ -16,7 +16,6 @@ import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.MetaValue;
 import play.Logger;
 import play.data.validation.Required;
-//import play.db.jpa.JPASupport;
 import play.db.jpa.Model;
 import utils.language.Language;
 import play.*;
@@ -35,6 +34,13 @@ import java.io.IOException;
 @Inheritance
 @DiscriminatorColumn(name="UserType",discriminatorType = DiscriminatorType.STRING, length = 32)
 @Table(name="User")
+@SqlResultSetMappings({
+    @SqlResultSetMapping(name = "dummy", columns = {
+        @ColumnResult(name = "nothing")})
+})
+@NamedNativeQuery(name="UserBase.changeUserType", 
+    query="update User set UserType = :type where id = :id",
+	resultSetMapping = "dummy")
 public class UserBase extends Model{
  
 	private static final String DES_ENCRYPTION_KEY = Play.configuration.getProperty("application.secret");
@@ -178,6 +184,10 @@ public class UserBase extends Model{
         this.name = user.name;
         this.password = user.password;
         this.email = user.email;
+		this.company = user.company;
+		this.companies = user.companies;
+		this.modules = user.modules;
+		this.groups = user.groups;
     }
     
     /**

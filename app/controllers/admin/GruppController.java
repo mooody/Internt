@@ -27,7 +27,7 @@ public class GruppController extends AdminController{
         List<Grupp> groups = new ArrayList();
      
         //Hämta in användaren
-        UserBase tUser = UserBase.findById(session.get("userid"));
+        UserBase tUser = UserBase.findById(getUserId());
         groups = tUser.getAllGroups();
         Logger.info("AdminContrioller.groups size= %s", groups.size());
        

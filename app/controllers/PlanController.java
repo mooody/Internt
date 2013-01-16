@@ -46,35 +46,19 @@ public class PlanController extends Controller{
 		} catch (NumberFormatException ne) {
 		}
         
-        Logger.info("userid: %s", session.get("userid"));
         if(userAuth==0)
         {
             renderArgs.put("loginform",1);
             Application.loginform();
         }
         
-		//DENNA LIGGER I ADMINCONTROLLER
-        //kontroll om användaren tillhör ett företag. Annars skicka till vyn där vi skapar ett företag
-        /*if(user.company == null && !(
-                (Controller.request.action.equals("CompanyController.index")) 
-                ||(Controller.request.action.equals("CompanyController.create"))
-                ))
-        {
-            flash.put("message", Messages.get("you.need.to.create.a.company.before.you.can.continue"));
-            CompanyController.index();
-        }*/
-        
         //om användaren inte är null så 
         if(userAuth!=0)
         {
            UserBase user = UserBase.findById(getUserId());
            renderArgs.put("sessionuser",user);
-           //Cache.set("sessionuser", updateduser);
 		   Cache.set(session.getId()+"user", user);
-           Logger.info("PlanController.before Company:%s", user().company);
         }
-        
-        
     }
     
     @After

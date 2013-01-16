@@ -14,6 +14,7 @@ import play.Logger;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import java.util.ArrayList;
+import models.Core.CompanyUserSettings;
 
 /**
  *
@@ -25,15 +26,22 @@ public class UsersController extends AdminController {
     {
         UserBase tUser = UserBase.findById(getUserId());
         //List<Grupp> groups = tUser.getAllGroups();
-        List<UserBase> users = UserBase.find("select u from UserBase u "
+        /*List<UserBase> users = UserBase.find("select u from UserBase u "
                 + "where u.company.id = :crit").bind("crit", tUser.company.id).fetch();
+		*/
+		List<UserBase> users = UserBase.find("select u from UserBase u left join u.companies uc where uc.id = :company")
+			.bind("company", getCompanyId()).fetch();
+				
+		Logger.info("size %s", users.size());
         render("admin/users/show.html", users);
     }   
      
+	
     public static void create()
     {
         List<Grupp> groups = Grupp.findAll();
-        
+		//THIS IS NOT GOOD! find ALL
+        //notFound("SEE UsersController.create()");
         render("admin/users/create.html", groups);
     }
     
@@ -57,6 +65,15 @@ public class UsersController extends AdminController {
         }
         else
         {
+		
+			long count = UserBase.count("select count(u.id) from UserBase u where u.email = ?", user.email);
+			Logger.info("Count users: %s", count);
+			if(count>0)
+			{
+				flash.put("message", Messages.get("send.invite"));
+				index();
+			}
+			
             Company company = PlanController.user().company;
 
             user.company = company;
@@ -67,12 +84,15 @@ public class UsersController extends AdminController {
             {
                 user.save();
             }
+			
+			CompanyUserSettings cus = new CompanyUserSettings(user, company);
             
             flash.put("message", Messages.get("user.created"));
             index();
 
         }        
     }
+	
     
     public static void edit(Long id)
     {
@@ -142,32 +162,72 @@ public class UsersController extends AdminController {
         
     }
     
-    public static void setUserType(Long id,boolean admin) throws Exception
+    public static void setUserType(long id, short usertype) throws Exception
     {
-        UserBase user = UserBase.find("select u from User u where u.id = :crit").bind("crit", id).first();
-      
-        UserBase.em().createNamedQuery("update u from User u set DTYPE = ADMIN where u.id = "+id);
-        throw new Exception("NotImplentedYet");
-                
+        long count = UserBase.count("select count(id) from UserBase u where u.id = ?", id);
+		if(count==0)
+		{
+			notFound();
+		}
+       
+		String discriminator = null;
+		
+		switch(usertype)
+		{
+			case 1: discriminator = "Admin"; break;
+			case 2: discriminator = "Super"; break;
+			default: discriminator = "UserBase"; break;
+		}
+
+		play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")
+	    .setParameter("type",discriminator).setParameter("id",id)
+	    .executeUpdate();
+		
+		CompanyUserSettings cus = CompanyUserSettings.find("select c from CompanyUserSettings c where c.user.id = :uid and c.company.id = :company").bind("uid", id).bind("company", user().company.id).first();
+		
+		cus.setUserType(discriminator);
+
+        edit(id);
         
     }
     
     public static void deleteUser(Long id)
     {
+	
         UserBase user = UserBase.findById(id);
         Controller.notFoundIfNull(user, "Not.found.user");
         
-        List<Grupp> groups = Grupp.find("select g from Grupp g left join g.users u where u.id = :userid").bind("userid", id).fetch();
+        List<Grupp> groups = Grupp.find("select g from Grupp g left join g.users u where u.id = :userid and g.companyId = :companyId").bind("userid", id).bind("companyId", PlanController.getCompanyId()).fetch();
 
+		Admin admin = (Admin)PlanController.user();
         for(Grupp g: groups)
         {
-            g.users.remove(user);
-            g.save();
+			g.users.remove(user);
+			g.save();
         }
-        user.delete();
-        
-        String message = "user.deleted";
-        flash.put("message", message);
+		
+		user.companies.remove(admin.company);
+		admin.company.users.remove(user);
+		admin.company.save();
+		
+		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, admin.company).first();
+		if(cus!=null){
+			cus.delete();
+		}
+
+		//Om användaren är inloggad i flera företag
+		if(user.companies.size()==0)
+		{
+			flash.put("message", Messages.get("user.deleted"));
+			user.delete();
+		}
+		else
+		{
+			flash.put("message", Messages.get("user.removed.from.company"));
+			//se till användaren har ett aktivt företag som inställning...
+			user.company = user.companies.get(0);
+			user.save();
+		}
         
         index();
     }
