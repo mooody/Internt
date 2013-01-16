@@ -22,7 +22,7 @@ public class CompanyController extends AdminController {
     public static void create(Company company)
     {
 		/* om användaren redan har ett företag! lägg till ytterligare ett */
-        if(user.company != null && company.id == null) 
+        if(user().company != null && company.id == null) 
 		{
 			addMultipleCompany(company);
 		}
@@ -36,12 +36,12 @@ public class CompanyController extends AdminController {
         {
             try{
          
-				company.addUser(user);
+				company.addUser(user());
 				company.save();
 				
-                Logger.info("CompanyControllercreate user %s", user);
+                Logger.info("CompanyControllercreate user %s", user());
 
-                Admin admin = Admin.findById(user.id);
+                Admin admin = Admin.findById(user().id);
                 admin.company = company;
                 admin.save();
 
@@ -66,8 +66,8 @@ public class CompanyController extends AdminController {
 	
 	private static void addMultipleCompany(Company company)
 	{
-		company.addUser(user);
-		user.companies.add(company);
+		company.addUser(user());
+		user().companies.add(company);
 		company.save();
 		flash.put("message",Messages.get("company %s created",company.name));
 		CompanyController.index();
@@ -124,9 +124,9 @@ public class CompanyController extends AdminController {
     public static void index()
     {
         Company company = null;
-        if(user.company != null)
+        if(user().company != null)
         {
-            company = Company.findById(user.company.id);
+            company = Company.findById(user().company.id);
         }
         render("admin/company/create.html", company);
     }
@@ -134,10 +134,10 @@ public class CompanyController extends AdminController {
 	public static void addCompany()
 	{
 		List<Company> companies = null;
-        if(user.companies != null)
+        if(user().companies != null)
         {
             companies = Company.find("select c from Company c left join c.usersWithMultipleAccounts u where u.id = :uid")
-				.bind("uid", user.id)
+				.bind("uid", user().id)
 				.fetch();
 				
 			Logger.info("CompanyController.addCompany more comps %s", companies.size());

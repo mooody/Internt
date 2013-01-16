@@ -38,11 +38,11 @@ public class AdminController extends PlanController {
     {
        try{
             //if(PlanController.user.getClass() == Admin.class)
-           if(PlanController.user instanceof Admin)
+           if(PlanController.user() instanceof Admin)
             {
 				Logger.info("AdminController.authority: ADMIN");
                 //Om användaren ännu inte skapat ett företag. Gå och hantera detta!
-				if(user.company == null && !(
+				if(user().company == null && !(
                 (Controller.request.action.equals("admin.CompanyController.index")) 
                 ||(Controller.request.action.equals("admin.CompanyController.create"))
                 ))

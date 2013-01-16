@@ -30,13 +30,13 @@ public class Users extends PlanController{
     
     public static void myaccount()
     {
-        UserBase user = UserBase.findById(PlanController.user.id);
+        UserBase user = UserBase.findById(getUserId());
         render(user);
     }
     
     public static void save(UserBase user)
     {
-        if(user.id != PlanController.user.id)
+        if(user.id != getUserId())
         {
             Controller.forbidden("Not allowed!");
         }

@@ -5,6 +5,9 @@ import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 
+import models.booking.*;
+import java.util.List;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -64,8 +67,21 @@ public class Initalization extends Job {
             
        
         }
-    
+		ver();
     }
+	
+	public void ver()
+	{
+		List<Verification> verifications = Verification.find("select v from Verification v where v.company.id = 1 order by v.verificationNr asc").fetch();
+		
+		int index = 0;
+		for(Verification verification: verifications)
+		{
+			index++;
+			Logger.info("i:%s nr:%s", index, verification.verificationNr);
+		}
+		Logger.info("%s", verifications.size());
+	}
     
     
     

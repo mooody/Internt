@@ -24,21 +24,30 @@ import play.mvc.Finally;
  */
 public class PlanController extends Controller{
     
-    protected static UserBase user;
+    protected static UserBase user()
+	{
+		return Cache.get(session.getId()+"user", UserBase.class);
+	}
    
+	protected static long getUserId(){
+		return new Long(session.get("userid")).longValue();
+	}
+	
+	protected static long getCompanyId(){
+		return user().company.id;
+	}
     @Before
     private static void getArgs()
     {
-        //user = Cache.get("sessionuser", UserBase.class);
-            
+        long userAuth = 0;
+         
 		try{
-			user = UserBase.findById(new Long(session.get("userid")).longValue());
+			userAuth = UserBase.count("select count(u.id) from UserBase u where u.id = ?", getUserId() );
 		} catch (NumberFormatException ne) {
-			user = null;
 		}
         
         Logger.info("userid: %s", session.get("userid"));
-        if(user==null)
+        if(userAuth==0)
         {
             renderArgs.put("loginform",1);
             Application.loginform();
@@ -56,14 +65,13 @@ public class PlanController extends Controller{
         }*/
         
         //om användaren inte är null så 
-        if(user!=null)
+        if(userAuth!=0)
         {
-           UserBase updateduser = UserBase.findById(user.id);
-           
-           renderArgs.put("sessionuser",updateduser);
-           Cache.set("sessionuser", updateduser);
-           //user = UserBase.findById(new Long(session.get("userid")).longValue());
-           Logger.info("PlanController.before Company:%s", user.company);
+           UserBase user = UserBase.findById(getUserId());
+           renderArgs.put("sessionuser",user);
+           //Cache.set("sessionuser", updateduser);
+		   Cache.set(session.getId()+"user", user);
+           Logger.info("PlanController.before Company:%s", user().company);
         }
         
         

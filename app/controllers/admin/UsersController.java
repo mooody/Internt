@@ -23,7 +23,7 @@ public class UsersController extends AdminController {
     
     public static void index()
     {
-        UserBase tUser = (UserBase.findById(PlanController.user.id));
+        UserBase tUser = UserBase.findById(getUserId());
         //List<Grupp> groups = tUser.getAllGroups();
         List<UserBase> users = UserBase.find("select u from UserBase u "
                 + "where u.company.id = :crit").bind("crit", tUser.company.id).fetch();
@@ -57,7 +57,7 @@ public class UsersController extends AdminController {
         }
         else
         {
-            Company company = PlanController.user.company;
+            Company company = PlanController.user().company;
 
             user.company = company;
 			if(user.companies == null) user.companies = new ArrayList<Company>();
@@ -88,7 +88,7 @@ public class UsersController extends AdminController {
     {
         Logger.info("Users.addGroupToUser - adding");
         
-        if(PlanController.user == null || !(PlanController.user instanceof Admin))
+        if(PlanController.user() == null || !(PlanController.user() instanceof Admin))
         {
                 Controller.forbidden();
         }

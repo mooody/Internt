@@ -2,9 +2,7 @@ package controllers;
 
 import play.*;
 import play.mvc.*;
-
 import java.util.*;
-
 import models.*;
 import play.cache.Cache;
 import play.i18n.Messages;
@@ -88,7 +86,8 @@ public class Application extends Controller {
                 message = Messages.get("login.ok");
                 //Vi sätter användaren som inloggad
                 session.put("userid", user.id);
-                
+                Cache.set(session.getId()+"user", user);
+				
                 flash.put("message", message);
 				
 				//om användaren har mera än 1 företag kopplat till sig, gå till välj företag

@@ -27,7 +27,7 @@ public class GruppController extends AdminController{
         List<Grupp> groups = new ArrayList();
      
         //Hämta in användaren
-        UserBase tUser = UserBase.findById(PlanController.user.id);
+        UserBase tUser = UserBase.findById(session.get("userid"));
         groups = tUser.getAllGroups();
         Logger.info("AdminContrioller.groups size= %s", groups.size());
        
@@ -40,7 +40,7 @@ public class GruppController extends AdminController{
         Grupp parent = Grupp.findById(grupp.parent.id);
         parent.childs.add(grupp);
         
-        grupp.setCompanyId(PlanController.user.company.id);
+        grupp.setCompanyId(PlanController.user().company.id);
         grupp.save();
         
         parent.save();
