@@ -15,6 +15,8 @@ import play.Logger;
 import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.Controller;
+import models.Company;
+import java.util.ArrayList;
 
 /**
  * Hanterar alla superadminfunktioner. 
@@ -53,7 +55,13 @@ public class SuperAdminController extends PlanController {
      */
     public static void modules()
     {
-        render("bigadmin/modules.html");
+		String flashid = flash.get("company");
+		
+		Long id = params.get("cId", Long.class);
+		Company company = Company.findById(id!=null?id.longValue():(flashid!=null?new Long(flashid).longValue():0));
+		List<Company> companies = Company.findAll();
+		List<Module> modules = Module.findAll();
+        render("bigadmin/modules.html", companies, modules, company);
     }
     
     /** 
@@ -61,7 +69,6 @@ public class SuperAdminController extends PlanController {
      */
     public static void groups()
     {
-        
         List<Grupp> groups = Grupp.find("select g from Grupp g where g.parent = null").fetch();
         render("bigadmin/groups.html", groups);
     }
@@ -84,9 +91,104 @@ public class SuperAdminController extends PlanController {
         throw new Exception("NO IMPLEMENTED! - superadmin.getGroupById");
         //return Grupp.findById(id);
     }
+	
+	public static void removeModuleFromCompany(long companyid, long moduleid)
+	{
+		Company company = Company.findById(companyid);
+
+		notFoundIfNull(company, "Felaktig företag");
+		flash.put("company", company.id);
+		
+		String modulename = null;
+		for(Module module : company.modules)
+		{
+			if(module.id == moduleid)
+			{
+				company.modules.remove(module);
+				modulename = module.name;
+				company.save();
+				break;
+			}
+		}
+		
+		if(modulename!=null)
+		{
+			flash.put("message", Messages.get("superAdmin.module.was.removed", modulename));
+		}
+		else
+		{
+			flash.put("message", Messages.get("No.modules.was.removed.from", company.name));
+		}
+		SuperAdminController.modules();
+	}
     
+    public static void addModuleToCompany(long cId, List<Long> modid)
+    {        
+		//kontrollerar företaget
+		Company company = Company.findById(cId);
+		//Lägg företaget i flash för att vi ska kunna få tag i det i metoden modules()
+		flash.put("company", company.id);
+	
+		if(company == null )
+		{
+			flash.put("message", Messages.get("SuperAdmin.NoCompanySelected"));
+			SuperAdminController.modules();
+		}
+		//Kontrollerar så någon modul är vald om den inte är vald så tömmer vi hela medulslistan för företaget
+		if(modid == null || modid.size()==0){
+			flash.put("message", "SuperAdmin.NoModuleSelected");
+			SuperAdminController.modules();
+		}
+		
+		//hämta in alla module id:n
+		List<Module> modules = new ArrayList<Module>();
+		for(Long moduleId: modid)
+		{
+			if(moduleId != null)
+			{
+				Module temp = Module.findById(moduleId);
+				if(temp != null)
+				{
+					modules.add(temp);
+				}
+			}
+		}        
+	   
+	   //lista för vilka moduler som är tillagda, endast till för flash meddelandet
+	   List<String> added = new ArrayList<String>();
+	   
+	   
+	   //Går igenom alla måduler som är medskickade
+	   for(Module module: modules)
+	   {
+			try
+			{
+				if(company.modules==null) company.modules = new ArrayList<Module>();
+				//Lägg till modulerna
+				company.modules.add(module);
+				//För flashmeddelandet
+				added.add(module.name);
+			} catch(Exception ex)
+			{
+				Logger.error("error in SuperAdmin.addModuleToCompany %s and module %s", company.name, module.name);
+				Logger.error(ex.getMessage()+"\n"+ex.getCause());
+				
+			}
+		}
+		company.save();
+		if(added.size()>0)
+		{
+			
+			flash.put("message", Messages.get("Module.was.added.to.company", added, company.name));
+		}
+		else //Om det blev något fel
+		{
+			flash.put("message", Messages.get("No.modules.was.added.to", company.name));
+		}
+        SuperAdminController.modules();
+    }
    
-    
+    /*
     public static void addAdminToModule(Admin user, Module module)
     {        
         if(user == null || module == null) Controller.forbidden("Not an allowed request!");
@@ -103,5 +205,5 @@ public class SuperAdminController extends PlanController {
        
         
         SuperAdminController.modules();
-    }
+    }*/
 }

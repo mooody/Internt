@@ -22,6 +22,8 @@ import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Router;
+import models.Company;
+import models.Core.CompanyUserSettings;
 
 /**
  *
@@ -57,9 +59,8 @@ public class AdminController extends PlanController {
                 Application.loginform();
             }
             
-       } catch(Exception ex)       {
+       } catch(Exception ex){
            Application.loginform();
-           
        }
     }
     
@@ -71,25 +72,106 @@ public class AdminController extends PlanController {
 //<editor-fold defaultstate="collapsed" desc=" Modules" >
     public static void modules()
     {
-        render("admin/modules/modules.html");
+		String flashid = flash.get("user");
+		Long id = params.get("userid", Long.class);
+
+		Logger.info("userid %s", id);
+		UserBase user = UserBase.findById(id!=null?id.longValue():(flashid!=null?new Long(flashid).longValue():0));
+		
+		List<Module> modules = user().company.modules;
+		List<Module> usermodules = CompanyUserSettings.getUserModules(user, user().company);
+        render("admin/modules/modules.html", modules, usermodules, user);
     }
-    
-    public static void addUserToModule(UserBase user, Module module)
-    {
-        
-        if(user == null || module == null) Controller.forbidden("Not an allowed request!");
-       
-       
-            if(module.addUser(user))
-            {
-                flash.put("message", Messages.get("module %s added to user %s", module.name, user.name));
-            }
-            else{
-                flash.put("message", Messages.get("user %s already have access to %s module", user.name,module.name));
-            }
-        AdminController.modules();
-    }
-     
+	
+	public static void removeModuleFromUser(Long userid, Long moduleid)
+	{
+		UserBase user = UserBase.findById(userid);
+		
+		CompanyUserSettings cus = CompanyUserSettings.findByUserAndCompany(user, user().company);
+		if(cus != null)
+		{
+			for(Module module : cus.modules)
+			{
+				if(module.id == moduleid)
+				{
+					cus.modules.remove(module);
+					cus.save();
+					flash.put("message", Messages.get("module.removed", module.name, user.name));
+					break;
+				}
+			}
+		}
+		flash.put("user", user.id);
+		AdminController.modules();
+	}
+    public static void addModuleToUser(long uId, List<Long> modid)
+	{
+		UserBase user = UserBase.findById(uId);
+		//Lägg företaget i flash för att vi ska kunna få tag i det i metoden modules()
+		
+		flash.put("user", user.id);
+		if(user == null )
+		{
+			flash.put("message", Messages.get("admin.NoUserSelected"));
+			AdminController.modules();
+		}
+		
+		
+		//Kontrollerar så någon modul är vald om den inte är vald så tömmer vi hela medulslistan för företaget
+		if(modid == null || modid.size()==0){
+			flash.put("message", "SuperAdmin.NoModuleSelected");
+			AdminController.modules();
+		}
+		
+		List<String> added = new ArrayList<String>();
+		for(Long moduleId: modid)
+		{
+			if(moduleId != null)
+			{
+				Module module = Module.findById(moduleId);
+				if(module != null)
+				{
+					if(addModuleToCompanyUserSettings(user, module))
+					{
+						added.add(module.name);
+					}
+				}
+			}
+		}    
+		if(added.size()>0)
+		{
+			flash.put("message", Messages.get("Modules.added.to.user", added, user.name));
+		}
+		modules();
+	}
+
+	private static boolean addModuleToCompanyUserSettings(UserBase user, Module module)
+	{
+		boolean companyHasAccessToModule = false;
+		for(Module mod : user().company.modules)
+		{
+			if(module.id == mod.id)
+			{
+				companyHasAccessToModule = true;
+				break;
+			}
+		}
+		
+		if(!companyHasAccessToModule) forbidden("Company has not access to Module "+module.name);
+		
+		try{
+			Company company = PlanController.user().company;
+			CompanyUserSettings cus = CompanyUserSettings.findByUserAndCompany( user, company);
+			if(cus.modules == null) cus.modules = new ArrayList<Module>();
+			cus.modules.add(module);
+			cus.save();
+			return true;
+		} catch(Exception ex){
+			Logger.error("Fel i AdminController.addModuleToCompanySettings" );
+			Logger.error(ex.getMessage()+"\n"+ex.getCause().toString());
+			return false;
+		}
+	}
     
      
      //</editor-fold> 

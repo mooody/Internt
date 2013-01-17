@@ -12,6 +12,7 @@ import models.Grupp;
 import models.SuperAdmin;
 import play.Logger;
 import play.i18n.Messages;
+import models.Core.CompanyUserSettings;
 
 /**
  *
@@ -25,6 +26,7 @@ public class CompanyController extends AdminController {
         if(user().company != null && company.id == null) 
 		{
 			addMultipleCompany(company);
+			
 		}
         //Update
         if(company.id != null)
@@ -38,6 +40,8 @@ public class CompanyController extends AdminController {
          
 				company.addUser(user());
 				company.save();
+				
+				CompanyUserSettings cus = new CompanyUserSettings(user(), company);
 				
                 Logger.info("CompanyControllercreate user %s", user());
 
@@ -69,6 +73,7 @@ public class CompanyController extends AdminController {
 		company.addUser(user());
 		user().companies.add(company);
 		company.save();
+		CompanyUserSettings cus = new CompanyUserSettings(user(), company);
 		flash.put("message",Messages.get("company %s created",company.name));
 		CompanyController.index();
 	}

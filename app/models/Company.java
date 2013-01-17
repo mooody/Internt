@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import play.db.jpa.Model;
+import models.Core.Module;
 
 /**
  *
@@ -25,6 +26,7 @@ public class Company extends Model{
      * Företagets orgnr
      */
     public String orgnr;
+	
 	public boolean fskatt;
 	public double defaultDebitation = 0.0;
 	public String bankgiro;
@@ -53,6 +55,15 @@ public class Company extends Model{
         inverseJoinColumns = {@JoinColumn(name ="user_id") }, 
         joinColumns = { @JoinColumn(name = "company_id") })
     public List<UserBase> usersWithMultipleAccounts;
+	
+	@ManyToMany
+	 @JoinTable(name = "company_modules", 
+        inverseJoinColumns = {@JoinColumn(name ="module_id") }, 
+        joinColumns = { @JoinColumn(name = "company_id") },
+		uniqueConstraints = @UniqueConstraint(name = "oneOneModulePerCompany",
+		columnNames = {"company_id", "module_id"})
+	)
+    public List<Module> modules;
 
     /**
      * 

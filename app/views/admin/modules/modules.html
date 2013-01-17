@@ -1,29 +1,89 @@
-#{mainpage title:'Create user' /}
+#{mainpage title:'Modules' /}
 
 <h2>Moduler</h2>
 
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("form.delete").submit(
+		function(){
+			var username = jQuery(this).attr('username');
+			var module = jQuery(this).attr('module');
+			return confirm('&{'sure.remove.module'}'+' '+module);
+		}
+	);
+});
+</script>
 
-*{<!-- Tilldela users to modules -->}*
-#{form @admin.AdminController.addUserToModule() }
-<ul>
-#{list items:sessionuser.modules, as:'module'}  
-    <li>
-        <input type="checkbox" id="module.id" name="module.id" value="${module.id}" />
-        <label for="module.id">${module.name}</id>
-    </li>
-#{/list}
-</ul>
+<style>
+table.listtable{
+	margin:0 0 0 100px;
+}
 
-<select name="user.id" >
-    <option value="">choose.user:</option>
-    #{list items: sessionuser.company.users, as:'user'}
-    <option value="${user.id}">${user.name}</option>
-#{/list}
-</select>
-<input type="submit" value="spara" />
-#{/form}
+table.listtable td{
+	padding: 0 20px;
+	min-width:100px;
+}
+</style>
 
-*{<!-- Give adminsrigths to admins -->}*
+#{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
+	<h2>&{'admin.GiveUserModuleAccess'}</h2>
+	#{form @admin.AdminController.modules()}
+		<select name="userid" >
+			<option value="">&{'admin.choose.user'}:</option>
+			#{list items:sessionuser.company.users, as:'u'}
+				<option value="${u.id}" #{if user}${user.id==u.id?'selected="selected"'.raw():''}#{/if}>${u.name}</option>
+			#{/list}
+		</select>
+		<input type="submit" value="&{'Get'}" />
+	#{/form}
+	
+	#{if user}
+		*{<!-- Listar användarens ingående moduler-->}*
+		#{if usermodules!=null && usermodules.size() != 0}
+			<h2>&{'User.got.modules', user.name}</h2>
+			<table class="listtable">
+				#{list items:usermodules, as:'module'}
+					<tr>
+						<td>${module.name}</td>
+						<td>
+							#{form @admin.AdminController.removeModuleFromUser(), class:'delete', username:user.name, module:module.name}				
+							<input type="hidden" name="userid" value="${user.id}" />
+							<input type="hidden" name="moduleid" value="${module.id}" />
+							<input type="submit" class="deletebutton" value="" alt="delete group" />
+							#{/form}
+						</td>
+					</tr>
+				#{/list}
+			</table>
+		#{/if}
+		<h2>&{'User.can.have.modules', user.name}</h2>
+		*{<!-- Skriver ut resterande moduler -->}*
+		#{form @admin.AdminController.addModuleToUser() }
+		<input type="hidden" value="${user.id}" name="uId" />
+		<table class="listtable">
+			#{list items:modules, as:'module'}  
+				#{if !usermodules?.contains(module)}
+				<tr>
+					<td>
+						<input type="checkbox"id="m${module.id}" name="modid[${module.id}]" value="${module.id}" />
+					</td>
+					<td>
+						<label for="m${module.id}">${module.name}</id>
+					</td>
+				</tr>
+				#{/if}
+			#{/list}
+			<tr>
+				<td colspan="2" style="text-align:right">
+				<br />
+					<input type="submit" value="&{'Save'}" />
+				</td>
+			</tr>
+		</table>
+		#{/form}
+	#{/if}
+#{/if}
+
 
 
 

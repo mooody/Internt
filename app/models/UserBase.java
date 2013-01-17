@@ -99,7 +99,7 @@ public class UserBase extends Model{
     public List<AccessRights> rights;
     
     @Basic(fetch=FetchType.LAZY)
-    @ManyToMany(mappedBy="users")
+    @OneToMany
     public List<Module> modules;
     
     @Basic(fetch=FetchType.LAZY)

@@ -54,3 +54,14 @@ controllern innehåller action index som startsida
 lägg till modulen i mainappen routesfile
 
 
+Beskrivning
+----------------------
+En användare skapar ett konto. Denna blir by default Admin användare. 
+Användaren får ej ett företag by default. Utan det blir ett krav när denna loggar in för första gången.
+
+När företaget skapas skapas samtidigt en grupp för företaget. Default-gruppen. Samt ett object av CompanyUserSettings. 
+Där finns rättighetskopplingen för användaren. Om den har graden User, Admin eller Super
+
+
+
+

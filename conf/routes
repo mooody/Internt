@@ -34,14 +34,16 @@ POST    /admin/groups/delete                    admin.GruppController.delete
 
 #Admincontroller
 # - Company
-GET     /company                                admin.CompanyController.index
-POST    /company/company                        admin.CompanyController.create
+GET    /company                                admin.CompanyController.index
+POST   /company/company                        admin.CompanyController.create
 GET    /company/addcompany                     admin.CompanyController.addCompany
 
 #AdminController
 # - Modules
 GET     /modules                                admin.AdminController.modules
-POST    /modules/addUser                        admin.AdminController.addUserToModule
+POST    /modules/addUser                        admin.AdminController.addModuleToUser
+POST	/modules/removeModule 					admin.AdminController.removeModuleFromUser
+			
 
 #SuperAdminController
 # - modules
@@ -50,6 +52,8 @@ GET     /super/users                            SuperAdminController.users
 GET     /super/modules                          SuperAdminController.modules
 GET     /super/groups                           SuperAdminController.groups
 POST    /super/modules/addAdmin                 SuperAdminController.addAdminToModule
+POST 	/super/modules/addCompany				SuperAdminController.addModuleToCompany
+POST 	/super/modules/removeCompany			SuperAdminController.removeModuleFromCompany
 
 
 #user regular

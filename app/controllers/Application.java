@@ -6,7 +6,7 @@ import java.util.*;
 import models.*;
 import play.cache.Cache;
 import play.i18n.Messages;
-import models.Core.CompanyUserSettings;
+import models.Core.*;
 
 /**
  * Application controllern har hand om inloggning. 
@@ -150,17 +150,44 @@ public class Application extends Controller {
 	public static void loadCompany(long id)
 	{
 		long userid = new Long(session.get("userid")).longValue();
+		
+		Company company = Company.find("select c from models.UserBase u left join u.companies c where u.id = :uid and c.id = :cid")
+			.bind("cid", id).bind("uid", userid).first();
 		UserBase user = UserBase.findById(userid);
-		Company company = Company.findById(id);
+
+		if(company==null)
+			forbidden("Felaktig inloggning");
 		user.company = company;
 		user.save();
 		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
+		Logger.info("CUS: %s", cus);
 		
 		if(cus!=null){
 			String usertype = cus.getUserType();
+			
 			play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")
-			.setParameter("type",usertype).setParameter("id",userid)
-			.executeUpdate();
+				.setParameter("type",usertype).setParameter("id",userid)
+				.executeUpdate();
+			
+			List<Module> modules = cus.modules;
+			
+			if(user.modules == null) 
+			{
+				user.modules = new ArrayList<Module>();
+			}
+			else 
+			{
+				user.modules.clear();
+				user.save();
+			}
+			
+			for(Module module: modules)
+			{
+				Logger.info("Module: %s", module.name);
+				user.modules.add(module);
+			}
+			user.save();
+			
 		}
 		
 		redirect("users.mypage");

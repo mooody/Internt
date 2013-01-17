@@ -22,6 +22,7 @@ user.password.dont.match = Lösenorden är inte lika
 user.updated = Användaren är uppdaterad
 login.ok = Inloggad korrekt
 You.need.to.login.as.administrator = Du måste logga in som administratör
+Get = Hämta
 #Users
 add.user.to.group = Lägg till användaren till gruppen
 users.saved.ok = Användaren sparad
@@ -35,6 +36,29 @@ admin.user = Admin
 regular.user = Användare
 super.user = SuperAdmin
 #Company
+
+#SuperAdmin
+No.modules.was.added.to = Ingen modul blev tillagd till %s
+Module.was.added.to.company = %s blev tillagda till %s
+superAdmin.choose.company = Välj företag
+superAdmin.GiveCompanyModuleAccess = Tilldela moduler till företag
+No.modules.was.removed.from = Ingen modul blev borttagen från %s
+superAdmin.module.was.removed = %s blev borttagen
+Company.got.modules = %s har följande moduler
+Company.can.have.modules = %s kan få följande moduler
+module.name = Modul
+
+#Admin - module
+admin.GiveUserModuleAccess = Ge användaren modul access
+User.got.modules = %s har tillgång till följande moduler
+User.can.have.modules = %s kan få tillgång till följande moduler
+admin.choose.user = Välj användare
+sure.remove.module = Är du säker på att du vill spärra modulen 
+module.removed = Modulen %s är nu spärrad för användaren %s
+Modules.added.to.user = Modulerna %s är nu tillgängliga för användaren %s
+
+
+
 
 
 

@@ -1,24 +1,80 @@
 #{mainpage title:'Handle.modules' /}
 
 #{if sessionuser.getClass() == models.SuperAdmin.class}
-#{form @SuperAdminController.addAdminToModule() }
-<h2>Alla admins</h2>
-<ul>
-#{list items:sessionuser.modules, as:'module'}  
-    <li>
-        <input type="radio" id="module.id" name="module.id" value="${module.id}" />
-        <label for="module.id">${module.name}</id>
-    </li>
-#{/list}
-</ul>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("form.delete").submit(
+		function(){
+			var username = jQuery(this).attr('username');
+			var module = jQuery(this).attr('module');
+			return confirm('&{'sure.remove.module'}'+' '+module);
+		}
+	);
+});
+</script>
 
-<select name="user.id" >
-    <option value="">choose.admin:</option>
-    #{list items:models.Admin.findAll(), as:'user'}
-    <option value="${user.id}">${user.name}</option>
+<style>
+table.listtable{
+	margin:0 0 0 100px;
+}
+</style>
+#{form @SuperAdminController.modules() }
+<h2>&{'superAdmin.GiveCompanyModuleAccess'}</h2>
+
+<select id="companies" name="cId" >
+    <option value="">&{'superAdmin.choose.company'}:</option>
+
+    #{list items:companies, as:'c'}
+    <option value="${c.id}" #{if company}${company.id==c.id?'selected="selected"'.raw():0}#{/if}>${c.name} ${companyid}</option>
     #{/list}
 </select>
-<input type="submit" value="spara" />
-
+<input type="submit" value="&{'Get'}" />
 #{/form}
+
+	#{if company}
+		*{<!-- Listar företagets ingående moduler-->}*
+		<h2>&{'Company.got.modules', company.name}</h2>
+		<table class="listtable">
+			<tr><th>&{'module.name'}</th><th></th></tr>
+			#{list items:company.modules, as:'module'}
+				<tr>
+				<td>${module.name}</td>
+				<td>
+					#{form @SuperAdminController.removeModuleFromCompany(), class:'delete', module:module.name}				
+					<input type="hidden" name="companyid" value="${company.id}" />
+					<input type="hidden" name="moduleid" value="${module.id}" />
+					<input type="submit" class="deletebutton" value="" alt="delete group" />
+					#{/form}
+				</td>
+	
+			#{/list}
+		</table>
+		<h2>&{'Company.can.have.modules', company.name}</h2>
+		*{<!-- Skriver ut resterande moduler -->}*
+		#{form @SuperAdminController.addModuleToCompany() }
+		<input type="hidden" value="${company.id}" name="cId" />
+		<table class="listtable">
+			<tr><th>&{'module.name'}</th><th></th></tr>
+			#{list items:modules, as:'module'}  
+				#{if !company.modules.contains(module)}
+				<tr>
+					<td>
+						<input type="checkbox" #{if company.modules!=null}${company.modules.contains(module)?'checked="checked" '.raw():''}#{/if}id="m${module.id}" name="modid[${module.id}]" value="${module.id}" />
+					</td>
+					<td>
+						<label for="m${module.id}">${module.name}</id>
+					</td>
+					</tr>
+				</li>
+				#{/if}
+			#{/list}
+			<tr>
+			<td colspan="2" style="text-align:right">
+				<input class="button" type="submit" value="&{'Save'}" />
+			</td>
+			</tr>
+			
+		</table>
+		#{/form}
+	#{/if}
 #{/if}

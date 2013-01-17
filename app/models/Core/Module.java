@@ -35,8 +35,8 @@ public class Module extends Model{
     @ManyToMany(mappedBy="modules")
     public List<ModuleController> controllers;
     
-    @ManyToMany
-    public List<UserBase> users;
+    //@ManyToMany(mappedBy="modules")
+    //public List<UserBase> users;
     
     public Module(String _name, String _controllerName, String _moduleName)
     {
@@ -73,7 +73,7 @@ public class Module extends Model{
                     module.controllers.add(mc);
                 }
                 
-                Module.setDefaultRights(module);
+                //Module.setDefaultRights(module);
                 module.save();
                 Logger.info("Modulen %s installerades utan fel", _moduleName);
             }
@@ -90,6 +90,7 @@ public class Module extends Model{
      * Hämtar ut headAdmin och ger rättigheter till denna
      * @param module 
      */
+	 /*
     private static boolean setDefaultRights(Module module) throws Exception
     {
        
@@ -109,7 +110,7 @@ public class Module extends Model{
         return true;
         
         
-    }
+    }*/
     
     /**
      * Adds a user to the module. If a User is added he/she will see the 
@@ -118,6 +119,7 @@ public class Module extends Model{
      * @param user
      * @return true if success otherwise false
      */
+	 /*
     public boolean addUser(UserBase user)
     {
         if(this.users == null) this.users = new ArrayList();
@@ -133,7 +135,7 @@ public class Module extends Model{
         {
             return false;
         }
-    }
+    }*/
     
     /**
      * Returns the url och the requested action of the default controller.
@@ -148,6 +150,11 @@ public class Module extends Model{
        String route = Router.reverse(this.moduleName+"."+this.controllerName+"."+action).url;
        return route;
     }
+	
+	@Override
+	public String toString(){
+		return this.name.toString();
+	}
     
    
        

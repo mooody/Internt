@@ -8,6 +8,7 @@ import play.db.jpa.Model;
 import java.util.List;
 import models.UserBase;
 import models.Core.Module;
+import play.Logger;
 
 @Entity
 public class CompanyUserSettings extends Model{
@@ -35,4 +36,21 @@ public class CompanyUserSettings extends Model{
 		this.usertype = _usertype;
 		this.save();
 	}
+	
+	public static CompanyUserSettings findByUserAndCompany(UserBase _user, Company _company)
+	{
+		if(CompanyUserSettings.count("byUserAndCompany", _user, _company)>1)
+		{
+			Logger.error("MULTIPLE COMPANYUSERSETTINGS TO %s AND %s", _user.id, _company.name);
+		}
+		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", _user, _company).first();
+		return cus;
+	}
+	
+	public static List<Module> getUserModules(UserBase _user, Company _company)
+	{
+		CompanyUserSettings cus = findByUserAndCompany(_user, _company);
+		return cus==null?null:cus.modules;
+	}
+
 }
