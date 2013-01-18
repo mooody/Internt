@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import models.Admin;
 import models.Company;
 import models.Grupp;
+import models.User;
 import models.UserBase;
 import play.Logger;
 import play.cache.Cache;
@@ -30,11 +31,11 @@ public class Users extends PlanController{
     
     public static void myaccount()
     {
-        UserBase user = UserBase.findById(getUserId());
+        User user = UserBase.findById(getUserId());
         render(user);
     }
     
-    public static void save(UserBase user)
+    public static void save(User user)
     {
         if(user.id != getUserId())
         {

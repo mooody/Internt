@@ -62,6 +62,29 @@ Användaren får ej ett företag by default. Utan det blir ett krav när denna l
 När företaget skapas skapas samtidigt en grupp för företaget. Default-gruppen. Samt ett object av CompanyUserSettings. 
 Där finns rättighetskopplingen för användaren. Om den har graden User, Admin eller Super
 
+När en användare registrerar sig på sidan skapas ett admin konto.
+Adminkontot är "tomt" från början. 
+
+Det första administratören måste göra är att skapa ett företag, med namn och org.nr
+När företaget skapas sparas även en "cus" CompanyUserSetting.
+
+Det är inställningar användaren har i Företaget. (Användaren kan ha olika roller i olika företag)
+
+Sedan kan administratören lägga in användare i sitt företag. Varje användare får default rollen som User.
+Samt en cus till det företag som administratören är inloggad i just nu.
+
+
+Administratören kan sedan skapa flera företag. För varje företag får administratören en ny cus.
+
+Om användaren endast har ett företag och loggar in kommer denna direkt till företaget. Men om det finns flera företag kopplade till 
+användarkontot kommer användaren först få välja vilket företag den vill logga in i.
+
+Vid inlogg och endast vid inlogg läses cus ut och inställningarna sparas i användarobjektet. Denna kommer att ha dessa inställningar.
+(Företag och moduler) under hela sessionen i detta företag. (Om administratören ändrar företag, loggar in i ett annaat genom "snabbinloggning" 
+från företagsmenyn i Hantera företag. Går läses cus ut genom samma metod som i välkomstskärmen)
+
+SuperAdministratören kan där efter lägga till moduler till Administratören. 
+
 
 
 

@@ -23,6 +23,12 @@ table.listtable td{
 	padding: 0 20px;
 	min-width:100px;
 }
+
+span.open{}
+span.locked{
+	color:red;
+	text-decoration:line-through;
+}
 </style>
 
 #{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
@@ -44,7 +50,8 @@ table.listtable td{
 			<table class="listtable">
 				#{list items:usermodules, as:'module'}
 					<tr>
-						<td>${module.name}</td>
+						<td><span class="${user.company.modules.contains(module)?'open':'locked'}">${module.name}</span></td>
+						
 						<td>
 							#{form @admin.AdminController.removeModuleFromUser(), class:'delete', username:user.name, module:module.name}				
 							<input type="hidden" name="userid" value="${user.id}" />
@@ -52,10 +59,13 @@ table.listtable td{
 							<input type="submit" class="deletebutton" value="" alt="delete group" />
 							#{/form}
 						</td>
+						
 					</tr>
 				#{/list}
 			</table>
 		#{/if}
+		
+		#{if modules != null && modules.size() > 0 && usermodules.size()!=modules.size()}
 		<h2>&{'User.can.have.modules', user.name}</h2>
 		*{<!-- Skriver ut resterande moduler -->}*
 		#{form @admin.AdminController.addModuleToUser() }
@@ -81,7 +91,8 @@ table.listtable td{
 			</tr>
 		</table>
 		#{/form}
-	#{/if}
+		#{/if} *{<!--modules != null && modules.size() > 0 -->}*
+	#{/if} *{<!-- if user -->}*
 #{/if}
 
 

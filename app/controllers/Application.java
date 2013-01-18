@@ -102,6 +102,8 @@ public class Application extends Controller {
 					selectCompany(user);
 					Logger.info("More Companys");
 				}
+				
+				loadComanyUserSetting(user, user.company);
 				//gå till inloggningen
                 redirect("users.mypage");
             }   
@@ -159,6 +161,14 @@ public class Application extends Controller {
 			forbidden("Felaktig inloggning");
 		user.company = company;
 		user.save();
+		
+		loadComanyUserSetting(user, company);
+		
+		redirect("users.mypage");
+	}
+	
+	private static void loadComanyUserSetting(UserBase user, Company company){
+	
 		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
 		Logger.info("CUS: %s", cus);
 		
@@ -166,7 +176,7 @@ public class Application extends Controller {
 			String usertype = cus.getUserType();
 			
 			play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")
-				.setParameter("type",usertype).setParameter("id",userid)
+				.setParameter("type",usertype).setParameter("id",user.id)
 				.executeUpdate();
 			
 			List<Module> modules = cus.modules;
@@ -183,14 +193,16 @@ public class Application extends Controller {
 			
 			for(Module module: modules)
 			{
-				Logger.info("Module: %s", module.name);
-				user.modules.add(module);
+				if(company.modules.contains(module)) //så företaget fortfarande har access till modulen
+				{
+					user.modules.add(module);
+				}
 			}
+			
+			
 			user.save();
 			
 		}
-		
-		redirect("users.mypage");
 	}
     
     /**

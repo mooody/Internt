@@ -35,7 +35,7 @@ POST    /admin/groups/delete                    admin.GruppController.delete
 #Admincontroller
 # - Company
 GET    /company                                admin.CompanyController.index
-POST   /company/company                        admin.CompanyController.create
+POST	/company/company                   admin.CompanyController.create
 GET    /company/addcompany                     admin.CompanyController.addCompany
 
 #AdminController

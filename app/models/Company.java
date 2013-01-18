@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.*;
 import play.db.jpa.Model;
 import models.Core.Module;
+import play.data.validation.Required;
 
 /**
  *
@@ -21,24 +22,19 @@ public class Company extends Model{
     /**
      * företagets namn
      */
+	@Required(message="you.need.a.company.name")
     public String name;
     /**
      * Företagets orgnr
      */
+	@Required(message="you.need.a.company.orgnr")
     public String orgnr;
-	
-	public boolean fskatt;
-	public double defaultDebitation = 0.0;
-	public String bankgiro;
-	public String plusgiro;
 	public String mail;
 	public String street;
 	public String zipcode;
 	public String city;
 	public String phone;
 	public String cellphone;
-	public String defaultReferens = "";
-	public int invoiceNumber = 0;
 	public String website;
 	
 	
@@ -71,11 +67,13 @@ public class Company extends Model{
     @OneToOne
     public Contact contact;
     
-    /*@OneToMany(fetch=FetchType.LAZY, targetEntity=UserBase.class, mappedBy="company")
-    @JoinColumn(name="user_company", referencedColumnName="id")
-    public List<UserBase> getUsers(){
-        return this.users;
-    };*/
+    public List<Grupp> getCompanyGroups()
+	{
+		List<Grupp> groups = Grupp.find("select g from Grupp g where g.companyId = :cid")
+			.bind("cid", this.id)
+			.fetch();
+		return groups;
+	}
     
     /**
      * Lägger till användare till företaget

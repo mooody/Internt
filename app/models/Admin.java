@@ -13,7 +13,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("Admin")
-public class Admin extends UserBase{
+public class Admin extends User{
 
     public Admin(UserBase user){
         this.copyFields(user);

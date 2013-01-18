@@ -2,66 +2,92 @@
 #{stylesheet 'login.html.css' /}
 #{set title:'Hantera företag' /}
 
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	#{ifError 'company.orgnr'}
+	jQuery("input#orgnr").addClass("error");
+	#{/ifError}
+	#{ifError 'company.name'}
+	jQuery("input#name").addClass("error");
+	#{/ifError}
+});
+</script>
+
+<style>
+input.error{
+	border: #f00 1px solid;
+}
+</style>
+
 *{<!-- Kontrollera att user = admin och att den inte har ett företag -->}*
 #{if sessionuser.isAdmin() }
 *{<!--#{if sessionuser.getClass() == models.Admin.class}-->}*
 
     #{if sessionuser.company == null}
     
-    Var vänlig att fyll i nedanstående uppgifter.
+		&{'first.company.info'}
     
     #{/if}
 
+	
 	*{<!-- Lista alla företag -->}*
+	<h2>&{'other.companies.account.attached.to'}</h2>
+	<ul>
 	#{list items:companies, as:'companyObject'}
-		${companyObject.name}<br />
+		<li><a href="@{Application.loadCompany(companyObject.id)}">${companyObject.name}</a></li>
 	#{/list}
-    #{form @admin.CompanyController.create()}
+	</ul>
 
+	<a class="button" href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
+
+	#{form @admin.CompanyController.create()}
     #{if company && company.id != null}
         <input type="hidden" name="company.id" value="${sessionuser.company?.id}" />
     #{/if}
-    
+
+	<hr />
+	*{<!-- newCompany kommer från action addCompany -->}*
+	#{if newCompany}
+		<h2>Fyll i organisationsuppgifter</h2>
+	#{/if}
+	#{else}
+		<h2>Organisationsuppgifter</h2>
+	#{/else}
     <table>
-		*{}*
-        <tr>  
-            <td colspan="2"><b>Företagsuppgifter</b></td>
-		</tr>
+		
+		
 		*{<!-- Organisationsnamn -->}*
         <tr>
             <td>
-                <label for="company.name">Organisationsnamn:</label>
+                <label for="name">Organisationsnamn:</label>
             </td>
             <td>
-                <input id="company.name" type="text" name="company.name" value="${company?.name}"/>
+                <input id="name" type="text" name="company.name" value="${flash['company.name']?flash['company.name']:company?.name}"/>
             </td>
         </tr>
         <tr>
             <td>
-                <label for="company.orgnr">Organisationsnummer:</label>
+                <label for="orgnr">Organisationsnummer:</label>
             </td>
             <td>
-                <input id="company.orgnr" type="text" name="company.orgnr" value="${company?.orgnr}"/>
+                <input id="orgnr" type="text" name="company.orgnr" value="${flash['company.orgnr']?flash['company.orgnr']:company?.orgnr}"/>
             </td>
         </tr>
-		<tr>
-			<td colspan="2">Nedanstående uppgifter skrivs default på fakturor</td>
-		</tr>
         <tr>
             <td>
-                <label for="company.name">Gatuadress:</label>
+                <label>Gatuadress:</label>
             </td>
             <td>
-                <input id="company.name" type="text" name="company.street" value="${company?.street}"/>
+                <input id="street" type="text" name="company.street" value="${company?.street}"/>
             </td>
         </tr>
 		 *{<!-- zip -->}*
 		<tr>
             <td>
-                <label for="company.name">Postnr:</label>
+                <label>Postnr:</label>
             </td>
             <td>
-                <input id="company.name" type="text" name="company.zipcode" value="${company?.zipcode}"/>
+                <input id="zipcode" type="text" name="company.zipcode" value="${company?.zipcode}"/>
             </td>
         </tr>
 		*{<!-- city -->}*
@@ -70,7 +96,7 @@
                 <label>Stad:</label>
             </td>
             <td>
-                <input id="company.name" type="text" name="company.city" value="${company?.city}"/>
+                <input id="city" type="text" name="company.city" value="${company?.city}"/>
             </td>
         </tr>
 		*{<!-- mail -->}*
@@ -100,86 +126,14 @@
                 <input type="text" name="company.cellphone" value="${company?.cellphone}"/>
             </td>
         </tr>
-		*{<!-- plusgiro -->}*
-		<tr>
-            <td>
-                <label>Plusgiro:</label>
-            </td>
-            <td>
-                <input type="text" name="company.plusgiro" value="${company?.plusgiro}"/>
-            </td>
-        </tr>
-		*{<!-- bankgiro -->}*
-		<tr>
-            <td>
-                <label>Bankgiro:</label>
-            </td>
-            <td>
-                <input type="text" name="company.bankgiro" value="${company?.bankgiro}"/>
-            </td>
-        </tr>
-		*{<!-- cellphone -->}*
-		<tr>
-            <td>
-                <label>Debitering (default):</label>
-            </td>
-            <td>
-                <input type="text" name="company.defaultDebitation" value="${company?.defaultDebitation}"/>
-            </td>
-        </tr>
-		*{<!-- defaultReferens -->}*
-		<tr>
-            <td>
-                <label>Debitering (default):</label>
-            </td>
-            <td>
-                <input type="text" name="company.defaultReferens" value="${company?.defaultReferens}"/>
-            </td>
-        </tr>
-		*{<!-- first invoice number -->}*
-		<tr>
-            <td>
-                <label>Första fakturanr:</label>
-            </td>
-            <td>
-                <input type="text" name="company.invoiceNumber" value="${company?.invoiceNumber}"/>
-            </td>
-        </tr>
-		*{<!-- f-skatt -->}*
-		<tr>
-            <td>
-                <label for="fskatt">Innehar F-Skatt:</label>
-            </td>
-            <td>
-                <input id="fskatt" type="checkbox" name="company.fskatt" ${company!=null&&company.fskatt?'checked="checked"'.raw():''}"/>
-            </td>
-        </tr>
         <tr>
-            <td colspan="2">
-                <input type="submit" value="&{'save'}" />
+            <td colspan="2" style="text-align:right;">
+                <input type="submit" class="button" value="&{'save'}" />
             </td>
         </tr> 
     </table>
 	
 	*{<!-- om vi laddar vårt nuvarande företag visa länken till att skapa ett nytt -->}*
-	#{if company}
-		<a href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
-	#{/if}
-    
-    
-    
-    
-    
-    
-    
-    
-   
-   
-    
-    
-    
-    
-    
-    
+	
     #{/form}
 #{/if}

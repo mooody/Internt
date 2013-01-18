@@ -89,6 +89,20 @@ public class Grupp extends Model{
         }
         return 0;
     }
+	
+	public static List<Grupp> getUsersGroupsInCompany(UserBase user){
+		List<Grupp> groups = Grupp.find("select g from Grupp g left join g.users u where g.companyId = :cid and u.id = :uid")
+			.bind("cid", user.company.id)
+			.bind("uid",user.id)
+			.fetch();
+			
+			Logger.info("%s %s", user.name, user.company.name);
+			for(Grupp grupp : groups)
+			{
+				Logger.info("%s %s", grupp.name, user.company.id);
+			}
+		return groups;
+	}
     
     
     /**

@@ -7,6 +7,7 @@ package models;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import models.Admin;
+import java.util.List;
 
 /**
  *
@@ -15,5 +16,4 @@ import models.Admin;
 @Entity
 @DiscriminatorValue("Super")
 public class SuperAdmin extends Admin{
-    
 }

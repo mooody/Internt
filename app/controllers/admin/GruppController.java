@@ -23,19 +23,13 @@ public class GruppController extends AdminController{
   
     public static void index() throws Exception
     {
-        
-        List<Grupp> groups = new ArrayList();
-     
-        //Hämta in användaren
-        UserBase tUser = UserBase.findById(getUserId());
-        groups = tUser.getAllGroups();
-        Logger.info("AdminContrioller.groups size= %s", groups.size());
-       
-        
+        List<Grupp> groups =  user().company.getCompanyGroups();
+        Logger.info("AdminController.groups size= %s", groups.size());
+
         render("admin/groups/groups.html",groups);
     }
 
-    public static void save(Grupp grupp ) throws Exception
+    public static void save(Grupp grupp) throws Exception
     {
         Grupp parent = Grupp.findById(grupp.parent.id);
         parent.childs.add(grupp);

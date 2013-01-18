@@ -1,4 +1,5 @@
-#{mainpage title:sessionuser.language.getString("Create.user") /}
+#{extends 'main.html' /}
+#{set title}&{'create.user'}#{/set}
 
 <style>
     span.halfwidth{
@@ -15,22 +16,26 @@
     }
 </style>
 
+<h2>&{'create.user'}</h2>
 #{form @admin.UsersController.save() } 
-<span class="fullwidth">
-    ${sessionuser.language.getString("Name")}:<input name="user.name" />
-</span>
-<span class="fullwidth">
-    ${sessionuser.language.getString("Password")}:<input name="user.password"/>
-</span>
-<span class="fullwidth">
-    ${sessionuser.language.getString("Email")}:<input name="user.email"/>
-</span>
-<span class="fullwidth">
-    <input type="submit" value="Spara" />
-</span>
-
-#{list items:utils.language.Language.languageAvalible(), as:'lang'}
-<input type="radio" id="lang" value="${lang}" name="user.lang" /><label for="lang">${lang}</label>
-#{/list}
+<table>
+	<tr>
+		<td>&{'Name'}:</td>
+		<td><input name="user.name" /></td>
+	</tr>
+	<tr>
+		<td>&{'Email'}:</td>
+		<td><input name="user.email"/></td>
+	</tr>
+	<tr>
+		<td>&{'Password'}:</td>
+		<td><input name="user.password"/></td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align:right">
+			<input class="button" type="submit" value="Spara" />
+		</td>
+	</tr>
+</table>
 #{/form}
 

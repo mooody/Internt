@@ -9,7 +9,7 @@ params:
 
 <select name="${_select_name!=null?_select_name:'group.id'}">
     <option value="${_first_option_value!=null?_first_option_value:'0'}">
-        ${_first_option_text!=null?_first_option_text:'Välj...'}
+        ${if _first_option_text!=null}&{_first_option_text}#{/if}#{else}&{'Choose'}#{/else}...
     </option>
 #{list items:_groups, as:'group'}
 <option value="${group.id}" ${_selected!=null && _selected==group.id ? 'selected="selected"':''}>${group.name}</option>

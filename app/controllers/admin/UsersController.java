@@ -10,6 +10,7 @@ import models.Admin;
 import models.Company;
 import models.Grupp;
 import models.UserBase;
+import models.User;
 import play.Logger;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -51,7 +52,7 @@ public class UsersController extends AdminController {
     public static void save()
     {
         //hämta ut administratörens företag
-        UserBase user = params.get("user", UserBase.class);
+        UserBase user = params.get("user", User.class);
         
         boolean update = (user.id!=null&&user.id>0)?true:false;
         
@@ -67,7 +68,7 @@ public class UsersController extends AdminController {
         {
 		
 			long count = UserBase.count("select count(u.id) from UserBase u where u.email = ?", user.email);
-			Logger.info("Count users: %s", count);
+
 			if(count>0)
 			{
 				flash.put("message", Messages.get("send.invite"));
@@ -86,7 +87,8 @@ public class UsersController extends AdminController {
             }
 			
 			CompanyUserSettings cus = new CompanyUserSettings(user, company);
-            
+            cus.setUserType("User");
+			
             flash.put("message", Messages.get("user.created"));
             index();
 
@@ -99,10 +101,6 @@ public class UsersController extends AdminController {
         UserBase user = UserBase.findById(id);
         render("admin/users/edit.html", user);
     }
-    
-    
-    
- 
 
     public static void addGroupToUser(Long userid, Long groupId)
     {
@@ -176,7 +174,7 @@ public class UsersController extends AdminController {
 		{
 			case 1: discriminator = "Admin"; break;
 			case 2: discriminator = "Super"; break;
-			default: discriminator = "UserBase"; break;
+			default: discriminator = "User"; break;
 		}
 
 		play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")

@@ -23,6 +23,7 @@ user.updated = Användaren är uppdaterad
 login.ok = Inloggad korrekt
 You.need.to.login.as.administrator = Du måste logga in som administratör
 Get = Hämta
+
 #Users
 add.user.to.group = Lägg till användaren till gruppen
 users.saved.ok = Användaren sparad
@@ -32,10 +33,27 @@ user.created = Användaren skapad
 user.removed.from.company = Användaren raderad från företaget
 send.invite = Mailadressen finns redan i systemet. Du måste skicka en inbjudan.
 user.has.no.groups = Användaren har inte kopplad till någon grupp ännu
-admin.user = Admin
-regular.user = Användare
-super.user = SuperAdmin
+Admin = Administratör
+User = Användare
+SuperAdmin = Super Administratör
+create.user  = Skapa användare
+edit = Ändra
+Name = Namn
+Email = Epost
+Password = Lösenord
+Choose.group.dots = Välj grupp...
+UserType = Användartyp
+change.usertype = Ändra användartyp
+edit.user = Hantera användare %s
+User.inready.in.parent.group = Användaren är redan i gruppen %s
+sure.remove.user = Är du säker på att du vill ta bort användaren
+
 #Company
+first.company.info = Var vänlig att fyll i nedanstående uppgifter.
+other.companies.account.attached.to = Andra företag kontot är kopplat till
+you.need.a.company.name = Du måste fylla i organisationsnamn
+you.need.a.company.orgnr = Du måste fylla i organisationsnummer
+validation.object = Felaktiga inmatningar
 
 #SuperAdmin
 No.modules.was.added.to = Ingen modul blev tillagd till %s

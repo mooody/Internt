@@ -19,6 +19,8 @@ public class CompanyUserSettings extends Model{
 	public UserBase user;      
 	@ManyToMany
 	public List<Module> modules;
+	//@ManyToMany
+	//public List<Grupp> groups;
 	
 	@Column(nullable=false)
 	String usertype = "UserBase";

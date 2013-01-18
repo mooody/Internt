@@ -63,11 +63,13 @@ public class UserBase extends Model{
     @Required
     public String email;
     
-	public String address;
+	public String street;
 	public String zipcode;
 	public String city;
+	public String cellphone;
+	public String phone;
 	
-    public String lang;
+    //public String lang;
     
     @Transient
     public Language language;
@@ -82,33 +84,34 @@ public class UserBase extends Model{
         inverseJoinColumns = { @JoinColumn(name = "company_id") })
 	public List<Company> companies;
     
+	/*
     @Basic(fetch=FetchType.LAZY)
     @ManyToMany(targetEntity=Content.class)
     @JoinTable(name = "content_read_by_user", 
         joinColumns = {@JoinColumn(name ="user_id") }, 
         inverseJoinColumns = { @JoinColumn(name = "content_id") })
     public List<Content> contentsRead;
-    
+    */
     public void setCompany(Company _company)
     {
         this.company = _company;
     }
-    
+    /*
     @Basic(fetch=FetchType.LAZY)
     @ManyToMany(mappedBy="users")
     public List<AccessRights> rights;
-    
+    */
     @Basic(fetch=FetchType.LAZY)
     @OneToMany
     public List<Module> modules;
     
     @Basic(fetch=FetchType.LAZY)
     @ManyToMany(targetEntity=Grupp.class, mappedBy="users")
-    public List<Grupp> groups;
+    private List<Grupp> groups;
     
-    @Basic(fetch=FetchType.LAZY)
+   /* @Basic(fetch=FetchType.LAZY)
     @OneToMany(mappedBy="owner")
-    public List<Content> contents;
+    public List<Content> contents;*/
    
     /**
      * Samma som this.groups
@@ -116,12 +119,7 @@ public class UserBase extends Model{
      */
     public List<Grupp> getGroups()
     {
-       /* List<Grupp> groups = Grupp.find("select g from Grupp g left join UserBase u where u.id = :uid")
-                .bind("uid", this.id)
-                .fetch();*/
-        return this.groups;
-    
-        
+        return Grupp.getUsersGroupsInCompany(this);
     }
     
     /**
@@ -134,19 +132,10 @@ public class UserBase extends Model{
     {
         try{
             List<Grupp> usergroups = new ArrayList();
-            usergroups.addAll(this.groups);
+            usergroups.addAll(this.getGroups());
             //Gå igenom alla grupper och hämta barnen
-            for(Grupp g: this.groups)
+            for(Grupp g: this.getGroups())
             {
-                Logger.info("UserBase.getAllGroups %s", g.name);
-                if(g.childs!=null)
-                {
-                    for(Grupp c: g.childs)
-                    {
-                        Logger.info("%s", c.name);
-                    }
-                }
-
                 usergroups.addAll(Grupp.findChilds(g));
             }
 
@@ -197,7 +186,24 @@ public class UserBase extends Model{
     public boolean isAdmin()
     {
         return this instanceof Admin;
-        
+    }
+	
+	/**
+     * Returnerar true om användaren är av klassen SuperAdmin
+     * @return 
+     */
+    public boolean isSuperAdmin()
+    {
+        return this instanceof SuperAdmin;
+    }
+	
+	/**
+     * Returnerar true om användaren är av klassen Admin
+     * @return 
+     */
+    public boolean isUser()
+    {
+        return this instanceof User;
     }
     
     /**
@@ -214,23 +220,10 @@ public class UserBase extends Model{
      * @throws NoSuchFieldException 
      */
     @PostLoad
-    public void loadLanguage() throws ClassNotFoundException, InstantiationException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException
+    public void alert() 
     {
-		//ladda in företaget
-		if(this.companies!=null && this.companies.size() > 0)
-		{
-			Logger.info("LOOOAD COMPANY");
-		}
-        String name = this.lang;
-       if(name==null)
-           name = "Sv";
-            Class cl = Class.forName("utils.language."+name);
-            java.lang.reflect.Constructor co = cl.getConstructor();
-            this.language =  (Language) co.newInstance();
-           
             Logger.info("PostLoad UserBase");
     }
-    
     
     @Override
     public String toString()

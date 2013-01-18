@@ -1,9 +1,20 @@
 #{extends 'main.html' /}
 #{stylesheet 'login.html.css' /}
-#{set title:sessionuser.language.getString("handle.user") /}
+#{set title}&{'handle.user'}#{/set}
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("form.delete").submit(
+		function(){
+			var username = jQuery(this).attr('username');
+			return confirm('&{'sure.remove.user'}'+' '+username);
+		}
+	);
+});
+</script>
 
 <br />
-<a href="@{admin.UsersController.create()}">#{lang user:sessionuser, tag:'create.user' /}</a>
+<a class="button" href="@{admin.UsersController.create()}">&{'create.user'}</a>
 <br />
 <hr />
 #{list items:users, as:'user'}
@@ -15,11 +26,11 @@
     [${user.company.name}]
     
 	
-    <a href="@{admin.UsersController.edit(user.id)}">${sessionuser.language.getString("edit")}</a>
-     #{form @admin.UsersController.deleteUser(user.id), class:'delete'}
-        <input type="submit" class="deletebutton" alt="${sessionuser.language.getString("delete")}" value="" />
+    <a href="@{admin.UsersController.edit(user.id)}"><img src="/public/images/edit_small.png" alt="" /></a>
+     #{form @admin.UsersController.deleteUser(user.id), class:'delete', username:user.name}
+        <input type="submit" class="deletebutton" alt="&{'delete'}" value="" />
      #{/form}
-            
+      
     <br />
    
     <hr />

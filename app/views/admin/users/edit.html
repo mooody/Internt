@@ -1,23 +1,48 @@
-#{mainpage title:sessionuser.language.getString("edit.user") /}
+#{extends 'main.html' /}
+#{set title}&{'edit.user'}#{/set}
 #{stylesheet 'login.html.css' /}
 
 
-
+<h2>&{'edit.user', user.name}</h2>
 *{<!-- Visa / ändra användaruppgifter -->}*
-&{'UserType'}: ${user.getClass().getSimpleName()}<br />
+&{'UserType'}: &{user.getClass().getSimpleName()}<br />
 #{form @admin.UsersController.save()}
-<input type="hidden" name="user.id" value="${user.id}" />
-<label for="user.name">${sessionuser.language.getString("name")}:</label>
-<input type="text" name="user.name" value="${user.name}"/>
-
-<br />
-
-<label for="user.email">${sessionuser.language.getString("email")}:</label>
-<input type="text" name="user.email" value="${user.email}"/>
-
-<br />
-
-<input type="submit" value="${sessionuser.language.getString("save")}" />
+	<input type="hidden" name="user.id" value="${user.id}" />
+	<table>
+		<tr>
+			<td>&{'Name'}:</td>
+			<td><input type="text" name="user.name" value="${user.name}"/></td>
+		</tr>
+		<tr>
+			<td>&{'Email'}:</td>
+			<td><input type="text" name="user.email" value="${user.email}"/></td>
+		</tr>
+		<tr>
+			<td>&{'Street'}:</td>
+			<td><input type="text" name="user.street" value="${user.street}"/></td>
+		</tr>
+		<tr>
+			<td>&{'zipcode'}:</td>
+			<td><input type="text" name="user.zipcode" value="${user.zipcode}"/></td>
+		</tr>
+		<tr>
+			<td>&{'city'}:</td>
+			<td><input type="text" name="user.city" value="${user.city}"/></td>
+		</tr>
+		<tr>
+			<td>&{'cellphone'}:</td>
+			<td><input type="text" name="user.cellphone" value="${user.cellphone}"/></td>
+		</tr>
+		<tr>
+			<td>&{'phone'}:</td>
+			<td><input type="text" name="user.phone" value="${user.phone}"/></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:right;">
+				<input class="button" type="submit" value="&{'Save'}" />
+			</td>
+		</td>
+	</table>
 #{/form}
 
     *{<!-- Visa alla grupper som användaren har -->}*
@@ -40,7 +65,7 @@
     *{<!-- Lägg till användaren i ny grupp -->}*
     #{form @admin.UsersController.addGroupToUser()}
         <input type="hidden" name="userid" value="${user.id}" />
-        #{group.showgroups groups:sessionuser.getAllGroups(), key:'groupId', option:sessionuser.language.getString("choose")+"..." /}
+        #{group.showgroups groups:sessionuser.getAllGroups(), key:'groupId', option:'Choose.group.dots' /}
         <input type="submit" class="button" value="&{'add.user.to.group'}" />
     #{/form}
     <hr />
@@ -49,18 +74,33 @@
 	
     #{form @admin.UsersController.setUserType()}
     <input type="hidden" name="id" value="${user.id}" />
-	
-    <label for="user">&{'regular.user'}</label>
-    <input type="radio" id="usertype" name="usertype" value="0" #{if user.getClass() == models.UserBase.class}checked="checked"#{/if} />
-
-	<label for="admin">&{'admin.user'}</label>
-	<input type="radio" id="usertype" name="usertype" value="1" #{if user.getClass() == models.Admin.class}checked="checked"#{/if}/>
-    
-	#{if sessionuser.getClass() == models.SuperAdmin.class}
-		<label for="admin">&{'super.user'}</label>
-		<input type="radio" id="usertype" name="usertype" value="2" #{if user.getClass() == models.SuperAdmin.class}checked="checked"#{/if}/>
-    #{/if}
-	<input type="submit" value="${sessionuser.language.getString("change.usertype")}"/>
+    <table>
+		<tr>
+			<td>
+				<input type="radio" id="user" name="usertype" value="0" #{if user.getClass() == models.User.class}checked="checked"#{/if} />
+				<label for="user">&{'User'}</label>
+			</td>
+		</tr>
+		<tr>
+			<td>	
+				<input type="radio" id="admin" name="usertype" value="1" #{if user.getClass() == models.Admin.class}checked="checked"#{/if}/>
+				<label for="admin">&{'Admin'}</label>
+			</td>
+		</tr>
+		#{if sessionuser.getClass() == models.SuperAdmin.class}
+			<tr>
+				<td>
+					<input type="radio" id="superadmin" name="usertype" value="2" #{if user.getClass() == models.SuperAdmin.class}checked="checked"#{/if}/>
+					<label for="superadmin">&{'SuperAdmin'}</label>
+				</td>
+			</tr>
+		#{/if}
+		<tr>
+			<td style="text-align:right;">
+				<input type="submit" value="&{'change.usertype'}"/>
+			</td>
+		</tr>
+	</table>
     #{/form}
     #{/if}
     

@@ -25,7 +25,8 @@ import java.util.ArrayList;
  */
 public class SuperAdminController extends PlanController {
     
-   /* @Before
+	/*
+    @Before
     public static void authority() throws AdminController.NoAdminException
     {
        try{
@@ -92,6 +93,10 @@ public class SuperAdminController extends PlanController {
         //return Grupp.findById(id);
     }
 	
+	/**
+	*	Tar bort modulen med module-id från ett företag.
+	* Visar notFound "Felaktigt företag" om företagsid inte kan hittas.
+	*/
 	public static void removeModuleFromCompany(long companyid, long moduleid)
 	{
 		Company company = Company.findById(companyid);
@@ -122,6 +127,11 @@ public class SuperAdminController extends PlanController {
 		SuperAdminController.modules();
 	}
     
+	/**
+	* Sparar undan alla valda moduler till ett företag
+	* @param cId = företagets id
+	* @param modid = array med modul id:n
+	*/
     public static void addModuleToCompany(long cId, List<Long> modid)
     {        
 		//kontrollerar företaget
@@ -187,23 +197,4 @@ public class SuperAdminController extends PlanController {
 		}
         SuperAdminController.modules();
     }
-   
-    /*
-    public static void addAdminToModule(Admin user, Module module)
-    {        
-        if(user == null || module == null) Controller.forbidden("Not an allowed request!");
-       
-       
-            if(module.addUser(user))
-            {
-                flash.put("message", Messages.get("module %s added to user %s", module.name, user.name));
-            }
-            else{
-                flash.put("message", Messages.get("user %s already have access to %s module", user.name,module.name));
-            }
-        
-       
-        
-        SuperAdminController.modules();
-    }*/
 }

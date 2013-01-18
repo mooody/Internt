@@ -13,6 +13,7 @@ import models.SuperAdmin;
 import play.Logger;
 import play.i18n.Messages;
 import models.Core.CompanyUserSettings;
+import play.data.validation.Valid;
 
 /**
  *
@@ -20,8 +21,19 @@ import models.Core.CompanyUserSettings;
  */
 public class CompanyController extends AdminController {
     
-    public static void create(Company company)
+    public static void create(@Valid Company company)
     {
+		if(validation.hasErrors())
+		{
+			validation.keep();
+			params.flash();
+			if(user().company != null && company.id == null) 
+			{
+				CompanyController.addCompany();
+			}
+			CompanyController.index();
+		}
+		
 		/* om användaren redan har ett företag! lägg till ytterligare ett */
         if(user().company != null && company.id == null) 
 		{
@@ -41,13 +53,14 @@ public class CompanyController extends AdminController {
 				company.addUser(user());
 				company.save();
 				
+				//Skapa en cus för användaren
 				CompanyUserSettings cus = new CompanyUserSettings(user(), company);
 				
                 Logger.info("CompanyControllercreate user %s", user());
 
-                Admin admin = Admin.findById(user().id);
-                admin.company = company;
-                admin.save();
+				Admin admin = Admin.findById(user().id);
+				admin.company = company;
+				admin.save();
 
                 CompanyController.createDefaultGroup(admin,company.name);
                 
@@ -63,8 +76,6 @@ public class CompanyController extends AdminController {
             }
         }
         
-        
-        
         CompanyController.index();
     }
 	
@@ -75,10 +86,18 @@ public class CompanyController extends AdminController {
 		company.save();
 		CompanyUserSettings cus = new CompanyUserSettings(user(), company);
 		flash.put("message",Messages.get("company %s created",company.name));
+		
+		Admin admin = Admin.findById(user().id);
+		try{
+		CompanyController.createDefaultGroup(admin,company.name);
+		} catch(Exception ex)
+		{}
+		
 		CompanyController.index();
 	}
+	
     private static void createDefaultGroup(Admin admin, String groupName) throws Exception
-    {
+    {	
         String defaultgrupp = play.Play.configuration.getProperty("defaultuser.grupp");
         String defaultmail = play.Play.configuration.getProperty("defaultuser.email");
         
@@ -86,7 +105,7 @@ public class CompanyController extends AdminController {
         SuperAdmin superadmin = SuperAdmin.find("byEmail", defaultmail).first();
         Logger.info("CompanyController.createDefaultgroupp superadmin is %s", superadmin.name);
         //Hämta superAdmins grupper
-        List<Grupp> groups = superadmin.groups;
+        List<Grupp> groups = superadmin.getGroups();
             
         Logger.info("CompanyController.createDefaultgroupp 1");
         //Hämta huvudgruppen
@@ -133,7 +152,16 @@ public class CompanyController extends AdminController {
         {
             company = Company.findById(user().company.id);
         }
-        render("admin/company/create.html", company);
+		List<Company> companies = null;
+		
+		if(user().companies != null)
+		{
+			companies = Company.find("select c from Company c left join c.usersWithMultipleAccounts u where u.id = :uid")
+				.bind("uid", user().id)
+				.fetch();
+		}
+		
+        render("admin/company/create.html", company, companies);
     }
 	
 	public static void addCompany()
@@ -147,6 +175,8 @@ public class CompanyController extends AdminController {
 				
 			Logger.info("CompanyController.addCompany more comps %s", companies.size());
         }
-        render("admin/company/create.html", companies);
+		
+		boolean newCompany = true;
+        render("admin/company/create.html", companies,newCompany);
 	}
 }
