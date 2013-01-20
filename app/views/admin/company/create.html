@@ -29,32 +29,29 @@ input.error{
     
     #{/if}
 
-	
-	*{<!-- Lista alla företag -->}*
-	<h2>&{'other.companies.account.attached.to'}</h2>
-	<ul>
-	#{list items:companies, as:'companyObject'}
-		<li><a href="@{Application.loadCompany(companyObject.id)}">${companyObject.name}</a></li>
-	#{/list}
-	</ul>
+	#{if newCompany==null}
+		*{<!-- Lista alla företag -->}*
+		<h2>&{'other.companies.account.attached.to'}</h2>
+		<ul>
+		#{list items:companies, as:'companyObject'}
+			<li><a href="@{Application.loadCompany(companyObject.id)}">${companyObject.name}</a></li>
+		#{/list}
+		</ul>
 
-	<a class="button" href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
-
-	#{form @admin.CompanyController.create()}
+		<a class="button" href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
+		*{<!-- newCompany kommer från action addCompany -->}*
+		<hr />
+		
+		<h2>Organisationsuppgifter</h2>
+	#{/if}
+	#{else}
+		<h2>Fyll i organisationsuppgifter</h2>
+	#{/else}
+    <table>
+		#{form @admin.CompanyController.create()}
     #{if company && company.id != null}
         <input type="hidden" name="company.id" value="${sessionuser.company?.id}" />
     #{/if}
-
-	<hr />
-	*{<!-- newCompany kommer från action addCompany -->}*
-	#{if newCompany}
-		<h2>Fyll i organisationsuppgifter</h2>
-	#{/if}
-	#{else}
-		<h2>Organisationsuppgifter</h2>
-	#{/else}
-    <table>
-		
 		
 		*{<!-- Organisationsnamn -->}*
         <tr>

@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
 <hr />
 #{list items:users, as:'user'}
 
-#{if user.id!=sessionuser.id }
+*{<!-- #{if user.id!=sessionuser.id } -->}*
 <!-- NEW USER -->
 <div>
     ${user.name}
@@ -35,5 +35,5 @@ jQuery(document).ready(function(){
    
     <hr />
   </div>
-#{/if}
+*{<!-- #{/if}  -->}*
 #{/list}

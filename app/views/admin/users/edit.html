@@ -65,7 +65,7 @@
     *{<!-- Lägg till användaren i ny grupp -->}*
     #{form @admin.UsersController.addGroupToUser()}
         <input type="hidden" name="userid" value="${user.id}" />
-        #{group.showgroups groups:sessionuser.getAllGroups(), key:'groupId', option:'Choose.group.dots' /}
+        #{group.showgroups groups:sessionuser.company.getCompanyGroups(), key:'groupId', option:'Choose.group.dots' /}
         <input type="submit" class="button" value="&{'add.user.to.group'}" />
     #{/form}
     <hr />

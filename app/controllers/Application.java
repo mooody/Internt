@@ -19,7 +19,7 @@ public class Application extends Controller {
 	* Om sessionen finns med ett userid så blir det en redirect till User.mypage
 	*/
     public static void index() {
-        
+
         //Om sessionen lever så redirect till mypage
         if(session.get("userid")!=null)
         {
@@ -77,7 +77,16 @@ public class Application extends Controller {
             Logger.info("check username %s", email);
             UserBase user = null;
 			try {
+
 				user = UserBase.login(email,password);
+				
+				if(!user.activated)
+				{
+					flash.put("message", Messages.get("account.not.activated"));
+					flash.put("resend", user.email);
+					Application.loginform();
+				}
+				
 			} catch(Exception ex) {
 				message = "some.error.occord.contact.site.help";
 			}
@@ -172,37 +181,38 @@ public class Application extends Controller {
 		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
 		Logger.info("CUS: %s", cus);
 		
-		if(cus!=null){
-			String usertype = cus.getUserType();
-			
-			play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")
-				.setParameter("type",usertype).setParameter("id",user.id)
-				.executeUpdate();
-			
-			List<Module> modules = cus.modules;
-			
-			if(user.modules == null) 
-			{
-				user.modules = new ArrayList<Module>();
-			}
-			else 
-			{
-				user.modules.clear();
-				user.save();
-			}
-			
-			for(Module module: modules)
-			{
-				if(company.modules.contains(module)) //så företaget fortfarande har access till modulen
-				{
-					user.modules.add(module);
-				}
-			}
-			
-			
-			user.save();
-			
+		//Om det inte finns en cus (Exempelvis vid inbjudan)
+		if(cus==null)
+		{
+			cus = new CompanyUserSettings(user, company);
+			cus.save();
 		}
+		
+		String usertype = cus.getUserType();
+		
+		//Sätt användartyp på den inloggade användaren.
+		play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")
+			.setParameter("type",usertype).setParameter("id",user.id)
+			.executeUpdate();
+		
+		List<Module> modules = cus.getModules();
+		
+		if(user.getModules() != null) 
+		{
+			user.clearModules();
+			user.save();
+		}
+		
+		for(Module module: modules)
+		{
+			if(company.modules.contains(module)) //så företaget fortfarande har access till modulen
+			{
+				user.addModule(module);
+			}
+		}
+		user.save();
+		
+		
 	}
     
     /**
@@ -213,8 +223,53 @@ public class Application extends Controller {
     public static void createAccount(Admin user)
     {
         user.save();
+		notifiers.Mails.welcome(user);
         flash.put("message", "Account.created.successful");
         params.data.clear();
         Application.loginform();
     }
+	
+	/**
+	*
+	*
+	*/
+	public static void resendActivationMail(String email)
+	{
+		UserBase user = UserBase.find("byEmail", email).first();
+		if(user.activated)
+		{
+			flash.put("message", Messages.get("your.account.is.already.activated"));
+			Application.index();
+		}
+		
+		if(user.token == null)
+		{
+			try{
+				user.token = utils.Cryptography.getPasswordToken();
+			} catch(Exception ex)
+			{
+				flash.put("message", Messages.get("Error.with.password.token"));
+				Application.index();
+			}
+		}
+		user.save();
+		notifiers.Mails.welcome(user);
+		flash.put("message", Messages.get("Activationmail.sent"));
+		Application.loginform();
+	}
+	public static void activate(String token)
+	{
+		UserBase user = UserBase.find("byToken", token).first();
+		
+		if(user == null)
+		{
+			renderText("NO USER");
+		}
+		
+		user.activated = true;
+		user.token = null;
+		user.save();
+		flash("message", Messages.get("you.are.activated", user.name));
+		Application.loginform();
+	}
 }

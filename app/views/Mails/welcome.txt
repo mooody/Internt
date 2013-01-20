@@ -1,0 +1,4 @@
+
+&{'Welcome'} ${user.name}
+
+@@{application.index}activate/${user.token}

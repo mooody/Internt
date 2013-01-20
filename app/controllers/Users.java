@@ -31,7 +31,7 @@ public class Users extends PlanController{
     
     public static void myaccount()
     {
-        User user = UserBase.findById(getUserId());
+        UserBase user = UserBase.findById(getUserId());
         render(user);
     }
     
@@ -66,13 +66,13 @@ public class Users extends PlanController{
             myaccount();
         }
         
-        
-        
         user.save();
         flash.put("message", Messages.get("user.updated"));
         myaccount();
         
     }
+	
+	
     
     
 }

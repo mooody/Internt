@@ -13,6 +13,8 @@ POST    /account                                Application.createAccount
 GET		/selectCompany							Application.selectCompany
 #När användaren valt vilket företag han ska logga in i	
 GET		/loadCompany							Application.loadCompany
+GET		/activate/{token}						Application.activate
+GET		/reactivate/{email}						Application.resendActivationMail
 
 #AdminController 
 # - user
@@ -32,10 +34,11 @@ GET     /admin/groups                           admin.GruppController.index
 POST    /admin/groups/save                      admin.GruppController.save
 POST    /admin/groups/delete                    admin.GruppController.delete
 
+
 #Admincontroller
 # - Company
 GET    /company                                admin.CompanyController.index
-POST	/company/company                   admin.CompanyController.create
+POST	/company/company                   		admin.CompanyController.create
 GET    /company/addcompany                     admin.CompanyController.addCompany
 
 #AdminController
@@ -43,6 +46,9 @@ GET    /company/addcompany                     admin.CompanyController.addCompan
 GET     /modules                                admin.AdminController.modules
 POST    /modules/addUser                        admin.AdminController.addModuleToUser
 POST	/modules/removeModule 					admin.AdminController.removeModuleFromUser
+GET		/admin/group/modules					admin.GruppController.modules
+POST	/admin/group/addModule					admin.GruppController.addModuleToGroup
+POST	/admin/group/removeModule 				admin.GruppController.removeModuleFromGroup
 			
 
 #SuperAdminController
@@ -65,6 +71,9 @@ POST    /myaccount                              Users.save
 GET     /getmodule/{moduleId}                     ModuleController.index                  
 GET     /getpeek/{moduleId}                       ModuleController.peek 
 
+#MailController
+GET		/mail/recovery 							mail.MailController.recoveryView
+POST	/mail/recovery 							mail.MailController.sendRecovory
 #Modules
 *   /messages                                   module:messages
 *   /reminder                                   module:reminder

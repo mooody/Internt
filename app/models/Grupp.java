@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.*;
 import play.Logger;
 import play.db.jpa.Model;
+import models.Core.Module;
 
 
 /**
@@ -32,10 +33,17 @@ public class Grupp extends Model{
     @Basic(fetch=FetchType.LAZY)
     @ManyToMany(targetEntity=AccessRights.class,mappedBy="groups")
     public List<AccessRights> rights;
+	
+	@Basic(fetch=FetchType.LAZY)
+    @OneToMany
+    public List<Module> modules;
     
     private long companyId;
             
-    
+    public List<Module> getModules()
+	{
+		return this.modules;
+	}
     public void setCompanyId(long _companyId)
     {
         this.companyId = _companyId;

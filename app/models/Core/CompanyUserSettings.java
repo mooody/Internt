@@ -9,6 +9,7 @@ import java.util.List;
 import models.UserBase;
 import models.Core.Module;
 import play.Logger;
+import java.util.ArrayList;
 
 @Entity
 public class CompanyUserSettings extends Model{
@@ -19,9 +20,7 @@ public class CompanyUserSettings extends Model{
 	public UserBase user;      
 	@ManyToMany
 	public List<Module> modules;
-	//@ManyToMany
-	//public List<Grupp> groups;
-	
+
 	@Column(nullable=false)
 	String usertype = "UserBase";
 	
@@ -30,6 +29,13 @@ public class CompanyUserSettings extends Model{
 		this.company = _company;
 		this.save();
 	}
+	
+	public List<Module> getModules()
+	{
+		return this.modules!=null?modules:new ArrayList<Module>();
+	}
+	
+	
 	
 	public String getUserType() {return this.usertype;}
 	

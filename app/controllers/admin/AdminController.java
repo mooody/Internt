@@ -104,6 +104,7 @@ public class AdminController extends PlanController {
 		flash.put("user", user.id);
 		AdminController.modules();
 	}
+	
     public static void addModuleToUser(long uId, List<Long> modid)
 	{
 		UserBase user = UserBase.findById(uId);

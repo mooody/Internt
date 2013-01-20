@@ -59,8 +59,17 @@
 			<div class="message ui-state-highlight ui-corner-all" style="width:95%">
 				<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 				${flash['message']}
+				*{<!-- Återaktivering -->}*
+				#{if flash['resend']}
+					<span style="margin: 20px 0;">
+						<a href="@{Application.resendActivationMail(flash['resend'])}"><b>&{'resend.activationmail'}</b></a>
+					</span>
+				#{/if}
 			</div>
 		#{/if}
+		
+		
+		
 		*{<!-- Messagebox ERROR -->}*
 		#{if errors }
 			<div class="message ui-state-error ui-corner-all" style="width:95%">

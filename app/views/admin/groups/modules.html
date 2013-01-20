@@ -1,0 +1,53 @@
+<!--
+#{get 'group' /}
+#{get 'groupmodules' /}
+#{get 'companymodules' /}
+-->
+#{if group}
+	*{<!-- Listar användarens ingående moduler-->}*
+
+	<h2>&{'Got.access.to.modules', group.name}</h2>
+	<table class="listtable">
+		#{list items:groupmodules, as:'module'}
+			<tr>
+				<td><span class="${sessionuser.company.modules.contains(module)?'open':'locked'}">${module.name}</span></td>
+				
+				<td>
+					
+					#{form @admin.GruppController.removeModuleFromGroup(), class:'delete', username:group.name, module:module.name}				
+					<input type="hidden" name="groupid" value="${group.id}" />
+					<input type="hidden" name="moduleid" value="${module.id}" />
+					<input type="submit" class="deletebutton" value="" alt="delete group" />
+					#{/form}
+					
+				</td>
+				
+			</tr>
+		#{/list}
+	</table>
+	<h2>&{'Accessable.modules.to', group.name}</h2>
+		*{<!-- Skriver ut resterande moduler -->}*
+		#{form @admin.GruppController.addModuleToGroup() }
+		<input type="hidden" value="${group.id}" name="gId" />
+		<table class="listtable">
+			#{list items:companymodules, as:'module'}  
+				#{if !groupmodules?.contains(module)}
+				<tr>
+					<td>
+						<input type="checkbox"id="m${module.id}" name="modid[${module.id}]" value="${module.id}" />
+					</td>
+					<td>
+						<label for="m${module.id}">${module.name}</id>
+					</td>
+				</tr>
+				#{/if}
+			#{/list}
+			<tr>
+				<td colspan="2" style="text-align:right">
+				<br />
+					<input type="submit" value="&{'Save'}" />
+				</td>
+			</tr>
+		</table>
+		#{/form}
+#{/if}

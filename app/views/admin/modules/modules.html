@@ -32,6 +32,8 @@ span.locked{
 </style>
 
 #{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
+
+	*{<!-- Välj användare -->}*
 	<h2>&{'admin.GiveUserModuleAccess'}</h2>
 	#{form @admin.AdminController.modules()}
 		<select name="userid" >
@@ -42,57 +44,33 @@ span.locked{
 		</select>
 		<input type="submit" value="&{'Get'}" />
 	#{/form}
+
+	#{set user:user /}
+	#{set usermodules:usermodules /}
+	#{set companymodules:companymodules /}
+
+	#{include 'admin/users/modules.html' /}
+
+	<hr />
 	
-	#{if user}
-		*{<!-- Listar användarens ingående moduler-->}*
-		#{if usermodules!=null && usermodules.size() != 0}
-			<h2>&{'User.got.modules', user.name}</h2>
-			<table class="listtable">
-				#{list items:usermodules, as:'module'}
-					<tr>
-						<td><span class="${user.company.modules.contains(module)?'open':'locked'}">${module.name}</span></td>
-						
-						<td>
-							#{form @admin.AdminController.removeModuleFromUser(), class:'delete', username:user.name, module:module.name}				
-							<input type="hidden" name="userid" value="${user.id}" />
-							<input type="hidden" name="moduleid" value="${module.id}" />
-							<input type="submit" class="deletebutton" value="" alt="delete group" />
-							#{/form}
-						</td>
-						
-					</tr>
-				#{/list}
-			</table>
-		#{/if}
-		
-		#{if modules != null && modules.size() > 0 && usermodules.size()!=modules.size()}
-		<h2>&{'User.can.have.modules', user.name}</h2>
-		*{<!-- Skriver ut resterande moduler -->}*
-		#{form @admin.AdminController.addModuleToUser() }
-		<input type="hidden" value="${user.id}" name="uId" />
-		<table class="listtable">
-			#{list items:modules, as:'module'}  
-				#{if !usermodules?.contains(module)}
-				<tr>
-					<td>
-						<input type="checkbox"id="m${module.id}" name="modid[${module.id}]" value="${module.id}" />
-					</td>
-					<td>
-						<label for="m${module.id}">${module.name}</id>
-					</td>
-				</tr>
-				#{/if}
+	*{<!-- Välj grupp -->}*
+	<h2>&{'admin.GiveGroupModuleAccess'}</h2>
+	#{form @admin.GruppController.modules()}
+		<select name="groupid" >
+			<option value="">&{'admin.choose.group'}:</option>
+			#{list items:sessionuser.company.getCompanyGroups(), as:'g'}
+				<option value="${g.id}" #{if group}${group.id==g.id?'selected="selected"'.raw():''}#{/if}>${g.name}</option>
 			#{/list}
-			<tr>
-				<td colspan="2" style="text-align:right">
-				<br />
-					<input type="submit" value="&{'Save'}" />
-				</td>
-			</tr>
-		</table>
-		#{/form}
-		#{/if} *{<!--modules != null && modules.size() > 0 -->}*
-	#{/if} *{<!-- if user -->}*
+		</select>
+		<input type="submit" value="&{'Get'}" />
+	#{/form}
+	
+	*{<!-- Gruppmoduler-->}*
+	#{set group:group /}
+	#{set groupmodules:groupmodules /}
+
+	#{include 'admin/groups/modules.html' /}
+
 #{/if}
 
 

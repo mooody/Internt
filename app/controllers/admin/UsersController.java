@@ -25,7 +25,7 @@ public class UsersController extends AdminController {
     
     public static void index()
     {
-        UserBase tUser = UserBase.findById(getUserId());
+        //UserBase tUser = UserBase.findById(getUserId());
         //List<Grupp> groups = tUser.getAllGroups();
         /*List<UserBase> users = UserBase.find("select u from UserBase u "
                 + "where u.company.id = :crit").bind("crit", tUser.company.id).fetch();
@@ -33,14 +33,17 @@ public class UsersController extends AdminController {
 		List<UserBase> users = UserBase.find("select u from UserBase u left join u.companies uc where uc.id = :company")
 			.bind("company", getCompanyId()).fetch();
 				
-		Logger.info("size %s", users.size());
+		Logger.info("usersize %s", users.size());
         render("admin/users/show.html", users);
     }   
      
 	
     public static void create()
     {
-        List<Grupp> groups = Grupp.findAll();
+        //List<Grupp> groups = Grupp.findAll();
+		List<Grupp> groups = Grupp.find("select g from Grupp g where g.companyId = :cid")
+			.bind("cid", user().company.id)
+			.fetch();
 		//THIS IS NOT GOOD! find ALL
         //notFound("SEE UsersController.create()");
         render("admin/users/create.html", groups);
@@ -84,6 +87,7 @@ public class UsersController extends AdminController {
             if(user!=null)
             {
                 user.save();
+				notifiers.Mails.welcome(user);
             }
 			
 			CompanyUserSettings cus = new CompanyUserSettings(user, company);
@@ -162,10 +166,17 @@ public class UsersController extends AdminController {
     
     public static void setUserType(long id, short usertype) throws Exception
     {
-        long count = UserBase.count("select count(id) from UserBase u where u.id = ?", id);
-		if(count==0)
+        //long count = UserBase.count("select count(id) from UserBase u where u.id = ?", id);
+		UserBase user = UserBase.findById(id);
+		if(user==null)
 		{
 			notFound();
+		}
+		
+		if(id == getUserId())
+		{
+			flash("message", Messages.get("you.cant.change.your.own.usertype"));
+			edit(id);
 		}
        
 		String discriminator = null;
@@ -192,7 +203,13 @@ public class UsersController extends AdminController {
     public static void deleteUser(Long id)
     {
 	
-        UserBase user = UserBase.findById(id);
+		if(id == getUserId())
+		{
+			flash("message", Messages.get("you.cant.erase.yourself"));
+			index();
+		}
+        
+		UserBase user = UserBase.findById(id);
         Controller.notFoundIfNull(user, "Not.found.user");
         
         List<Grupp> groups = Grupp.find("select g from Grupp g left join g.users u where u.id = :userid and g.companyId = :companyId").bind("userid", id).bind("companyId", PlanController.getCompanyId()).fetch();

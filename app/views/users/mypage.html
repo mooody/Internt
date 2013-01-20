@@ -7,14 +7,14 @@
 
 <h2>Grupper</h2>
 
-#{list items:models.Grupp.getUsersGroupsInCompany(sessionuser), as:'group'}
+#{list items:sessionuser.getAllGroups(), as:'group'}
 	${group.name}<br />
 #{/list}
 
 <h2>Modules</h2>
 <ul>
 
-#{list items:sessionuser.modules, as:'module'}
+#{list items:sessionuser.getUserAndGroupModules(), as:'module'}
 <li><a href="@{ModuleController.index(module.id)}" />&{module.name}</a></li>
 
 <div id="${module.name}"></div>

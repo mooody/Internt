@@ -75,13 +75,33 @@ public class Initalization extends Job {
 	
 	public void ver()
 	{
-		List<Verification> verifications = Verification.find("select v from Verification v where v.company.id = 1 order by v.verificationNr asc").fetch();
+		List<Verification> verifications = Verification.find("select v from Verification v where v.company.id = 1 order by v.date asc").fetch();
 		
 		int index = 0;
 		for(Verification verification: verifications)
 		{
 			index++;
+			verification.verificationNr = index+verifications.size()+10;
 			Logger.info("i:%s nr:%s", index, verification.verificationNr);
+			
+		}
+		for(Verification verification: verifications)
+		{
+			verification.save();
+		}
+		
+		
+		index=0;
+		for(Verification verification: verifications)
+		{
+			index++;
+			verification.verificationNr = index;
+			Logger.info("i:%s nr:%s", index, verification.verificationNr);
+			
+		}
+		for(Verification verification: verifications)
+		{
+			verification.save();
 		}
 		Logger.info("%s", verifications.size());
 	}

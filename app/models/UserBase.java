@@ -24,6 +24,9 @@ import java.security.InvalidKeyException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
+import models.Core.CompanyUserSettings;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 
 /**
@@ -43,6 +46,12 @@ import java.io.IOException;
 	resultSetMapping = "dummy")
 public class UserBase extends Model{
  
+	public UserBase() throws UnsupportedEncodingException, NoSuchAlgorithmException
+	{
+		this.activated = false;
+		this.token = utils.Cryptography.getPasswordToken();
+	}
+	
 	private static final String DES_ENCRYPTION_KEY = Play.configuration.getProperty("application.secret");
 	
     @Required
@@ -68,7 +77,10 @@ public class UserBase extends Model{
 	public String city;
 	public String cellphone;
 	public String phone;
-	
+	//Uses for activation and pw recovery
+	public String token;
+	@Column(nullable=false)
+	public boolean activated=false;
     //public String lang;
     
     @Transient
@@ -103,7 +115,8 @@ public class UserBase extends Model{
     */
     @Basic(fetch=FetchType.LAZY)
     @OneToMany
-    public List<Module> modules;
+    private List<Module> modules;
+
     
     @Basic(fetch=FetchType.LAZY)
     @ManyToMany(targetEntity=Grupp.class, mappedBy="users")
@@ -121,6 +134,37 @@ public class UserBase extends Model{
     {
         return Grupp.getUsersGroupsInCompany(this);
     }
+	
+	public List<Module> getModules(){
+		return CompanyUserSettings.getUserModules(this, this.company);
+	}
+	
+	public void setModules(List<Module> _modules){
+		this.modules = _modules;
+	}
+	
+	public void addModule(Module module)
+	{
+		if(this.modules == null) this.modules = new ArrayList<Module>();
+		this.modules.add(module);
+	}
+	
+	public void clearModules()
+	{
+		this.modules.clear();
+	}
+	
+	public List<Module> getUserAndGroupModules()
+	{
+		List<Module> modules = this.getModules();
+		List<Grupp> groups = getAllGroups();
+		for(Grupp group: groups)
+		{
+			modules.addAll(group.getModules());
+		}
+		
+		return modules;
+	}
     
     /**
      * Skapar en lista på alla grupper som användaren är med i. 
@@ -155,7 +199,7 @@ public class UserBase extends Model{
     
     public static UserBase login(String email, String pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException
     {
-        UserBase user = UserBase.find("select u from UserBase u where u.email = :email and u.password = :pw").bind("email", email).bind("pw", UserBase.getCryptedPassword(pw)).first();
+        UserBase user = UserBase.find("select u from UserBase u where u.email = :email and u.password = :pw").bind("email", email).bind("pw",UserBase.getCryptedPassword(pw)).first();
         return user;
     }       
     
@@ -353,5 +397,10 @@ public class UserBase extends Model{
             
         return 0;
     }
+	
+	public void sendWelcome()
+	{
+		notifiers.Mails.welcome(this);
+	}
     //</editor-fold>
 }

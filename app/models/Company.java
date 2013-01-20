@@ -61,6 +61,10 @@ public class Company extends Model{
 	)
     public List<Module> modules;
 
+	public List<Module> getCompanyModules()
+	{
+		return this.modules;
+	}
     /**
      * 
      */

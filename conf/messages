@@ -23,6 +23,10 @@ user.updated = Användaren är uppdaterad
 login.ok = Inloggad korrekt
 You.need.to.login.as.administrator = Du måste logga in som administratör
 Get = Hämta
+you.are.activated = Ditt konto är nu aktiverat och du kan logga in. Välkommen %s
+account.not.activated = Ditt konto är inte aktiverat
+resend.activationmail = Skicka aktiveringsmailet igen
+Activationmail.sent = Aktiveringsmailet skickat. Kontrollera din mail, även i skräpposten
 
 #Users
 add.user.to.group = Lägg till användaren till gruppen
@@ -47,6 +51,12 @@ change.usertype = Ändra användartyp
 edit.user = Hantera användare %s
 User.inready.in.parent.group = Användaren är redan i gruppen %s
 sure.remove.user = Är du säker på att du vill ta bort användaren
+you.cant.change.your.own.usertype = Du kan inte ändra användartyp på dig själv
+Street = Gatuadress
+zipcode = Postnummer
+city = Stad
+cellphone = Mobil	
+phone = Telefon
 
 #Company
 first.company.info = Var vänlig att fyll i nedanstående uppgifter.
@@ -68,12 +78,19 @@ module.name = Modul
 
 #Admin - module
 admin.GiveUserModuleAccess = Ge användaren modul access
-User.got.modules = %s har tillgång till följande moduler
-User.can.have.modules = %s kan få tillgång till följande moduler
 admin.choose.user = Välj användare
 sure.remove.module = Är du säker på att du vill spärra modulen 
 module.removed = Modulen %s är nu spärrad för användaren %s
 Modules.added.to.user = Modulerna %s är nu tillgängliga för användaren %s
+admin.GiveGroupModuleAccess = Ge gruppen modul access
+Got.access.to.modules = %s har tillgång till följande moduler
+you.cant.erase.yourself = Du kan inte radera dig själv
+Accessable.modules.to = Tillgängliga grupper för %s
+
+#Admin -groups
+is.your.headgroup.cant.erase = %s är din huvudgrupp och du kan inte radera denna
+group.erased = Gruppen %s är raderad
+group.is.created = Gruppen %s är skapad
 
 
 
