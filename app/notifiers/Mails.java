@@ -5,6 +5,8 @@ import play.mvc.*;
 import java.util.*;
 import org.apache.commons.mail.*; 
 import models.UserBase;
+import models.mail.Invite;
+import play.i18n.Messages;
  
 public class Mails extends Mailer {
  
@@ -25,6 +27,14 @@ public class Mails extends Mailer {
       setSubject("Your password has been reset");
       addRecipient(user.email);
       send(user, newpassword);
+   }
+   
+   public static void sendInvite(Invite invite)
+   {
+      setFrom(invite.getFrom().name+" <"+invite.getFrom().email+">");
+      addRecipient(invite.getTo().email);
+	  setSubject(invite.getFrom().name+" "+Messages.get("invites.you.to")+" "+invite.getCompany().name);
+      send(invite);
    }
  
 }

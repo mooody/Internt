@@ -1,0 +1,1 @@
+${invite.getFrom().name} &{'invites.you.to'} ${invite.getCompany().name}

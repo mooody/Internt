@@ -65,9 +65,33 @@
 						<a href="@{Application.resendActivationMail(flash['resend'])}"><b>&{'resend.activationmail'}</b></a>
 					</span>
 				#{/if}
+				*{
+				<!-- invite mail -->}*
+				#{if flash['invite']}
+					<span style="margin: 20px 0;">
+						<a href="@{admin.UsersController.sendInvitationMail(flash['invite'])}"><b>&{'send.invitationnmail'}</b></a>
+					</span>
+				#{/if}
+				
+				
 			</div>
 		#{/if}
-		
+*{<!--
+		#{if flash['hasInvites'] }
+			<div class="message ui-state-highlight ui-corner-all" style="width:95%">
+			%{def invitations = models.mail.Invite.getInvites(sessionuser); }%
+			<ul>
+				#{list items:invitations, as:'invite'}
+					${invite.getFrom().name} &{'invites.you.to'} ${invite.getCompany().name} 
+					<a href="javascript:void(0)">&{'accept.invite'}</a>
+					<a href="javascript:void(0)">&{'erase.invite'}</a>
+				#{/list}
+				
+			</ul>
+			</div>
+
+		#{/if}
+-->}*				
 		
 		
 		*{<!-- Messagebox ERROR -->}*

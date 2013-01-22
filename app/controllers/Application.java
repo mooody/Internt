@@ -7,6 +7,7 @@ import models.*;
 import play.cache.Cache;
 import play.i18n.Messages;
 import models.Core.*;
+import models.mail.Invite;
 
 /**
  * Application controllern har hand om inloggning. 
@@ -80,7 +81,7 @@ public class Application extends Controller {
 
 				user = UserBase.login(email,password);
 				
-				if(!user.activated)
+				if(user!=null&&!user.activated)
 				{
 					flash.put("message", Messages.get("account.not.activated"));
 					flash.put("resend", user.email);
@@ -89,9 +90,16 @@ public class Application extends Controller {
 				
 			} catch(Exception ex) {
 				message = "some.error.occord.contact.site.help";
+				Logger.info(ex.getMessage()+" "+ex.getCause());
 			}
             if(user != null)
             {
+				/*List<Invite> invites = Invite.getInvites(user);
+				if(invites != null && invites.size() > 0)
+				{
+					flash.put("hasInvites", true);
+				}
+				*/
                 message = Messages.get("login.ok");
                 //Vi sätter användaren som inloggad
                 session.put("userid", user.id);
@@ -228,7 +236,6 @@ public class Application extends Controller {
         params.data.clear();
         Application.loginform();
     }
-	
 	/**
 	*
 	*

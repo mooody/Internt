@@ -27,6 +27,9 @@ you.are.activated = Ditt konto är nu aktiverat och du kan logga in. Välkommen 
 account.not.activated = Ditt konto är inte aktiverat
 resend.activationmail = Skicka aktiveringsmailet igen
 Activationmail.sent = Aktiveringsmailet skickat. Kontrollera din mail, även i skräpposten
+invites.you.to = har bjudit in dig till 
+accept.invite = Acceptera inbjudan
+erase.invite = Radera inbjudan
 
 #Users
 add.user.to.group = Lägg till användaren till gruppen

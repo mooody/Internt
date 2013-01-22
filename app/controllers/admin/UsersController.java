@@ -16,6 +16,7 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import java.util.ArrayList;
 import models.Core.CompanyUserSettings;
+import models.mail.Invite;
 
 /**
  *
@@ -74,7 +75,10 @@ public class UsersController extends AdminController {
 
 			if(count>0)
 			{
+				UserBase invited = UserBase.find("byEmail", user.email).first();
 				flash.put("message", Messages.get("send.invite"));
+				
+				flash.put("invite", invited.id );
 				index();
 			}
 			
@@ -87,6 +91,7 @@ public class UsersController extends AdminController {
             if(user!=null)
             {
                 user.save();
+				//Skickar ut välkomstmailet
 				notifiers.Mails.welcome(user);
             }
 			
@@ -247,4 +252,13 @@ public class UsersController extends AdminController {
         index();
     }
     
+	public static void sendInvitationMail(long id)
+	{
+		UserBase user = UserBase.findById(id);
+		Invite invite = new Invite(user().company, user, user(), "");
+		invite.save();
+		notifiers.Mails.sendInvite(invite);
+		index();
+		
+	}
 }

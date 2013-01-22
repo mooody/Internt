@@ -46,10 +46,17 @@ import java.security.NoSuchAlgorithmException;
 	resultSetMapping = "dummy")
 public class UserBase extends Model{
  
-	public UserBase() throws UnsupportedEncodingException, NoSuchAlgorithmException
+	public UserBase()
 	{
 		this.activated = false;
-		this.token = utils.Cryptography.getPasswordToken();
+		try
+		{
+			this.token = utils.Cryptography.getPasswordToken();
+		} 
+		catch(UnsupportedEncodingException use)
+		{}
+		catch(NoSuchAlgorithmException nsa)
+		{}
 	}
 	
 	private static final String DES_ENCRYPTION_KEY = Play.configuration.getProperty("application.secret");
