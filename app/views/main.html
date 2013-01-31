@@ -109,7 +109,7 @@
 		<div class="footer">
 			#{if sessionuser}
 				&{'logged.in.as'} ${sessionuser.name}
-				( ${sessionuser.getClass().getSimpleName()} )<br />
+				( &{sessionuser.getClass().getSimpleName()} )<br />
 				&{'Company'}: ${sessionuser?.company?.name}
 			#{/if}
 		</div>

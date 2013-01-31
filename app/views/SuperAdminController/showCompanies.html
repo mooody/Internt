@@ -1,0 +1,7 @@
+#{mainpage title:'Handle.Company' /}
+
+<ul>
+#{list items:companies, as:'company'}
+	<li><a href="@{SuperAdminController.showCompany(company.id)}">${company.name}</a> - ${company.countUsers()} &{'users'}, </li>
+#{/list}
+</ul>

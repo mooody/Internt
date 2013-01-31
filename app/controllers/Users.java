@@ -66,6 +66,7 @@ public class Users extends PlanController{
             myaccount();
         }
         
+
         user.save();
         flash.put("message", Messages.get("user.updated"));
         myaccount();

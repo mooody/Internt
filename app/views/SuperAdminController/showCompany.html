@@ -1,0 +1,51 @@
+#{mainpage title:'Handle.groups' /}
+
+<h1>${company.name}</h1>
+
+#{form @SuperAdminController.updateCompany()}
+<input type="hidden" name="company.id" value="${company.id}" />
+<table>
+<tr>
+	<td>
+		&{'Users'}:
+	</td>
+	<td>
+		<input type="text" name="company.usersCount" value="${company.getUsersCount()}" />
+	</td>
+</tr>
+<tr>
+	<td>
+		&{'Admins'}:
+	</td>
+	<td>
+		<input type="text" name="company.adminsCount" value="${company.getAdminsCount()}" />
+	</td>
+</tr>
+<tr>
+	<td>
+		&{'PrivilegeUsers'}:
+	</td>
+	<td>
+		<input type="text" name="company.privilegeUsersCount" value="${company.getPrivilegeUsersCount()}" />
+	</td>
+</tr>
+<tr>
+	<td colspan="2" style="text-align:right;"><input type="submit" value="&{'Save'}" /></td>
+</tr>
+</table>
+
+#{/form}
+<h2>&{'Users'}</h2>
+<ul>
+#{list items:company.usersWithMultipleAccounts, as:'user'}
+	<li>${user.name} [&{user.getClass().getSimpleName()}]
+	</li>
+#{/list}
+</ul>
+
+<h2>&{'Modules'}</h2>
+<ul>
+#{list items:company.modules, as:'module'}
+	<li>&{module.name}</li>
+#{/list}
+</ul>

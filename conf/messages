@@ -30,6 +30,14 @@ Activationmail.sent = Aktiveringsmailet skickat. Kontrollera din mail, även i s
 invites.you.to = har bjudit in dig till 
 accept.invite = Acceptera inbjudan
 erase.invite = Radera inbjudan
+mail.lostPassword = Glömt lösenord
+application.RecoveryPassword = Återställning av lösenord
+type.your.email.to.get.recoverymail = Skriv in din epost för att få ett återställningsmail
+Send = Skicka
+validation.email.not.found = Epostadressen hittades inte! Har du skrivit rätt?
+Wrong.token.not.able.to.recovery.resend.mail  = Felaktigt token, skicka återställningsmail igen!
+email.sent = Ett email är skickat. Kontollera din mail (även skräpposten)
+Account.created.successful = Kontot är skapat. Ett aktiveringsmail är skickat till din epost. (Kontrollera även skräpposten)
 
 #Users
 add.user.to.group = Lägg till användaren till gruppen
@@ -42,6 +50,7 @@ send.invite = Mailadressen finns redan i systemet. Du måste skicka en inbjudan.
 user.has.no.groups = Användaren har inte kopplad till någon grupp ännu
 Admin = Administratör
 User = Användare
+PrivilegeUser = Användare med privilegium
 SuperAdmin = Super Administratör
 create.user  = Skapa användare
 edit = Ändra
@@ -67,7 +76,10 @@ other.companies.account.attached.to = Andra företag kontot är kopplat till
 you.need.a.company.name = Du måste fylla i organisationsnamn
 you.need.a.company.orgnr = Du måste fylla i organisationsnummer
 validation.object = Felaktiga inmatningar
-
+you.cant.add.user.your.company.has.accounts = Du måste uppgradera företaget. Nu har företaget totalt %s användarkonton
+you.have.to.upgrade.admin.counts = Du måste uppgradera företaget. Nu har företaget totalt %s administratörskonton
+you.have.to.upgrade.privilegue.counts = Du måste uppgradera företaget. Nu har företaget totalt %s konton med privilegium
+Company.updated = Företaget är uppdaterat
 #SuperAdmin
 No.modules.was.added.to = Ingen modul blev tillagd till %s
 Module.was.added.to.company = %s blev tillagda till %s
@@ -94,6 +106,9 @@ Accessable.modules.to = Tillgängliga grupper för %s
 is.your.headgroup.cant.erase = %s är din huvudgrupp och du kan inte radera denna
 group.erased = Gruppen %s är raderad
 group.is.created = Gruppen %s är skapad
+
+#Users - modules
+users.need.to.be.privileged = Det krävs ett konto med privileguim för access till denna modul
 
 
 

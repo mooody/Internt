@@ -13,7 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import models.Core.Module;
 import models.UserBase;
+import play.mvc.Before;
 import play.Logger;
+import play.data.validation.Validation;
+import play.i18n.Messages;
 
 /**
  * ModuleController. 
@@ -24,7 +27,7 @@ import play.Logger;
  */
 @Entity
 public class ModuleController extends PlanController{
-    
+	
     @Id 
     @GeneratedValue
     public Long id;
@@ -42,13 +45,46 @@ public class ModuleController extends PlanController{
     
     /**
      * Fixar en länk till indexmetoden för modulen
-	 * - Här inne ser du även till och hämtar in aktuella sessionvariabler till modulen.
+	 * - I index metoden ser du även till och hämtar in aktuella sessionvariabler till modulen.
      * @param moduleId 
      */
     public static void index(Long moduleId)
     {
         Module module = Module.findById(moduleId);
-        redirect(module.getModuleControllerActionRoute("index"));
+		
+		//först kontrollerar vi vilken användaraccess det finns på modulen
+		if(module==null) notFound("Modulen finns inte");
+		try{
+			//Kontrollerar att det är rätt användartyp
+			if((Class.forName("models."+module.getUserAccessType())).isInstance(user()))
+			{
+				//hämtar ut användarens moduler
+				List<Module> modules = user().getUserAndGroupModules();
+				
+				for(Module m : modules)
+				{
+					Logger.info("Users modules %s (%s = %s)", m.name, moduleId, m.id);
+					if(m.id == moduleId.longValue())
+					{
+						Logger.info("Found");
+						redirect(module.getModuleControllerActionRoute("index"));
+					}
+				}
+			}
+			
+		}catch(Exception ex){
+
+			Logger.error("ModuleController.index: %s %s",ex.getMessage(), ex.getClass().getName());
+			Validation.addError("error", "Error in loading module");
+			Validation.keep();
+			controllers.Users.mypage();
+		}
+		
+		if(!(user() instanceof models.PrivilegeUser))
+		{
+			flash.put("message", Messages.get("users.need.to.be.privileged"));
+		}
+        forbidden();
     }
     
    

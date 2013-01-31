@@ -15,6 +15,9 @@ GET		/selectCompany							Application.selectCompany
 GET		/loadCompany							Application.loadCompany
 GET		/activate/{token}						Application.activate
 GET		/reactivate/{email}						Application.resendActivationMail
+GET		/mail/recovery/{token} 					Application.recoveryView
+GET		/mail/recovery 							Application.recoveryView
+POST	/mail/recovery 							Application.sendRecovory
 
 #AdminController 
 # - user
@@ -61,7 +64,9 @@ GET     /super/groups                           SuperAdminController.groups
 POST    /super/modules/addAdmin                 SuperAdminController.addAdminToModule
 POST 	/super/modules/addCompany				SuperAdminController.addModuleToCompany
 POST 	/super/modules/removeCompany			SuperAdminController.removeModuleFromCompany
-
+GET		/super/company/all						SuperAdminController.showCompanies
+GET		/super/company/{id}						SuperAdminController.showCompany
+POST	/super/company/update					SuperAdminController.updateCompany
 
 #user regular
 GET     /mypage                                 Users.mypage
@@ -73,14 +78,14 @@ GET     /getmodule/{moduleId}                     ModuleController.index
 GET     /getpeek/{moduleId}                       ModuleController.peek 
 
 #MailController
-GET		/mail/recovery 							mail.MailController.recoveryView
-POST	/mail/recovery 							mail.MailController.sendRecovory
+
 #Modules
 *   /messages                                   module:messages
 *   /reminder                                   module:reminder
 *   /booking                                    module:booking
 *   /project                                    module:project
 *   /passwords                                  module:passwords
+*   /files                                  	module:files
 #----------------------
 #groups
 

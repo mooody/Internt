@@ -186,6 +186,9 @@ public class Application extends Controller {
 	
 	private static void loadComanyUserSetting(UserBase user, Company company){
 	
+		//Om det inte finns något företag. Exempelvis vid nyregistrering
+		if (company == null) return;
+		
 		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
 		Logger.info("CUS: %s", cus);
 		
@@ -219,18 +222,23 @@ public class Application extends Controller {
 			}
 		}
 		user.save();
-		
-		
 	}
     
     /**
      * Create an adminaccount
      * Skapar ett adminkonto. Detta för registreringen
+	 * Kontrollerar först så kontot inte redan finns.
      * @param user 
      */
     public static void createAccount(Admin user)
     {
+		if(UserBase.find("byEmail", user.email).first()!=null)
+		{
+			flash.put("message", Messages.get("email.exists.in.system"));
+			Application.signup();
+		}
         user.save();
+		
 		notifiers.Mails.welcome(user);
         flash.put("message", "Account.created.successful");
         params.data.clear();
@@ -279,4 +287,56 @@ public class Application extends Controller {
 		flash("message", Messages.get("you.are.activated", user.name));
 		Application.loginform();
 	}
+	
+	/**
+	 * Visar vyn för återställning av lösenord.
+	 */
+	public static void recoveryView(String token)
+	{
+		if(token == null)
+		{
+			render("Application/recoveryView.html");
+		}
+		else
+		{
+			long count = UserBase.count("select count(u.id) from UserBase u where u.token = ?", token);
+			UserBase user  = null;
+			if(count == 1)
+			{
+				user = UserBase.find("byToken", token).first();
+			}
+			
+			if(user == null)
+			{
+				validation.addError("message", Messages.get("Wrong.token.not.able.to.recovery.resend.mail"));
+				validation.keep();
+				//render("Application/recoveryView.html");
+				Application.recoveryView(null);
+			}
+			else
+			{
+				renderText("OK");
+			}
+		}
+	}
+	
+	/**
+	 * Skickar återställningsmail, kontroll av emailadressen i systemet. Om emailen inte finns ges felmeddelande.
+	 * Går tillbaka till recoveryView.html
+	 */
+	public static void sendRecovory(String email)
+	{
+		UserBase user = UserBase.find("byEmail", email).first();
+		if(user != null)
+		{
+			notifiers.Mails.lostPassword(user);
+			flash("message", Messages.get("email.sent"));
+		}
+		else
+		{
+			validation.addError("email.not.found", "validation.email.not.found");
+		}
+		render("Application/login.html");
+	}
+
 }

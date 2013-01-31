@@ -197,4 +197,24 @@ public class SuperAdminController extends PlanController {
 		}
         SuperAdminController.modules();
     }
+	
+	public static void showCompanies()
+	{
+		List<Company> companies = Company.findAll();
+		
+		render(companies);
+	}
+	
+	public static void showCompany(long id)
+	{
+		Company company = Company.findById(id);
+		render(company);
+	}
+	
+	public static void updateCompany(Company company)
+	{
+		company.save();
+		flash.put("message", Messages.get("Company.updated"));
+		showCompany(company.id);
+	}
 }

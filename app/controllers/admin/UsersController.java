@@ -10,6 +10,7 @@ import models.Admin;
 import models.Company;
 import models.Grupp;
 import models.UserBase;
+import models.PrivilegeUser;
 import models.User;
 import play.Logger;
 import play.i18n.Messages;
@@ -17,6 +18,7 @@ import play.mvc.Controller;
 import java.util.ArrayList;
 import models.Core.CompanyUserSettings;
 import models.mail.Invite;
+import play.data.validation.Validation;
 
 /**
  *
@@ -70,9 +72,19 @@ public class UsersController extends AdminController {
         }
         else
         {
-		
+			Company company = PlanController.user().company;
+			
+			if(company.getUsersCount() <= company.usersWithMultipleAccounts.size())
+			{
+				Logger.info("Users: %s of %s", company.usersWithMultipleAccounts.size(), company.getUsersCount());
+				Validation.addError("error", Messages.get("you.cant.add.user.your.company.has.accounts", company.getUsersCount()));
+				Validation.keep();
+				index();
+			}
+			//kontroll om användaren redan finns i systemet. (per emailadress)
 			long count = UserBase.count("select count(u.id) from UserBase u where u.email = ?", user.email);
 
+			//Om den finns
 			if(count>0)
 			{
 				UserBase invited = UserBase.find("byEmail", user.email).first();
@@ -82,7 +94,7 @@ public class UsersController extends AdminController {
 				index();
 			}
 			
-            Company company = PlanController.user().company;
+            
 
             user.company = company;
 			if(user.companies == null) user.companies = new ArrayList<Company>();
@@ -173,6 +185,7 @@ public class UsersController extends AdminController {
     {
         //long count = UserBase.count("select count(id) from UserBase u where u.id = ?", id);
 		UserBase user = UserBase.findById(id);
+		Company company = user().company;
 		if(user==null)
 		{
 			notFound();
@@ -188,8 +201,39 @@ public class UsersController extends AdminController {
 		
 		switch(usertype)
 		{
-			case 1: discriminator = "Admin"; break;
-			case 2: discriminator = "Super"; break;
+			case 1:
+			{
+				//kontollerar så företaget kan lägga till flera administratörer
+				long count = Admin.count("select count(a.id) from Admin a left join a.companies c where c.id = ?", company.id);
+				if(count>=company.getAdminsCount())
+				{
+					Validation.addError("error", Messages.get("you.have.to.upgrade.admin.counts",company.getAdminsCount())) ;
+					Validation.keep();
+					edit(id);
+				}
+				
+				discriminator = "Admin"; 
+				break;
+			}
+			case 2: 
+			{
+				discriminator = "Super"; 
+				break;
+			}
+			case 3:
+			{
+				//kontrollerar så företaget kan lägga till flera användare med privilegium
+				long count = PrivilegeUser.count("select count(p.id) from PrivilegeUser p left join p.companies c where c.id = ?", company.id);
+				if(count-company.getAdminsCount()>=company.getPrivilegeUsersCount())
+				{
+					Validation.addError("error", Messages.get("you.have.to.upgrade.privilegue.counts",company.getPrivilegeUsersCount())) ;
+					Validation.keep();
+					edit(id);
+				}
+				
+				discriminator = "PrivilegeUser"; 
+				break;
+			}
 			default: discriminator = "User"; break;
 		}
 
@@ -197,7 +241,7 @@ public class UsersController extends AdminController {
 	    .setParameter("type",discriminator).setParameter("id",id)
 	    .executeUpdate();
 		
-		CompanyUserSettings cus = CompanyUserSettings.find("select c from CompanyUserSettings c where c.user.id = :uid and c.company.id = :company").bind("uid", id).bind("company", user().company.id).first();
+		CompanyUserSettings cus = CompanyUserSettings.find("select c from CompanyUserSettings c where c.user.id = :uid and c.company.id = :company").bind("uid", id).bind("company", company.id).first();
 		
 		cus.setUserType(discriminator);
 

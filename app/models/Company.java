@@ -37,8 +37,22 @@ public class Company extends Model{
 	public String cellphone;
 	public String website;
 	
+	@Column(name="users_count", nullable=false)
+	private long usersCount=5;
+	@Column(name="admin_count", nullable=false)
+	private long adminsCount=1;
+	@Column(name="privuser_count", nullable=false)
+	private long privilegeUsersCount=1;
 	
- 
+	
+	public void setUsersCount(long _value){this.usersCount = _value;}
+	public void setAdminsCount(long _value){this.adminsCount = _value;}
+	public void setPrivilegeUsersCount(long _value){this.privilegeUsersCount = _value;}
+	
+	public long getUsersCount(){return this.usersCount;}
+	public long getAdminsCount(){return this.adminsCount;}
+	public long getPrivilegeUsersCount(){return this.privilegeUsersCount;}
+
     /**
      * Användare som är kopplade till företaget
      */
@@ -93,6 +107,12 @@ public class Company extends Model{
 	public String toString()
 	{
 		return "Company:"+this.name;
+	}
+
+	public int countUsers()
+	{
+		//long count = UserBase.count("select count(u.id) from UserBase u where u.company.id = ?", this.id );
+		return this.usersWithMultipleAccounts.size();
 	}
 
 }

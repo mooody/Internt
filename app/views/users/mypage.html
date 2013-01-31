@@ -2,21 +2,51 @@
 #{set title:'MyPage' /}
 #{script 'jquery-1.6.4.min.js' /}
 
+<style>
+div.module-holder{
+	padding:18px;
+	width:45%;
+	margin:2px 0 2px 0;
+	cursor:pointer;
+	border:1px solid #ccc;
+	display:inline;
+	display:inline-block;
+}
 
+div.module-hover{
+	border:1px solid #eee;
+	background-color:#ccc;
+}
+</style>
+<script type="text/javascript">
+    $(document).ready(function(){
+		jQuery(".module-holder").each(
+			function(){
+			
+				//när man klickar på modulen
+				jQuery(this).click(function(){
+					var href = jQuery(this).attr("goal");
+					location.href=href;
+				});
+				
+				jQuery(this).mouseover(function(){
+					jQuery(this).addClass("module-hover");
+				});
+				
+				jQuery(this).mouseout(function(){
+					jQuery(this).removeClass("module-hover");
+				});
+			})
+
+	});
+	</script>
 <h1>MyPage</h1>
-
-<h2>Grupper</h2>
-
-#{list items:sessionuser.getAllGroups(), as:'group'}
-	${group.name}<br />
-#{/list}
-
 <h2>Modules</h2>
-<ul>
 
 #{list items:sessionuser.getUserAndGroupModules(), as:'module'}
-<li><a href="@{ModuleController.index(module.id)}" />&{module.name}</a></li>
-
+<div class="module-holder" goal="@{ModuleController.index(module.id)}">
+<a href="@{ModuleController.index(module.id)}" id="a-${module.name}" /><h2>&{module.name}</h2></a>
+<br />
 <div id="${module.name}"></div>
 
 <script type="text/javascript">
@@ -25,6 +55,13 @@
         $("#${module.name}").load("@{ModuleController.peek(module.id)}");
     });
 </script>
+</div>
 #{/list}
-</ul>
+
+<h2>Grupper</h2>
+
+#{list items:sessionuser.getAllGroups(), as:'group'}
+	${group.name}<br />
+#{/list}
+
 

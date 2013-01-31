@@ -17,6 +17,10 @@ jQuery(document).ready(function(){
 table.listtable{
 	margin:0 0 0 100px;
 }
+
+td{
+	padding: 0 20px;
+}
 </style>
 #{form @SuperAdminController.modules() }
 <h2>&{'superAdmin.GiveCompanyModuleAccess'}</h2>
@@ -35,10 +39,14 @@ table.listtable{
 		*{<!-- Listar företagets ingående moduler-->}*
 		<h2>&{'Company.got.modules', company.name}</h2>
 		<table class="listtable">
-			<tr><th>&{'module.name'}</th><th></th></tr>
+			<tr>
+				<th>&{'module.name'}</th>
+				<th>&{'MinUserType'}</th>
+				<th></th></tr>
 			#{list items:company.modules, as:'module'}
 				<tr>
-				<td>${module.name}</td>
+				<td>&{module.name}</td>
+				<td>&{module.getUserAccessType()}</td>
 				<td>
 					#{form @SuperAdminController.removeModuleFromCompany(), class:'delete', module:module.name}				
 					<input type="hidden" name="companyid" value="${company.id}" />
@@ -54,7 +62,11 @@ table.listtable{
 		#{form @SuperAdminController.addModuleToCompany() }
 		<input type="hidden" value="${company.id}" name="cId" />
 		<table class="listtable">
-			<tr><th>&{'module.name'}</th><th></th></tr>
+			<tr>
+				<th>&{'module.name'}</th>
+				<th></th>
+				<th>&{'MinUserType'}</th>
+			</tr>
 			#{list items:modules, as:'module'}  
 				#{if !company.modules.contains(module)}
 				<tr>
@@ -62,8 +74,9 @@ table.listtable{
 						<input type="checkbox" #{if company.modules!=null}${company.modules.contains(module)?'checked="checked" '.raw():''}#{/if}id="m${module.id}" name="modid[${module.id}]" value="${module.id}" />
 					</td>
 					<td>
-						<label for="m${module.id}">${module.name}</id>
+						<label for="m${module.id}">&{module.name}</id>
 					</td>
+					<td>&{module.getUserAccessType()}</td>
 					</tr>
 				</li>
 				#{/if}

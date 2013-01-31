@@ -1,0 +1,11 @@
+#{extends 'main.html' /}
+#{stylesheet 'login.html.css' /}
+<fieldset class="loginform">
+    <legend>&{'application.RecoveryPassword'}</legend>
+	<p>&{'type.your.email.to.get.recoverymail'}</p>
+	
+	#{form @Application.sendRecovory()}
+		<input type="text" name="email" value="" />
+		<input type="submit" value="&{'Send'}" />
+	#{/form}
+</fieldset>

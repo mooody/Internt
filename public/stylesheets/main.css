@@ -153,3 +153,12 @@ ul#headmenu a {
 }
 
 ul#headmenu a:active {color:#FF704D;}
+
+a:link, a:visited, a:active  {
+	color:#111;
+	text-decoration:none;
+}
+a:hover {
+	color:#999;
+	text-decoration:underline;
+}

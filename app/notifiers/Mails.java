@@ -21,12 +21,29 @@ public class Mails extends Mailer {
       send(user);
    }
  
-   public static void lostPassword(UserBase user) {
-      String newpassword = "test";
-      setFrom("Robot <robot@thecompany.com>");
-      setSubject("Your password has been reset");
-      addRecipient(user.email);
-      send(user, newpassword);
+	/**
+	 * Skickar ut ett återställningsmail. 
+	 */
+	public static void lostPassword(UserBase user) 
+	{
+		String newpassword = "test";
+		setFrom("Robot <robot@thecompany.com>");
+		setSubject("Your password has been reset");
+		addRecipient(user.email);
+
+		try
+		{
+			String token = utils.Cryptography.getPasswordToken();
+			user.token = token;
+		} 
+		catch(Exception e)
+		{
+			play.mvc.Scope.Flash.current().put("message", "some.error.has.occord");
+			controllers.Application.recoveryView(null);
+		}
+
+		user.save();
+		send(user);
    }
    
    public static void sendInvite(Invite invite)

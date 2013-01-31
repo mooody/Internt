@@ -37,11 +37,13 @@ public class install extends Job{
     private String name = "Messages"; //valfritt -> det som visas för användaren
     private String controllerName = "MessagesController";
     private String moduleName = "messages"; //packagename
+	//Behövs även default UserAccess
     
     public void doJob()
     {
         //Statisk metod i core.Module som installerar
         Module.install(this.name, this.controllerName, this.moduleName);
+		// Module.install(this.name, this.controllerName, this.moduleName);
     }
 }
 

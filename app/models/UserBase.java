@@ -196,7 +196,8 @@ public class UserBase extends Model{
             Logger.warn("Exeption in UserBase.getAllGroups (user == null ??) %s", ex.getMessage());
             //throw ex;
         }
-        return null;
+		//returnera en tom lista
+        return new ArrayList<Grupp>();
     }
 	
 	public static String getCryptedPassword(String _pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException

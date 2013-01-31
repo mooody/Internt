@@ -83,6 +83,12 @@
 		</tr>
 		<tr>
 			<td>	
+				<input type="radio" id="admin" name="usertype" value="3" #{if user.getClass() == models.PrivilegeUser.class}checked="checked"#{/if}/>
+				<label for="admin">&{'PrivilegeUser'}</label>
+			</td>
+		</tr>
+		<tr>
+			<td>	
 				<input type="radio" id="admin" name="usertype" value="1" #{if user.getClass() == models.Admin.class}checked="checked"#{/if}/>
 				<label for="admin">&{'Admin'}</label>
 			</td>

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
  * @author weetech
  */
 @Entity
-@DiscriminatorValue("Admin")
-public class Admin extends PrivilegeUser{
+@DiscriminatorValue("PrivilegeUser")
+public class PrivilegeUser extends User{
+    
 }

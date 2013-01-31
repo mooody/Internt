@@ -20,3 +20,6 @@ namedfiles
 #myignores
 planningmodules
 uploadCatalog
+*.py
+*.pyc
+
