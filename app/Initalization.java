@@ -72,10 +72,10 @@ public class Initalization extends Job {
 		//ver();
 		//setCompanyUserSettings();
     }
-	
+	/*
 	public void ver()
 	{
-		/*
+		
 		List<Verification> verifications = Verification.find("select v from Verification v where v.company.id = 1 order by v.date asc").fetch();
 		
 		int index = 0;
@@ -105,8 +105,8 @@ public class Initalization extends Job {
 			verification.save();
 		}
 		Logger.info("%s", verifications.size());
-		*/
-	}
+		
+	}*/
 	/*
 	public void setCompanyUserSettings()
 	{
