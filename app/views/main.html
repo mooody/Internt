@@ -35,7 +35,7 @@
 		<div id="menu">
 			<ul id="headmenu">   
 			#{if sessionuser}
-				#{include 'users/menu.html' /}
+				#{include 'Users/menu.html' /}
 			#{/if}
 			#{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
 				#{include 'admin/menu.html' /}
