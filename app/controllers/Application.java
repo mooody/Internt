@@ -40,7 +40,7 @@ public class Application extends Controller {
     {
         renderArgs.put("loginform",true);
         Logger.info("Loginform");
-        render("application/login.html");
+        render("Application/login.html");
     }
     
 	/**
