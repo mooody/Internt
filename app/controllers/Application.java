@@ -24,7 +24,7 @@ public class Application extends Controller {
         //Om sessionen lever så redirect till mypage
         if(session.get("userid")!=null)
         {
-            redirect("users.mypage");
+            redirect("Users.mypage");
         }
         
         //kolla om det finns något meddelande
