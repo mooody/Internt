@@ -30,9 +30,9 @@ public class Grupp extends Model{
     @OneToMany
     public List<Grupp> childs;
     
-    @Basic(fetch=FetchType.LAZY)
-    @ManyToMany(targetEntity=AccessRights.class,mappedBy="groups")
-    public List<AccessRights> rights;
+//    @Basic(fetch=FetchType.LAZY)
+//    @ManyToMany(targetEntity=AccessRights.class,mappedBy="groups")
+//    public List<AccessRights> rights;
 	
 	@Basic(fetch=FetchType.LAZY)
     @OneToMany

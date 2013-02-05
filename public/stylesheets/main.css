@@ -12,20 +12,24 @@ body{
     width:100%;
     margin:0px;
     padding:0px;
+	background-image: url('/public/images/background.png');
+	background-position: center top;
+	background-repeat: no-repeat;
     
 }
-
+a img{
+	border:none;
+}
 div.wrapper{
     margin:auto;
     padding-top: 10px;
-    border: 1px solid #ccc;
     width:1000px;   
 	/*height:100%;*/
 }
 
 div.logo{
     width:100%;
-    border:red solid 1px;
+    
     height:75px;
 }
 
@@ -35,17 +39,17 @@ div.userinfo{
     top:10px;
     padding:20px;
     margin:20px;
-    border:solid 1px #ddd;
+    
     background-color: #ccc;
 }
 div.content{
-    border: 1px solid #ddd;
+   
     clear:both;
 	margin: 10px 20px;
 	height: 100%;
 }
 div.footer{
-    border:1px solid #ddd;
+    
 }
 
 a.button {
@@ -99,7 +103,6 @@ img{
 }
 a.button, input[type=submit]{
 	padding:2px 5px;
-	border:#111 1ps solid;
 	background-color: #0c0c0c;
 	text-decoration:none;
 	color:#e0e0e0;
@@ -115,7 +118,6 @@ a.overbutton, input[type=submit].overbutton{
 /* menu */
 div#content{
 	width:70%;
-	border:solid 1px #ccc;
 	padding: 1em;
 }
 ul#headmenu{

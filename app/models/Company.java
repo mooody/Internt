@@ -82,8 +82,8 @@ public class Company extends Model{
     /**
      * 
      */
-    @OneToOne
-    public Contact contact;
+//    @OneToOne
+//    public Contact contact;
     
     public List<Grupp> getCompanyGroups()
 	{
