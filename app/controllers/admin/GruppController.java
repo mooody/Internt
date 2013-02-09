@@ -22,7 +22,7 @@ import models.Core.Module;
  */
 public class GruppController extends AdminController{
   
-    public static void index() throws Exception
+    public static void index()
     {
         List<Grupp> groups =  user().company.getCompanyGroups();
         Logger.info("AdminController.groups size= %s", groups.size());
