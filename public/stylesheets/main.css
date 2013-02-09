@@ -89,6 +89,30 @@ body {
 	font-family: StMarieThin !important;
 }
 
+div.divmenu-holder{
+	padding:18px;
+	width:45%;
+	height:70px;
+	margin:2px 2px 4px 0;
+	cursor:pointer;
+	border:1px solid #ccc;
+	display:inline;
+	display:inline-block;
+}
+
+div.divmenu-holder h2{
+	margin:auto;
+}
+	
+div.divmenu-hover{
+	border:1px solid #eee;
+	background-image: url('/public/images/menudiv.png');
+	border: 1px solid #ccc;
+}
+div.divmenu-holder a:hover{
+	text-decoration:none;
+}
+
 /* errors */
 span.error{
 	color:#ff0000;
@@ -99,8 +123,6 @@ input[type=text],
 input[type=password], 
 input[type=file], 
 button, 
-.button, 
-input[type=submit],
 select{
 	border: 1px solid #ccc;
 	-moz-border-radius: 10px;
@@ -125,18 +147,41 @@ input.button{
 img{
 	border:none;
 }
+
+.shadow{
+border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 2px 2px 3px #666;
+	-webkit-box-shadow: 2px 2px 3px #666;
+	box-shadow: 2px 2px 3px #666;
+}
 a.button, input[type=submit]{
 	padding:2px 5px;
 	background-color: #0c0c0c;
 	text-decoration:none;
 	color:#e0e0e0;
 	margin: 2px;
+	/**/
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 2px 2px 3px #666;
+	-webkit-box-shadow: 2px 2px 3px #666;
+	box-shadow: 2px 2px 3px #666;
+	font-size: 12px;
+	padding: 4px 30px;
+	outline: 0;
+	-webkit-appearance: none;
+	alignment-adjust: central;
 }
 
 a.overbutton, input[type=submit].overbutton{
 	border:#111 1ps solid;
 	background-color: #0e0e0e;
-	color:#0c0c0c;
+	color:#FFF;
 }
 
 /* menu */
@@ -150,17 +195,18 @@ ul#headmenu{
 	-webkit-padding-start:0em;
 	min-width:700px;
 }
+
 ul#headmenu li{
 	list-style: none;
 	float: left;
 	padding:5px 20px;
 	background-color: #eee;
-	-moz-border-top-left-radius: solid 5px;
+	/*-moz-border-top-left-radius: solid 5px;
 	-moz-border-top-right-radius: 5px;
 	-webkit-border-top-left-radius: 5px;
 	-webkit-border-top-right-radius: 5px;
 	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
+	border-top-right-radius: 5px;*/
 	border:solid 1px #999;
 }
 
@@ -170,7 +216,6 @@ ul#headmenu li.active{
 
 ul#headmenu li.mouseover{
 	background-color: #fff;
-
 }
 
 ul#headmenu a {

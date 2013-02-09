@@ -85,6 +85,10 @@ public class CompanyController extends AdminController {
 		user().companies.add(company);
 		company.save();
 		CompanyUserSettings cus = new CompanyUserSettings(user(), company);
+		if(company.users.size() == 1)
+		{
+			cus.setUserType("Admin");
+		}
 		flash.put("message",Messages.get("company %s created",company.name));
 		
 		Admin admin = Admin.findById(user().id);

@@ -20,7 +20,7 @@ div.module-hover{
 </style>
 <script type="text/javascript">
     $(document).ready(function(){
-		jQuery(".module-holder").each(
+		jQuery(".divmenu-holder").each(
 			function(){
 			
 				//när man klickar på modulen
@@ -30,11 +30,11 @@ div.module-hover{
 				});
 				
 				jQuery(this).mouseover(function(){
-					jQuery(this).addClass("module-hover");
+					jQuery(this).addClass("divmenu-hover");
 				});
 				
 				jQuery(this).mouseout(function(){
-					jQuery(this).removeClass("module-hover");
+					jQuery(this).removeClass("divmenu-hover");
 				});
 			})
 
@@ -44,7 +44,7 @@ div.module-hover{
 <h2>Modules</h2>
 
 #{list items:sessionuser.getUserAndGroupModules(), as:'module'}
-<div class="module-holder" goal="@{ModuleController.index(module.id)}">
+<div class="divmenu-holder" goal="@{ModuleController.index(module.id)}">
 <a href="@{ModuleController.index(module.id)}" id="a-${module.name}" /><h2>&{module.name}</h2></a>
 <br />
 <div id="${module.name}"></div>
