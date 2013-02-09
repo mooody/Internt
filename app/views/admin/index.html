@@ -1,0 +1,8 @@
+﻿#{extends 'main.html' /}
+#{set title:'Admin' /}
+<ul>
+<li><a  href="@{admin.Userscontroller.index()}">Hantera användare</a></li>
+<li><a  href="@{admin.GruppController.index()}">Hantera grupper</a></li>
+<li><a  href="@{admin.CompanyController.index()}">Hantera Företag</a></li>
+<li><a  href="@{admin.AdminController.modules()}">Hantera Moduler</a></li>
+</ul>

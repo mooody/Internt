@@ -106,6 +106,8 @@ Accessable.modules.to = Tillgängliga grupper för %s
 is.your.headgroup.cant.erase = %s är din huvudgrupp och du kan inte radera denna
 group.erased = Gruppen %s är raderad
 group.is.created = Gruppen %s är skapad
+core.GroupName = Gruppnamn
+core.GroupParentName = Huvudgrupp
 
 #Users - modules
 users.need.to.be.privileged = Det krävs ett konto med privileguim för access till denna modul

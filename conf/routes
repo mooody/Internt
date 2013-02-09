@@ -20,6 +20,7 @@ GET		/mail/recovery 							Application.recoveryView
 POST	/mail/recovery 							Application.sendRecovory
 
 #AdminController 
+GET     /admin                                    admin.AdminController.index
 # - user
 GET     /users                                    admin.UsersController.index
 GET     /users/create                             admin.UsersController.create
@@ -29,7 +30,7 @@ POST    /users/type                               admin.UsersController.setUserT
 GET     /users/edit/{id}                          admin.UsersController.edit
 POST    /users/addgrouptouser                     admin.UsersController.addGroupToUser
 POST    /users/removefromgroup                    admin.UsersController.removeUserFromGroup
-GET     /users/sendinvite/{id}                    	  admin.UsersController.sendInvitationMail
+GET     /users/sendinvite/{id}                    admin.UsersController.sendInvitationMail
 
 
 #AdminController

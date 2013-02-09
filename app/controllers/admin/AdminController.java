@@ -64,6 +64,10 @@ public class AdminController extends PlanController {
        }
     }
     
+	public static void index()
+	{
+		render("admin/index.html");
+	}
     
     /**
      * Functions witch handles the adminfunctions of modules

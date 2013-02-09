@@ -44,7 +44,7 @@
 				#{include 'bigadmin/menu.html' /}
 			#{/if}
 			#{if sessionuser}
-				<li><a href="@{Application.logout()}">&{'user.logout'}</a></li>
+				<li  style="float:right; !important"><a href="@{Application.logout()}">&{'user.logout'}</a></li>
 			#{/if}
 			#{elseif !loginform}
 			<li><a href="@{Application.loginform()}">&{'user.login'}</a></li>
