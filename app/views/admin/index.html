@@ -1,4 +1,7 @@
 ﻿#{extends 'main.html' /}
+<script>
+$("li#admin").addClass("active");
+</script>
 #{set title:'Admin' /}
 <ul>
 <li><a  href="@{admin.Userscontroller.index()}">Hantera användare</a></li>

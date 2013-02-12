@@ -1,22 +1,51 @@
 #{mainpage title:'My page' /}
-
+<script>
+$("li#myaccount").addClass("active");
+</script>
+<script>
+	jQuery(document).ready(function(){
+		jQuery("#change-pw-button").click(function(){
+			jQuery("#change-pw").css("display","block");
+			jQuery("#change-pw-button").css("display","none");
+		});
+		#{ifError 'password.error'}
+			jQuery("input#pw").addClass("error");
+			jQuery("input#pw2").addClass("error");
+			jQuery("#change-pw").css("display","block");
+			jQuery("#change-pw-button").css("display","none");
+		#{/ifError}
+		#{ifError 'user.name'}
+			jQuery("input#name").addClass("error");
+		#{/ifError}
+		#{ifError 'user.email'}
+			jQuery("input#email").addClass("error");
+		#{/ifError}
+	});
+</script>
 #{form @Users.myaccount(), method:'post' }
 <input type="hidden" name="user.id" value="${user.id}" />
+<div style="width:400px; position:absolute; text-align:right;"><input type="submit" value="Spara" /></div>
 <table>
     <tr>
-        <td>Namn:</td><td><input type="text" name="user.name" value="${user.name}" /></td>
+        <td>&{'core.Name'}:</td><td><input id="name" style="width:200px;" type="text" name="user.name" value="${user.name}" /></td>
     </tr>
     <tr>
-        <td>Mail:</td><td><input type="text" name="user.email" value="${user.email}" /></td>
-    </tr>
-    <tr>
-        <td>Lösen:</td><td><input type="password" name="password1" /></td>
-    </tr>
-     <tr>
-        <td>Lösen:</td><td><input type="password" name="password2" /></td>
-    </tr>
-    <tr>
-        <td colspan="2"><input type="submit" value="Spara" /></td>
-    </tr>
+        <td>&{'core.Email'}:</td><td><input id="email" style="width:200px;" type="text" name="user.email" value="${user.email}" /></td>
+    </tr>	
+	<tr>
+		<td colspan="2"><span id="change-pw-button" class="button">Byt lösen</span></td>
+	</tr>
 </table>
+<div id="change-pw" style="display:none">
+<table>
+<tr>
+		<td>&{'core.pass'}:</td><td><input id="pw" style="width:200px;" type="password" name="password1" /></td>
+	</tr>
+	 <tr>
+		<td>&{'core.pass2'}:</td><td><input id="pw2" style="width:200px;" type="password" name="password2" /></td>
+	</tr>
+</table>
+</div>
+
+
 #{/form}

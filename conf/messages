@@ -38,6 +38,12 @@ validation.email.not.found = Epostadressen hittades inte! Har du skrivit rätt?
 Wrong.token.not.able.to.recovery.resend.mail  = Felaktigt token, skicka återställningsmail igen!
 email.sent = Ett email är skickat. Kontollera din mail (även skräpposten)
 Account.created.successful = Kontot är skapat. Ett aktiveringsmail är skickat till din epost. (Kontrollera även skräpposten)
+user.name.is.empty = Användarennamn får inte vara tomt
+user.email.is.empty = Användarens emailadress måste anges
+core.Name = Namn	
+core.Email = Email
+core.pass = Ange nytt lösenord
+core.pass2 = Ange nytt lösenord igen
 
 #Users
 add.user.to.group = Lägg till användaren till gruppen

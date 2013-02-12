@@ -1,6 +1,6 @@
 ul#mainmenu{
 
-	margin:0px;
+	margin:0px 0px;
 	-webkit-padding-start:0em;
 	min-width:700px;
 }
@@ -8,18 +8,32 @@ ul#mainmenu li{
 	list-style: none;
 	float: left;
 	padding:5px 20px;
-	background-color: #ccc;
-	-moz-border-top-left-radius: solid 5px;
+	background-color: #eee;
+	/*-moz-border-top-left-radius: solid 5px;
 	-moz-border-top-right-radius: 5px;
 	-webkit-border-top-left-radius: 5px;
 	-webkit-border-top-right-radius: 5px;
 	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	border:solid 1px #999;
+	border-top-right-radius: 5px;*/
+	border-top:solid 1px #999;
+	border-bottom:solid 1px #999;
+}
+
+ul#mainmenu li.m-over {
+	background-color: #ccc;
+	color:#FF704D;
 }
 
 ul#mainmenu li.active{
-	background-color: #eee;
+	/*background-color: #ccc;*/
+	background-image:url('/public/images/module-menu-active.png');
+	background-repeat: repeat-y;
+	-moz-border-top-left-radius: solid 5px;
+	/*-moz-border-top-right-radius: 5px;*/
+	-webkit-border-top-left-radius: 5px;
+	/*-webkit-border-top-right-radius: 5px;*/
+	border-top-left-radius: 5px;
+	/*border-top-right-radius: 5px;*/
 }
 
 ul#mainmenu li.mouseover{
@@ -28,9 +42,11 @@ ul#mainmenu li.mouseover{
 }
 
 ul#mainmenu a {
-
 	color:black;
 	text-decoration: none;
 }
 
-ul#mainmenu a:active {color:#FF704D;}
+ul#mainmenu a:active {
+	
+	color:#FF704D;
+}

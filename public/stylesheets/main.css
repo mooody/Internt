@@ -43,10 +43,20 @@ div.userinfo{
     background-color: #ccc;
 }
 div.content{
-   
     clear:both;
 	margin: 10px 20px;
 	height: 100%;
+}
+
+div.modulecontent{
+	-moz-border-radius: solid 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	border-radius: 5px;
+	border:1px solid #1f1f1f;
+	background-color:#fcfcfc;padding:20px;
 }
 div.footer{
     
@@ -118,6 +128,10 @@ span.error{
 	color:#ff0000;
 	padding: 0: 5px;
 }
+input.error{
+	border: #f00 1px solid !important;
+}
+
 
 input[type=text], 
 input[type=password], 
@@ -172,7 +186,7 @@ a.button, input[type=submit]{
 	-webkit-box-shadow: 2px 2px 3px #666;
 	box-shadow: 2px 2px 3px #666;
 	font-size: 12px;
-	padding: 4px 30px;
+	padding: 4px 7px;
 	outline: 0;
 	-webkit-appearance: none;
 	alignment-adjust: central;
@@ -189,41 +203,6 @@ div#content{
 	width:70%;
 	padding: 1em;
 }
-ul#headmenu{
-
-	margin:0px;
-	-webkit-padding-start:0em;
-	min-width:700px;
-}
-
-ul#headmenu li{
-	list-style: none;
-	float: left;
-	padding:5px 20px;
-	background-color: #eee;
-	/*-moz-border-top-left-radius: solid 5px;
-	-moz-border-top-right-radius: 5px;
-	-webkit-border-top-left-radius: 5px;
-	-webkit-border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;*/
-	border:solid 1px #999;
-}
-
-ul#headmenu li.active{
-	background-color: #eee;
-}
-
-ul#headmenu li.mouseover{
-	background-color: #fff;
-}
-
-ul#headmenu a {
-	color:black;
-	text-decoration: none;
-}
-
-ul#headmenu a:active {color:#FF704D;}
 
 a:link, a:visited, a:active  {
 	color:#111;

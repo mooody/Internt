@@ -49,22 +49,37 @@ public class Users extends PlanController{
         {
             if(!pw2.equals(pw1))
             {
-                flash.put("message", Messages.get("user.password.dont.match"));
-                myaccount();
+                validation.addError("password.error",Messages.get("user.password.dont.match"));
             }
              
 			try {
 				user.setPassword(pw1);
 			} catch (Exception ex) {
-				flash.put("message", Messages.get("could.not.set.new.password.contact.site.helpdesk"));
-            myaccount();
+				validation.addError("error",Messages.get("could.not.set.new.password.contact.site.helpdesk"));
+				validation.keep();
+				myaccount();
 			}	
         }
         else if(pw1.isEmpty()^pw2.isEmpty())
         {
-            flash.put("message", Messages.get("user.password.dont.match"));
-            myaccount();
+			validation.addError("password.error",Messages.get("user.password.dont.match"));
         }
+		
+		if(user.name.isEmpty())
+		{
+			validation.addError("user.name",Messages.get("user.name.is.empty"));
+		}
+		
+		if(user.email.isEmpty())
+		{
+			validation.addError("user.email",Messages.get("user.email.is.empty"));
+		}
+		
+		if(validation.hasErrors())
+		{
+			validation.keep();
+            myaccount();
+		}
         
 
         user.save();

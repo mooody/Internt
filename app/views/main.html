@@ -22,6 +22,22 @@
 		//stäng av all autocomplete i HTML5 kompitibla webbläsare
         jQuery(document).ready(function(){
 			jQuery("input").attr("autocomplete","off");
+			
+			//Huvudmenyn
+			jQuery("ul#headmenu li").mouseover(function(){
+				jQuery(this).addClass("m-over");
+			});
+			jQuery("ul#headmenu li").mouseout(function(){
+				jQuery(this).removeClass("m-over");
+			});
+			
+			//modulemenyn
+			jQuery("ul#mainmenu li").mouseover(function(){
+				jQuery(this).addClass("m-over");
+			});
+			jQuery("ul#mainmenu li").mouseout(function(){
+				jQuery(this).removeClass("m-over");
+			});
 		});
     </script>
     <body>
@@ -44,7 +60,7 @@
 				#{include 'bigadmin/menu.html' /}
 			#{/if}
 			#{if sessionuser}
-				<li  style="float:right; !important"><a href="@{Application.logout()}">&{'user.logout'}</a></li>
+				<li class="shadow" style="float:right; !important"><a href="@{Application.logout()}">&{'user.logout'}</a></li>
 			#{/if}
 			#{elseif !loginform}
 			<li><a href="@{Application.loginform()}">&{'user.login'}</a></li>
@@ -102,7 +118,7 @@
 				#{/errors}
 			</div>
 		#{/if}
-		<div class="content">
+		<div class="content" #{if loginform}style="border:none;background-color:transparent;"#{/if}>
 			#{doLayout /}
 		</div>
         
