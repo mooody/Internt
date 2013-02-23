@@ -44,8 +44,7 @@ div.module-hover{
 	</script>
 <h1>MyPage</h1>
 <h2>Modules</h2>
-
-#{list items:sessionuser.getUserAndGroupModules(), as:'module'}
+#{list items:modules, as:'module'}
 <div class="divmenu-holder" goal="@{ModuleController.index(module.id)}">
 <a href="@{ModuleController.index(module.id)}" id="a-${module.name}" /><h2>&{module.name}</h2></a>
 <br />

@@ -17,6 +17,8 @@ import play.db.jpa.GenericModel;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.*;
+import java.util.ArrayList;
+import models.Core.Module;
 
 /**
  *
@@ -24,9 +26,24 @@ import play.*;
  */
 public class Users extends PlanController{
     
+	/**
+	* Hämtar in alla moduler som användaren har. Om företaget har blivit av med rättigheterna för modulen 
+	* så kommer den tas bort från listan.
+	*/
     public static void mypage()
     {
-        render();
+		UserBase user = user();
+		Company company = user.company;
+		List<Module> useraccess = user.getUserAndGroupModules();
+		List<Module> modules = new ArrayList<Module>();
+		for(Module module: useraccess)
+		{
+			if(company.modules.contains(module))
+			{
+				modules.add(module);
+			}
+		}
+        render(modules);
     }
     
     public static void myaccount()

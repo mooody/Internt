@@ -258,19 +258,6 @@ public class UserBase extends Model{
         return this instanceof User;
     }
     
-    /**
-     * Språkfiler laddas in för varje gång som användaren anropas!
-     * Den läser ut denna användarens lang-variabel och hämtar in klasssen till denna
-     * 
-     * Ska detta läggas i sessionvariabel istället?
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws NoSuchFieldException 
-     */
     @PostLoad
     public void alert() 
     {

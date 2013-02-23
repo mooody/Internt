@@ -24,6 +24,9 @@ ul#mainmenu li.m-over {
 	color:#FF704D;
 }
 
+ul#mainmenu li.active a{
+font-weight:bold;
+}
 ul#mainmenu li.active{
 	/*background-color: #ccc;*/
 	background-image:url('/public/images/module-menu-active.png');

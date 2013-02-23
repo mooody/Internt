@@ -55,6 +55,10 @@ public class ModuleController extends PlanController{
 		//först kontrollerar vi vilken användaraccess det finns på modulen
 		if(module==null) notFound("Modulen finns inte");
 		try{
+			if(!user().company.modules.contains(module))
+			{
+				forbidden("Company has not rights to see content");
+			}
 			//Kontrollerar att det är rätt användartyp
 			if((Class.forName("models."+module.getUserAccessType())).isInstance(user()))
 			{
@@ -79,7 +83,7 @@ public class ModuleController extends PlanController{
 			Validation.keep();
 			controllers.Users.mypage();
 		}
-		
+		//TODO Kolla detta... varför privilegad användare
 		if(!(user() instanceof models.PrivilegeUser))
 		{
 			flash.put("message", Messages.get("users.need.to.be.privileged"));
