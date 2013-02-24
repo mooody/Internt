@@ -26,7 +26,19 @@ public class PlanController extends Controller{
     
     protected static UserBase user()
 	{
-		return Cache.get(session.getId()+"user", UserBase.class);
+		UserBase user = Cache.get(session.getId()+"user", UserBase.class);
+		
+		if(user == null)
+		{
+			try{
+				user = UserBase.find("byId", new Long(session.getId()+"user")).first();
+			} catch(Exception ex)
+			{
+				flash.put("message", "you.need.to.login.again");
+				Application.loginform();
+			}
+		}
+		return user;
 	}
    
 	protected static long getUserId(){
