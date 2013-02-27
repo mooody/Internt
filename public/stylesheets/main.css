@@ -70,14 +70,7 @@ a.button {
     border-left: #ddd solid 1px;
 }
 
-input.deletebutton {
-    background-image: url('/public/images/trash20px.jpeg');
-    background-color: transparent;
-    cursor: pointer;
-    border:none;
-    height:20px;
-    width:20px;
-}
+
 
 form.delete{
     display:inline;
@@ -154,6 +147,8 @@ input[type=text]:focus, input[type=password]:focus, input[type=file]:focus{
 	border-color: #339933;
 }
 
+
+
 /* buttons */
 input.button{
 
@@ -196,6 +191,20 @@ a.overbutton, input[type=submit].overbutton{
 	border:#111 1ps solid;
 	background-color: #0e0e0e;
 	color:#FFF;
+}
+
+input[type=submit].deletebutton {
+    background-image: url('/public/images/trash20px.jpeg');
+    background-color: transparent;
+    cursor: pointer;
+    border:none;
+    height:20px;
+    width:20px;
+	min-width:20px;
+	-moz-border: none;
+	-webkit-border: none;
+	-webkit-box-shadow: none;
+	padding:0;
 }
 
 /* menu */

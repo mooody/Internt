@@ -71,7 +71,43 @@ public class Initalization extends Job {
         }
 		//ver();
 		//setCompanyUserSettings();
+		//Company company = Company.findById(1L);
+		//setYear(company);
     }
+	
+	public void setYear(Company company)
+	{
+		List<BookingYear> years = BookingYear.find("byCompany", company).fetch();
+		
+		play.Logger.info("Found %s years in Company %s", years.size(), company.name);
+		long count = 0;
+		for(BookingYear year: years)
+		{
+			play.Logger.info("Y : %s --- %s", year.startdate, year.enddate);
+			List<Verification> verifications = Verification.find("select v from Verification v where v.company = :company and v.kontering = (0) and v.date between :min and :max order by v.date asc")
+				.bind("company", company)
+				.bind("min",year.startdate)
+				.bind("max",year.enddate)
+				.fetch();
+
+			play.Logger.info("Found %s verifications", verifications.size());
+			for(Verification v : verifications)
+			{
+				if(v.year == null)
+				{
+					count++;
+					v.verificationNr = count;
+					v.year = year;
+					v.save();
+					
+				}
+			}
+
+			play.Logger.info("Edited %s verifications", count);
+			count = 0;
+		}
+	}
+	
 	/*
 	public void ver()
 	{
@@ -106,7 +142,8 @@ public class Initalization extends Job {
 		}
 		Logger.info("%s", verifications.size());
 		
-	}*/
+	}
+	*/
 	/*
 	public void setCompanyUserSettings()
 	{
