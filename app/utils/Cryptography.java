@@ -70,11 +70,15 @@ public class Cryptography {
 		return key;  
 	}  
 	
+	public static String getPasswordToken() throws UnsupportedEncodingException, NoSuchAlgorithmException
+	{
+		return getUniqueToken();
+	}
 	/**
 	* Genererar en unik nyckel baserad på tiden samt ett slumpmässigt tal
 	*
 	*/
-	public static String getPasswordToken() throws UnsupportedEncodingException, NoSuchAlgorithmException
+	public static String getUniqueToken() throws UnsupportedEncodingException, NoSuchAlgorithmException
 	{
 		int rand = new java.util.Random().nextInt();
 		String token = (new Date()).toString()+new Integer(rand).toString();

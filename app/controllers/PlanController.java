@@ -31,11 +31,13 @@ public class PlanController extends Controller{
 		if(user == null)
 		{
 			try{
-				user = UserBase.find("byId", new Long(session.getId()+"user")).first();
+				Long id = new Long(session.get("userid"));
+				user = UserBase.find("byId",id).first();
+				
+				 Cache.set(session.getId()+"user", user, "30mn");
 			} catch(Exception ex)
 			{
-				flash.put("message", "you.need.to.login.again");
-				Application.loginform();
+				return null;
 			}
 		}
 		return user;
@@ -48,28 +50,28 @@ public class PlanController extends Controller{
 	protected static long getCompanyId(){
 		return user().company.id;
 	}
+	
     @Before
     private static void getArgs()
     {
-        long userAuth = 0;
-         
+        //long userAuth = 0;
+        /*
 		try{
 			userAuth = UserBase.count("select count(u.id) from UserBase u where u.id = ?", getUserId() );
 		} catch (NumberFormatException ne) {
 		}
-        
-        if(userAuth==0)
+        */
+		UserBase userAuth = user();
+        if(userAuth==null)
         {
             renderArgs.put("loginform",1);
             Application.loginform();
         }
-        
-        //om användaren inte är null så 
-        if(userAuth!=0)
+        else
         {
            UserBase user = UserBase.findById(getUserId());
            renderArgs.put("sessionuser",user);
-		   Cache.set(session.getId()+"user", user);
+		   Cache.set(session.getId()+"user", user, "30mn");
         }
     }
     

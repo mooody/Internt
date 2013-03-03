@@ -35,6 +35,8 @@ public class Initalization extends Job {
             create = true;
         }
             
+		//Skapar upp default admin
+		//sätt defaultuser.email, defaultuser.name, defaultuser.pass, defaultuser.company, defaultuser.group i application.conf
         if(create){
             
             SuperAdmin user = new SuperAdmin();
@@ -64,15 +66,11 @@ public class Initalization extends Job {
             
             Logger.info("Creating default group %s", grupp.name);
             grupp.save();
-            
-            
-            
-       
         }
 		//ver();
 		//setCompanyUserSettings();
-		//Company company = Company.findById(1L);
-		//setYear(company);
+		Company company = Company.findById(4L);
+		setYear(company);
     }
 	
 	public void setYear(Company company)

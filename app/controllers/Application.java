@@ -103,7 +103,7 @@ public class Application extends Controller {
                 message = Messages.get("login.ok");
                 //Vi sätter användaren som inloggad
                 session.put("userid", user.id);
-                Cache.set(session.getId()+"user", user);
+                Cache.set(session.getId()+"user", user, "30mn");
 				
                 flash.put("message", message);
 				//om användaren har varit användare i flera företag och borttaget från ett.

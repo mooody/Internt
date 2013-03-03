@@ -114,5 +114,10 @@ public class Company extends Model{
 		//long count = UserBase.count("select count(u.id) from UserBase u where u.company.id = ?", this.id );
 		return this.usersWithMultipleAccounts.size();
 	}
+	
+	public static List<PrivilegeUser> getPrivilegeUsers(Company company)
+	{
+		return PrivilegeUser.find("byCompany", company).fetch();
+	}
 
 }
