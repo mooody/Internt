@@ -36,7 +36,7 @@ public class Initalization extends Job {
         }
             
 		//Skapar upp default admin
-		//sätt defaultuser.email, defaultuser.name, defaultuser.pass, defaultuser.company, defaultuser.group i application.conf
+		//sï¿½tt defaultuser.email, defaultuser.name, defaultuser.pass, defaultuser.company, defaultuser.group i application.conf
         if(create){
             
             SuperAdmin user = new SuperAdmin();
@@ -75,6 +75,7 @@ public class Initalization extends Job {
 	
 	public void setYear(Company company)
 	{
+                if(company == null) return;
 		List<BookingYear> years = BookingYear.find("byCompany", company).fetch();
 		
 		play.Logger.info("Found %s years in Company %s", years.size(), company.name);

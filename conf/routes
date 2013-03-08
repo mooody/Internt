@@ -77,6 +77,7 @@ POST    /myaccount                              Users.save
 #ModuleController
 GET     /getmodule/{moduleId}                     ModuleController.index                  
 GET     /getpeek/{moduleId}                       ModuleController.peek 
+GET     /settings/{moduleId}/{companyId}          ModuleController.settings 
 
 #MailController
 
