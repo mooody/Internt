@@ -27,8 +27,8 @@ import models.Core.Module;
 public class Users extends PlanController{
     
 	/**
-	* Hämtar in alla moduler som användaren har. Om företaget har blivit av med rättigheterna för modulen 
-	* så kommer den tas bort från listan.
+	* Hï¿½mtar in alla moduler som anvï¿½ndaren har. Om fï¿½retaget har blivit av med rï¿½ttigheterna fï¿½r modulen 
+	* sï¿½ kommer den tas bort frï¿½n listan.
 	*/
     public static void mypage()
     {
@@ -38,9 +38,9 @@ public class Users extends PlanController{
 		List<Module> modules = new ArrayList<Module>();
 		for(Module module: useraccess)
 		{
-			if(company.modules.contains(module))
+			if(!modules.contains(module)&&company.modules.contains(module))
 			{
-				modules.add(module);
+                                    modules.add(module);
 			}
 		}
         render(modules);
