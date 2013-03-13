@@ -108,12 +108,16 @@ public class Module extends Model{
      * Can be used to redirect to the action
      * 
      * @param action (Action of controller)
-     * @return the url...
+     * @return the url... or null if no route is found
      */
     public String getModuleControllerActionRoute(String action)
     {
-       String route = Router.reverse(this.moduleName+"."+this.controllerName+"."+action).url;
-       return route;
+       try{
+        String route = Router.reverse(this.moduleName+"."+this.controllerName+"."+action).url;
+        return route;
+       }catch(Exception ex){
+           return null;
+       }
     }
 	
 	@Override

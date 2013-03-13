@@ -27,9 +27,10 @@ public class PlanController extends Controller{
     protected static UserBase user()
 	{
 		UserBase user = Cache.get(session.getId()+"user", UserBase.class);
-		
+	
 		if(user == null)
 		{
+                    play.Logger.info("USER=NULL");
 			try{
 				Long id = new Long(session.get("userid"));
 				user = UserBase.find("byId",id).first();
@@ -37,7 +38,8 @@ public class PlanController extends Controller{
 				 Cache.set(session.getId()+"user", user, "30mn");
 			} catch(Exception ex)
 			{
-				return null;
+                            play.Logger.error("user() = %s", ex.getMessage());
+                            return null;
 			}
 		}
 		return user;

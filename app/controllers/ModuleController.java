@@ -101,10 +101,18 @@ public class ModuleController extends PlanController{
 	*/
     public static void peek(Long moduleId)
     {
-        Logger.info("Loading peek from %s", moduleId);
         Module module = Module.findById(moduleId);
         redirect(module.getModuleControllerActionRoute("peek"));
-        //render(module.name+"/peek.html");
+    }  
+    
+    public static void settings(Long moduleId, Long companyId)
+    {
+        Module module = Module.findById(moduleId);
+        String route = module.getModuleControllerActionRoute("settings");
+        if(route!=null)
+            redirect(route+"?companyId="+companyId);
+        else
+            renderText(Messages.get("core.settings.avalible"));
     }  
      
     

@@ -71,8 +71,8 @@
        
 	   <div style="clear:both;"></div>
 	   *{<!-- Messagebox -->}*
-		#{if flash['message'] }
-			<div class="message ui-state-highlight ui-corner-all" style="width:95%">
+		
+			<div class="message ui-state-highlight ui-corner-all" style="width:95%; display:${flash['message']?'block':'none'};">
 				<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 				${flash['message']}
 				*{<!-- Återaktivering -->}*
@@ -91,7 +91,7 @@
 				
 				
 			</div>
-		#{/if}
+		
 *{<!--
 		#{if flash['hasInvites'] }
 			<div class="message ui-state-highlight ui-corner-all" style="width:95%">
@@ -112,7 +112,7 @@
 		
 		*{<!-- Messagebox ERROR -->}*
 		#{if errors }
-			<div class="message ui-state-error ui-corner-all" style="width:95%">
+			<div class="message ui-state-error ui-corner-all" style="width:95%; display:${errors?'block':'none'};">
 				#{errors}
 					<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> ${error}<br />
 				#{/errors}

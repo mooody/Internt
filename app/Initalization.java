@@ -79,6 +79,7 @@ public class Initalization extends Job {
     //Samt även radera gamla year-fältet i bookingsettings
 	public void setYear(Company company)
 	{
+                if(company == null) return;
 		List<BookingYear> years = BookingYear.find("byCompany", company).fetch();
 		
 		play.Logger.info("Found %s years in Company %s", years.size(), company.name);

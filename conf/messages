@@ -116,6 +116,9 @@ group.is.created = Gruppen %s är skapad
 core.GroupName = Gruppnamn
 core.GroupParentName = Huvudgrupp
 
+#SuperAdmin - company
+core.settings.avalible = Det finns inte några inställningar tillgängliga för modulen
+
 #Users - modules
 users.need.to.be.privileged = Det krävs ett konto med privileguim för access till denna modul
 
