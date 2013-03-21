@@ -1,5 +1,8 @@
+import java.security.InvalidKeyException;
 import org.junit.*;
 import java.util.*;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import play.test.*;
 import models.*;
 import play.Logger;
@@ -7,7 +10,7 @@ import play.Logger;
 public class BasicTest extends UnitTest {
     
     @Test
-    public void testGroups(){
+    public void testGroups() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
         Grupp grupp1 = new Grupp(1);
         grupp1.name = "Grupp 1";
         
@@ -23,7 +26,7 @@ public class BasicTest extends UnitTest {
         UserBase user = new UserBase();
         
         user.name = "Johan";
-        user.password = "pass";
+        user.setPassword("pass");
         user.email = "mail@mail.se";
         user.save();
         

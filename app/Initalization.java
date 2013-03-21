@@ -1,14 +1,15 @@
 
 import java.util.ArrayList;
-import models.*;
+import java.util.List;
+import models.Company;
+import models.Grupp;
+import models.SuperAdmin;
+import models.UserBase;
+import models.booking.BookingYear;
+import models.booking.Verification;
 import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
-
-import models.booking.*;
-import models.*;
-import models.Core.*;
-import java.util.List;
 
 /*
  * To change this template, choose Tools | Templates
@@ -69,10 +70,13 @@ public class Initalization extends Job {
         }
 		//ver();
 		//setCompanyUserSettings();
-		Company company = Company.findById(4L);
-		setYear(company);
+		Company company = Company.findById(1L);
+		if(company!=null)
+                setYear(company);
     }
 	
+    //se till att fixa unika constrains i databasen, year, company, verid
+    //Samt även radera gamla year-fältet i bookingsettings
 	public void setYear(Company company)
 	{
                 if(company == null) return;
