@@ -41,8 +41,16 @@ public class CompanyUserSettings extends Model{
 	
 	public void setUserType(String _usertype)
 	{
-		this.usertype = _usertype;
-		this.save();
+            if("SuperAdmin".equals(_usertype))
+            {
+                this.usertype = "Super";
+            }
+            else
+            {
+            	this.usertype = _usertype;
+            }
+		
+            this.save();
 	}
 	
 	public static CompanyUserSettings findByUserAndCompany(UserBase _user, Company _company)

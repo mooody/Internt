@@ -38,8 +38,43 @@
 			jQuery("ul#mainmenu li").mouseout(function(){
 				jQuery(this).removeClass("m-over");
 			});
-		});
-    </script>
+		//hanterar rutor i menyer
+		jQuery(".divmenu-holder").each(
+			function(){
+			
+				//n�r man klickar p� modulen
+				jQuery(this).click(function(){
+					var href = jQuery(this).attr("goal");
+					location.href=href;
+				});
+				
+				jQuery(this).mouseover(function(){
+					jQuery(this).addClass("divmenu-hover");
+				});
+				
+				jQuery(this).mouseout(function(){
+					jQuery(this).removeClass("divmenu-hover");
+				});
+			})
+
+	});
+	</script>
+        <style>
+div.module-holder{
+	padding:18px;
+	width:45%;
+	margin:2px 0 2px 0;
+	cursor:pointer;
+	border:1px solid #ccc;
+	display:inline;
+	display:inline-block;
+}
+
+div.module-hover{
+	border:1px solid #eee;
+	background-color:#ccc;
+}
+</style>
     <body>
 
     <div class="wrapper">

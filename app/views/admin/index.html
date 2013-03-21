@@ -3,9 +3,18 @@
 $("li#admin").addClass("active");
 </script>
 #{set title:'Admin' /}
-<ul>
-<li><a  href="@{admin.Userscontroller.index()}">Hantera användare</a></li>
-<li><a  href="@{admin.GruppController.index()}">Hantera grupper</a></li>
-<li><a  href="@{admin.CompanyController.index()}">Hantera Företag</a></li>
-<li><a  href="@{admin.AdminController.modules()}">Hantera Moduler</a></li>
-</ul>
+
+<h1>Administratör</h1>
+
+<div class="divmenu-holder" goal="@{admin.Userscontroller.index()}">
+<h2>Hantera användare</h2>
+</div>
+<div class="divmenu-holder" goal="@{admin.GruppController.index()}">
+<h2>Hantera grupper</h2>
+</div>
+<div class="divmenu-holder" goal="@{admin.CompanyController.index()}">
+<h2>Hantera Företag</h2>
+</div>
+<div class="divmenu-holder" goal="@{admin.AdminController.modules()}">
+<h2>Hantera Moduler</h2>
+</div>

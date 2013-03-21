@@ -35,6 +35,7 @@ public class Users extends PlanController{
 		UserBase user = user();
 		Company company = user.company;
 		List<Module> useraccess = user.getUserAndGroupModules();
+                if(useraccess==null) render();
 		List<Module> modules = new ArrayList<Module>();
 		for(Module module: useraccess)
 		{
@@ -43,7 +44,7 @@ public class Users extends PlanController{
                                     modules.add(module);
 			}
 		}
-        render(modules);
+                render(modules);
     }
     
     public static void myaccount()

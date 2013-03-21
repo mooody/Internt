@@ -2,9 +2,18 @@
 <script>
 $("li#superadmin").addClass("active");
 </script>
-<ul>
-    <li><a  href="@{SuperAdminController.modules()}">Admin Moduler</a></li>
-    <li><a  href="@{SuperAdminController.users()}">Admin Users</a></li>
-    <li><a  href="@{SuperAdminController.groups()}">Admin Groups</a></li>
-	<li><a  href="@{SuperAdminController.showCompanies()}">Admin Companies</a></li>
-</ul>
+
+<h1>Superadministratör</h1>
+
+<div class="divmenu-holder" goal="@{SuperAdminController.modules()}">
+<h2>Hantera moduler</h2>
+</div>
+<div class="divmenu-holder" goal="@{SuperAdminController.users()}">
+<h2>Hantera Användare</h2>
+</div>
+<div class="divmenu-holder" goal="@{SuperAdminController.groups()}">
+<h2>Hantera grupper</h2>
+</div>
+<div class="divmenu-holder" goal="@{SuperAdminController.showCompanies()}">
+<h2>Hantera Företag</h2>
+</div>

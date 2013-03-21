@@ -4,44 +4,8 @@
 $("li#mypage").addClass("active");
 </script>
 
-<style>
-div.module-holder{
-	padding:18px;
-	width:45%;
-	margin:2px 0 2px 0;
-	cursor:pointer;
-	border:1px solid #ccc;
-	display:inline;
-	display:inline-block;
-}
 
-div.module-hover{
-	border:1px solid #eee;
-	background-color:#ccc;
-}
-</style>
-<script type="text/javascript">
-    $(document).ready(function(){
-		jQuery(".divmenu-holder").each(
-			function(){
-			
-				//när man klickar på modulen
-				jQuery(this).click(function(){
-					var href = jQuery(this).attr("goal");
-					location.href=href;
-				});
-				
-				jQuery(this).mouseover(function(){
-					jQuery(this).addClass("divmenu-hover");
-				});
-				
-				jQuery(this).mouseout(function(){
-					jQuery(this).removeClass("divmenu-hover");
-				});
-			})
 
-	});
-	</script>
 <h1>MyPage</h1>
 <h2>Modules</h2>
 #{list items:modules, as:'module'}

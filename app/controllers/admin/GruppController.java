@@ -45,7 +45,7 @@ public class GruppController extends AdminController{
 	 public static void addModuleToGroup(long gId, List<Long> modid)
 	{
 		Grupp group = Grupp.findById(gId);
-		//Lägg företaget i flash för att vi ska kunna få tag i det i metoden modules()
+		//Lï¿½gg fï¿½retaget i flash fï¿½r att vi ska kunna fï¿½ tag i det i metoden modules()
 		
 		flash.put("group", group.id);
 		if(group == null )
@@ -55,7 +55,7 @@ public class GruppController extends AdminController{
 		}
 		
 		
-		//Kontrollerar så någon modul är vald om den inte är vald så tömmer vi hela medulslistan för företaget
+		//Kontrollerar sï¿½ nï¿½gon modul ï¿½r vald om den inte ï¿½r vald sï¿½ tï¿½mmer vi hela medulslistan fï¿½r fï¿½retaget
 		if(modid == null || modid.size()==0){
 			flash.put("message", "SuperAdmin.NoModuleSelected");
 			GruppController.modules();
@@ -155,10 +155,10 @@ public class GruppController extends AdminController{
     }
     
 	/*
-	* Raderar en grupp utifrån id. 
-	* hämtar ut gruppen från databasen, hämtar in föräldern och raderar gruppen från dess lista.
+	* Raderar en grupp utifrï¿½n id. 
+	* hï¿½mtar ut gruppen frï¿½n databasen, hï¿½mtar in fï¿½rï¿½ldern och raderar gruppen frï¿½n dess lista.
 	* Sedan raderas gruppen.
-	* Om gruppen ej har en förälder tillåts inte radering!
+	* Om gruppen ej har en fï¿½rï¿½lder tillï¿½ts inte radering!
 	**/
     public static void delete() throws Exception
     {
@@ -166,7 +166,7 @@ public class GruppController extends AdminController{
         Grupp group = Grupp.findById(groupid);
         Controller.notFoundIfNull(group, "Gruppen existerar inte!");
         
-		//om gruppen hör till ett annat företag
+		//om gruppen hï¿½r till ett annat fï¿½retag
 		if(group.getCompanyId() != user().company.id)
 		{
 			forbidden();
@@ -178,9 +178,10 @@ public class GruppController extends AdminController{
 			index();
 		}
 		
-        if(group.childs == null || group.childs.size() == 0 )
+        if(group.childs != null && group.childs.size() != 0 )
         {
-            Logger.info("GruppController.delete has childs");
+            flash("message", Messages.get("need.to.delete.childgroups.of", group.name));
+            index();
         }
         
         Grupp parent = group.parent;
@@ -199,7 +200,7 @@ public class GruppController extends AdminController{
 	public static void addModuleToGroup(long gId, List<Long> modid)
 	{
 		Grupp group = Grupp.findById(gId);
-		//Lägg företaget i flash för att vi ska kunna få tag i det i metoden modules()
+		//Lï¿½gg fï¿½retaget i flash fï¿½r att vi ska kunna fï¿½ tag i det i metoden modules()
 		
 		flash.put("group", group.id);
 		if(group == null )
@@ -209,7 +210,7 @@ public class GruppController extends AdminController{
 		}
 		
 		
-		//Kontrollerar så någon modul är vald om den inte är vald så tömmer vi hela medulslistan för företaget
+		//Kontrollerar sï¿½ nï¿½gon modul ï¿½r vald om den inte ï¿½r vald sï¿½ tï¿½mmer vi hela medulslistan fï¿½r fï¿½retaget
 		if(modid == null || modid.size()==0){
 			flash.put("message", "SuperAdmin.NoModuleSelected");
 			AdminController.modules();
