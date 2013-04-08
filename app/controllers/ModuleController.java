@@ -105,6 +105,11 @@ public class ModuleController extends PlanController{
         redirect(module.getModuleControllerActionRoute("peek"));
     }  
     
+    /**
+     * Är till för företagsspecifika moduleinställningar
+     * @param moduleId
+     * @param companyId 
+     */
     public static void settings(Long moduleId, Long companyId)
     {
         Module module = Module.findById(moduleId);
@@ -113,6 +118,20 @@ public class ModuleController extends PlanController{
             redirect(route+"?companyId="+companyId);
         else
             renderText(Messages.get("core.settings.avalible"));
+    }  
+    
+    /**
+     * Är till för globala modulinställningar
+     * @param moduleId 
+     */
+     public static void globalSettings(Long moduleId)
+    {
+        Module module = Module.findById(moduleId);
+        String route = module.getModuleControllerActionRoute("globalsettings");
+        if(route!=null)
+            redirect(route);
+        else
+            render("SuperAdminController/modules/noAvalibleGlobalSettings.html");
     }  
      
     

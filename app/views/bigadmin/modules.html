@@ -36,7 +36,7 @@ td{
 #{/form}
 
 	#{if company}
-		*{<!-- Listar företagets ingående moduler-->}*
+		*{<!-- Listar fï¿½retagets ingï¿½ende moduler-->}*
 		<h2>&{'Company.got.modules', company.name}</h2>
 		<table class="listtable">
 			<tr>
@@ -91,3 +91,9 @@ td{
 		#{/form}
 	#{/if}
 #{/if}
+
+*{<!-- Global settings-->}*
+<h1>&{'core.global.settings'}</h1>
+#{list items:modules, as: 'module'}
+<a href="@{ModuleController.globalSettings(module.id)}">${module.name}</a>
+#{/list}

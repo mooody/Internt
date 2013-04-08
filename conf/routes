@@ -78,6 +78,7 @@ POST    /myaccount                              Users.save
 GET     /getmodule/{moduleId}                     ModuleController.index                  
 GET     /getpeek/{moduleId}                       ModuleController.peek 
 GET     /settings/{moduleId}/{companyId}          ModuleController.settings 
+GET     /globalsettings/{moduleId}                ModuleController.globalSettings 
 
 #MailController
 
