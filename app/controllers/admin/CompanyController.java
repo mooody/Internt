@@ -16,7 +16,8 @@ import models.Core.CompanyUserSettings;
 import play.data.validation.Valid;
 
 /**
- *
+ * Vid skapande av ett företag kommer företaget först och främst läggar in i multiple_companies
+ * sedan kommer en default grupp att skapas.
  * @author weetech
  */
 public class CompanyController extends AdminController {
@@ -27,27 +28,27 @@ public class CompanyController extends AdminController {
      */
     public static void create(@Valid Company company)
     {
-		if(validation.hasErrors())
-		{
-			validation.keep();
-			params.flash();
-                        //redirect to createView
-			if(user().company != null && company.id == null) 
-			{
-				CompanyController.addCompany();
-			}
-                        else
-                        {
-                            CompanyController.index();
-                        }
-		}
-		
-            /* om användaren redan har ett företag! lägg till ytterligare ett */
-            if(user().company != null && company.id == null) 
+            if(validation.hasErrors())
             {
-                    addMultipleCompany(company);
-
+                    validation.keep();
+                    params.flash();
+                    //redirect to createView
+                    if(user().company != null && company.id == null) 
+                    {
+                            CompanyController.addCompany();
+                    }
+                    else
+                    {
+                        CompanyController.index();
+                    }
             }
+		
+        /* om användaren redan har ett företag! lägg till ytterligare ett */
+        if(user().company != null && company.id == null) 
+        {
+                addMultipleCompany(company);
+
+        }
         //Update företaget
         if(company.id != null)
         {
@@ -71,9 +72,9 @@ public class CompanyController extends AdminController {
                 admin.company = company;
                 admin.save();
 
-                CompanyController.createDefaultGroup(admin,company.name);
+                CompanyController.createDefaultGroup(admin,company);
                 
-                flash.put("message",Messages.get("company %s created",company.name));
+                flash.put("message",Messages.get("company.created",company.name));
             } catch (Exception ex)
             {
                 StackTraceElement[] sex = ex.getStackTrace();
@@ -90,6 +91,10 @@ public class CompanyController extends AdminController {
 	
 	private static void addMultipleCompany(Company company)
 	{
+                if(!user().companies.contains(user().company))
+                {
+                    user().companies.add(user().company);
+                }
 		company.addUser(user());
 		user().companies.add(company);
 		company.save();
@@ -103,7 +108,7 @@ public class CompanyController extends AdminController {
 		Admin admin = Admin.findById(user().id);
 		try
                 {
-                    CompanyController.createDefaultGroup(admin,company.name);
+                    CompanyController.createDefaultGroup(admin,company);
 		} catch(Exception ex)
 		{
                     Logger.error("CompanyController.addMultipleCompany %s", ex.getMessage());
@@ -112,7 +117,7 @@ public class CompanyController extends AdminController {
 		CompanyController.index();
 	}
 	
-    private static void createDefaultGroup(Admin admin, String groupName) throws Exception
+    private static void createDefaultGroup(Admin admin, Company company) throws Exception
     {	
         /*
         String defaultgrupp = play.Play.configuration.getProperty("defaultuser.grupp");
@@ -144,8 +149,8 @@ public class CompanyController extends AdminController {
         }
         */
         //Skapa nya användarens topgrupp
-        Grupp newGroup = new Grupp(admin.company.id);
-        newGroup.name = groupName;
+        Grupp newGroup = new Grupp(company.id);
+        newGroup.name = company.name;
         newGroup.users = new ArrayList();
         newGroup.users.add(admin);
         newGroup.save();

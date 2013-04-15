@@ -15,6 +15,7 @@ Company = Företag
 buttons.login = Logga in
 email = Emailadress
 password = Lösenord
+Account.created.successful = Kontot skapat
 you.have.been.logged.out = Du är utloggad
 you.need.to.type.pass.and.name = Du måste skriva in din emailadress och lösenord
 admin.you.need.to.create.a.company.first = Du måste skapa ett företag innan du kan gå vidare
@@ -88,6 +89,7 @@ you.have.to.upgrade.admin.counts = Du måste uppgradera företaget. Nu har före
 you.have.to.upgrade.privilegue.counts = Du måste uppgradera företaget. Nu har företaget totalt %s konton med privilegium
 Company.updated = Företaget är uppdaterat
 #SuperAdmin
+company.created = Företaget %s är skapat
 No.modules.was.added.to = Ingen modul blev tillagd till %s
 Module.was.added.to.company = %s blev tillagda till %s
 superAdmin.choose.company = Välj företag

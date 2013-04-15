@@ -24,29 +24,12 @@ input.error{
 *{<!--#{if sessionuser.getClass() == models.Admin.class}-->}*
 
     #{if sessionuser.company == null}
-    
 		&{'first.company.info'}
-    
     #{/if}
 
-	#{if newCompany==null}
-		*{<!-- Lista alla företag -->}*
-		<h2>&{'other.companies.account.attached.to'}</h2>
-		<ul>
-		#{list items:companies, as:'companyObject'}
-			<li><a href="@{Application.loadCompany(companyObject.id)}">${companyObject.name}</a></li>
-		#{/list}
-		</ul>
-
-		<a class="button" href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
-		*{<!-- newCompany kommer från action addCompany -->}*
-		<hr />
-		
-		<h2>Organisationsuppgifter</h2>
-	#{/if}
-	#{else}
-		<h2>Fyll i organisationsuppgifter</h2>
-	#{/else}
+    #{if newCompany!=null}
+            <h2>Fyll i organisationsuppgifter</h2>
+    #{/if}
     <table>
 		#{form @admin.CompanyController.create()}
     #{if company && company.id != null}
@@ -133,4 +116,20 @@ input.error{
 	*{<!-- om vi laddar vårt nuvarande företag visa länken till att skapa ett nytt -->}*
 	
     #{/form}
+    
+    #{if newCompany==null && companies.size()>1}
+            *{<!-- Lista alla företag -->}*
+            <h2>&{'other.companies.account.attached.to'}</h2>
+            <ul>
+            #{list items:companies, as:'companyObject'}
+                    <li><a href="@{Application.loadCompany(companyObject.id)}">${companyObject.name}</a></li>
+            #{/list}
+            </ul>
+
+            <a class="button" href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
+            *{<!-- newCompany kommer från action addCompany -->}*
+            <hr />
+
+            <h2>Organisationsuppgifter</h2>
+    #{/if}
 #{/if}
