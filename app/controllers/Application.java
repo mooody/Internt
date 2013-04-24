@@ -232,14 +232,14 @@ public class Application extends Controller {
      */
     public static void createAccount(Admin user)
     {
-		if(UserBase.find("byEmail", user.email).first()!=null)
-		{
-			flash.put("message", Messages.get("email.exists.in.system"));
-			Application.signup();
-		}
+        if(UserBase.find("byEmail", user.email).first()!=null)
+        {
+                flash.put("message", Messages.get("email.exists.in.system"));
+                Application.signup();
+        }
         user.save();
 		
-		notifiers.Mails.welcome(user);
+	notifiers.Mails.welcome(user);
         flash.put("message", "Account.created.successful");
         params.data.clear();
         Application.loginform();

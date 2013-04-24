@@ -18,6 +18,11 @@ import play.data.validation.Valid;
 /**
  * Vid skapande av ett företag kommer företaget först och främst läggar in i multiple_companies
  * sedan kommer en default grupp att skapas.
+ * 
+ * För att radera krävs det att man kollar användarens aktiva company, får ej vara samma som det 
+ * företaget som ska raderas. Sedan måste default grupp raderas, samt i tabellen multiple company
+ * och sist själva företaget.
+ * Sist men inte minst behöver alla moduler raderas
  * @author weetech
  */
 public class CompanyController extends AdminController {

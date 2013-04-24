@@ -18,11 +18,12 @@ public class Mails extends Mailer {
       //attachment.setDescription("A pdf document");
       //attachment.setPath(Play.getFile("rules.pdf").getPath());
       //addAttachment(attachment);
+      
       send(user);
    }
  
 	/**
-	 * Skickar ut ett återställningsmail. 
+	 * Skickar ut ett ï¿½terstï¿½llningsmail. 
 	 */
 	public static void lostPassword(UserBase user) 
 	{
