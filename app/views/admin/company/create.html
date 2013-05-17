@@ -30,8 +30,11 @@ input.error{
     #{if newCompany!=null}
             <h2>Fyll i organisationsuppgifter</h2>
     #{/if}
+    #{else}
+        <h2>Organisationsuppgifter</h2>
+    #{/else}
     <table>
-		#{form @admin.CompanyController.create()}
+    #{form @admin.CompanyController.create()}
     #{if company && company.id != null}
         <input type="hidden" name="company.id" value="${sessionuser.company?.id}" />
     #{/if}
@@ -126,10 +129,8 @@ input.error{
             #{/list}
             </ul>
 
-            <a class="button" href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
-            *{<!-- newCompany kommer från action addCompany -->}*
-            <hr />
-
-            <h2>Organisationsuppgifter</h2>
     #{/if}
+    
+    *{<!-- newCompany kommer från action addCompany -->}*
+    <a class="button" href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
 #{/if}
