@@ -68,11 +68,12 @@ public class Initalization extends Job {
             Logger.info("Creating default group %s", grupp.name);
             grupp.save();
         }
+                //EDITERINGAR AV DATABASEN
 		//ver();
 		//setCompanyUserSettings();
-		Company company = Company.findById(1L);
+		/*Company company = Company.findById(1L);
 		if(company!=null)
-                setYear(company);
+                setYear(company);*/
     }
 	
     //se till att fixa unika constrains i databasen, year, company, verid

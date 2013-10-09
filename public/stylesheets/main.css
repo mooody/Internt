@@ -20,6 +20,15 @@ body{
 a img{
 	border:none;
 }
+
+a:link, a:visited, a:active  {
+	color:#111;
+	text-decoration:none;
+}
+a:hover {
+	color:#999;
+	text-decoration:underline;
+}
 div.wrapper{
     margin:auto;
     padding-top: 10px;
@@ -180,7 +189,7 @@ a.button, input[type=submit]{
 	-moz-box-shadow: 2px 2px 3px #666;
 	-webkit-box-shadow: 2px 2px 3px #666;
 	box-shadow: 2px 2px 3px #666;
-	font-size: 12px;
+	/*font-size: 12px;*/
 	padding: 4px 7px;
 	outline: 0;
 	-webkit-appearance: none;
@@ -213,11 +222,3 @@ div#content{
 	padding: 1em;
 }
 
-a:link, a:visited, a:active  {
-	color:#111;
-	text-decoration:none;
-}
-a:hover {
-	color:#999;
-	text-decoration:underline;
-}

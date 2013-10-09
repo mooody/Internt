@@ -1,13 +1,131 @@
 package models.Core;
 
+import java.util.SortedMap;
+import java.util.TreeMap;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import models.Company;
+import models.UserBase;
+import play.db.jpa.Model;
+
 
 /**
- * Entitet som hanterar r‰ttighetss‰ttning fˆr grupper och anv‰ndare
- * Varje anv‰ndare har en Lista av modulerights pÂ sig, samt varje grupp.
- * Vid intr‰de till en module det fˆrst kontrolleras om anv‰ndaren har en r‰ttighet satt pÂ sig.
- * finns det ej, sÂ kontrolleras anv‰ndarens grupper.
- * Finns det ej nÂgra r‰ttigheter satta sÂ kommer anv‰ndaren att avvisas.
+ * Klass som h√•ller i r√§ttigheter mellan anv√§ndare och modul.
  */
-//@Entity
-public class ModuleRights{// extends Model{
+@Entity
+@Table(
+        name="core_modulerights"
+        )
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+public abstract class ModuleRights extends play.db.jpa.GenericModel
+{
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    public Long id;
+    
+    /**
+     * Anv√§nds f√∂r att i modulen fylla p√• med vilka r√§ttigheter man ska ha
+     */
+    @Transient
+    public SortedMap<String,Integer> listOfRights;
+    @Column(nullable=false)
+    protected int rights = 0;
+    @ManyToOne    
+    public UserBase user;
+    @ManyToOne    
+    public Module module;
+    @ManyToOne    
+    public Company company;
+
+    public ModuleRights() {
+        this.listOfRights = null;
+    }
+    
+    /**
+     * H√§mtar ut vektorn med r√§ttigheter
+     * @return 
+     */
+    public int getRights()
+    {
+        return this.rights;
+    }
+    
+    public SortedMap<String,Integer> getListOfRights()
+    {
+        return listOfRights;
+    }
+    
+    /**
+     * Byter alla r√§ttigheter mot parametern _rights
+     * @param _rights 
+     */
+    public void setRights(int _rights)
+    {
+        this.rights = _rights;
+    }
+    
+    /**
+     * L√§gger till r√§ttigheten p√• den biten. (Ett st√§llet bit)
+     * @param bit 
+     */
+    public void addRight(int bit)
+    {
+        int mask = (0x01<<bit-1);
+        this.rights = this.rights|mask;
+    }
+    
+    /**
+     * Tar bort r√§ttigheten (nollst√§ller biten)
+     * @param bit 
+     */
+    public void removeRight(int bit)
+    {
+        int mask = ~(0x01<<bit-1);
+        this.rights = this.rights&mask;
+    }
+    
+    /**
+     * Kontrollerar om r√§ttigheten finns (kollar om biten √§r satt)
+     * @param bit
+     * @return 
+     */
+    public boolean hasRight(int bit)
+    {
+        int value = this.rights&(0x01<<bit-1);
+        return value>0?true:false;
+    }
+    
+    /**
+     * Skriver ut r√§ttighetsvektorn. F√∂r debugsyfte
+     */
+    public void printRights()
+    {
+        int mask = 0x01;
+        
+        System.out.print("RIGHTS:");
+        for(int i=0; i<8; i++)
+        { 
+            if(this.hasRight(mask))
+            {
+                System.out.print("1");
+            }
+            else{
+                System.out.print("0");
+            }
+            
+            mask++;
+        }
+        
+        System.out.println();
+    }
 }

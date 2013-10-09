@@ -75,14 +75,13 @@ public class Cryptography {
 		return getUniqueToken();
 	}
 	/**
-	* Genererar en unik nyckel baserad på tiden samt ett slumpmässigt tal
+	* Genererar en unik nyckel baserad pï¿½ tiden samt ett slumpmï¿½ssigt tal
 	*
 	*/
 	public static String getUniqueToken() throws UnsupportedEncodingException, NoSuchAlgorithmException
 	{
 		int rand = new java.util.Random().nextInt();
 		String token = (new Date()).toString()+new Integer(rand).toString();
-		play.Logger.info(token);
 		byte[] bytesOfMessage = token.getBytes("UTF-8");
 
 		MessageDigest md = MessageDigest.getInstance("MD5");

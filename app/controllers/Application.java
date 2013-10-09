@@ -190,7 +190,6 @@ public class Application extends Controller {
 		if (company == null) return;
 		
 		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
-		Logger.info("CUS: %s", cus);
 		
 		//Om det inte finns en cus (Exempelvis vid inbjudan)
 		if(cus==null)

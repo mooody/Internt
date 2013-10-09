@@ -31,17 +31,26 @@ public class PlanController extends Controller{
 		if(user == null)
 		{
                     play.Logger.info("USER=NULL");
-			try{
-				Long id = new Long(session.get("userid"));
-				user = UserBase.find("byId",id).first();
-				
-				 Cache.set(session.getId()+"user", user, "30mn");
-			} catch(Exception ex)
-			{
-                            play.Logger.error("user() = %s", ex.getMessage());
-                            return null;
-			}
+                    try
+                    {
+                            Long id = new Long(session.get("userid"));
+                            
+                            user = UserBase.find("byId",id).first();
+                            Cache.set(session.getId()+"user", user, "30mn");
+                    } 
+                    catch(Exception ex)
+                    {
+                        play.Logger.error("PlanController.user() = %s", ex.getMessage());
+                    }
+ 
 		}
+                
+                //Om vi inte hittat någon användare gå till login
+                if(user==null)
+                {
+                    renderArgs.put("loginform",1);
+                    Application.loginform();
+                }
 		return user;
 	}
    
@@ -56,6 +65,7 @@ public class PlanController extends Controller{
     @Before
     private static void getArgs()
     {
+        Logger.info("planController.getArgs()");
         //long userAuth = 0;
         /*
 		try{
@@ -66,14 +76,16 @@ public class PlanController extends Controller{
 		UserBase userAuth = user();
         if(userAuth==null)
         {
+            Logger.info("planController.getArgs() USER = NULL");
             renderArgs.put("loginform",1);
             Application.loginform();
         }
         else
         {
+            Logger.info("planController.getArgs() USER");
            UserBase user = UserBase.findById(getUserId());
            renderArgs.put("sessionuser",user);
-		   Cache.set(session.getId()+"user", user, "30mn");
+           Cache.set(session.getId()+"user", user, "30mn");
         }
     }
     

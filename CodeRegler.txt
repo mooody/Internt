@@ -42,10 +42,35 @@ public class install extends Job{
     public void doJob()
     {
         //Statisk metod i core.Module som installerar
-        Module.install(this.name, this.controllerName, this.moduleName);
-		// Module.install(this.name, this.controllerName, this.moduleName);
+        Module module = Module.install(this.name, this.controllerName, this.moduleName);
+	//lägg till rättigheter till modulen
+        if([Module]Rights.count("byModule", files)==0)
+        {
+            Logger.info("Installed rights to %s", files.name);
+            [Module]Rights rights = new [Module]Rights();
+            rights.module = files;
+            rights.save();
+        }
     }
 }
+
+Rättigheter sparas i en klass [Module]Rights
+@Entity
+@Table(name="[Module]_rights")
+public class [Module]Rights extends ModuleRights{
+    public [Module]Rights(){
+        listOfRights = new TreeMap<String, Integer>();
+        listOfRights.put("create.directory",1);
+        listOfRights.put("erase.file",2);
+        listOfRights.put("erase.directory",3);
+        osv...
+    }
+}
+
+Globala metoder i huvudcontroller är peek.
+Denna ska hämtas med AJAX från startsidan. Och ge valfri information från modulen
+Global settings är om superadministratören vill hantera modulen
+
 
 Kodregler moduler
 -----------------

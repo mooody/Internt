@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import models.Admin;
 import models.UserBase;
 import play.Logger;
@@ -28,13 +30,13 @@ import play.mvc.Router;
  */
 @Entity
 public class Module extends Model{
-    
+   
     public String name;
     public String controllerName;
     public String moduleName;
-	@Column(nullable=false)
-	private String userAccessType="User";
-	public String getUserAccessType(){return this.userAccessType;}
+    @Column(nullable=false)
+    private String userAccessType="User";
+    public String getUserAccessType(){return this.userAccessType;}
     
     @ManyToMany(mappedBy="modules")
     public List<ModuleController> controllers;
@@ -47,16 +49,15 @@ public class Module extends Model{
         this(_name, _controllerName, _moduleName, "User");
     }
 	
-	 public Module(String _name, String _controllerName, String _moduleName, String _userAccessType)
+    
+    public Module(String _name, String _controllerName, String _moduleName, String _userAccessType)
     {
         this.name = _name;
         this.controllerName = _controllerName;
         this.moduleName = _moduleName;
-		this.userAccessType = _userAccessType;
+	this.userAccessType = _userAccessType;
     }
-	
-	
-    
+
     /**
      * Installation method. Call this method from a Job
      * @param _name (Module trival name)
@@ -64,14 +65,14 @@ public class Module extends Model{
      * @param _moduleName (module real name)
      * @param controllers (List of all of the modules controllers)
      */
-    public static void install(String _name, String _controllerName, String _moduleName, List<ModuleController> controllers)
+    public static Module install(String _name, String _controllerName, String _moduleName, List<ModuleController> controllers)
     {
-		install( _name, _controllerName, _moduleName, controllers , "User");
+	return install( _name, _controllerName, _moduleName, controllers , "User");
     }
 	
-	public static void install(String _name, String _controllerName, String _moduleName, List<ModuleController> controllers , String _userAccessType)
+    public static Module install(String _name, String _controllerName, String _moduleName, List<ModuleController> controllers , String _userAccessType)
     {
-		 try{
+	try{
             //kontrollera om modulen redan finns
             Module module = Module.find(""
                 + "select m from Module m"
@@ -81,7 +82,7 @@ public class Module extends Model{
             {
                 Logger.info("Modulen %s installeras...", _moduleName);
 
-				module = new models.Core.Module(_name, _controllerName, _moduleName, _userAccessType);
+		module = new models.Core.Module(_name, _controllerName, _moduleName, _userAccessType);
                 
                 if(module.controllers == null) module.controllers = new ArrayList();
                 
@@ -96,11 +97,14 @@ public class Module extends Model{
             }
            
             Logger.info("Modulen %s finns tillgänglig", _moduleName);
+            return module;
             
         } catch (Exception ex){
             Logger.info("Ett fel inträffade när modulen %s skulle installeras!", _moduleName);
         } 
-	}
+                 
+        return null;
+    }
     
     /**
      * Returns the url och the requested action of the default controller.

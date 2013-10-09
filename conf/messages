@@ -110,6 +110,8 @@ admin.GiveGroupModuleAccess = Ge gruppen modul access
 Got.access.to.modules = %s har tillgång till följande moduler
 you.cant.erase.yourself = Du kan inte radera dig själv
 Accessable.modules.to = Tillgängliga grupper för %s
+module.has.no.rights.settings = Modulen har inte några rättighetssättningar
+set.access = Hantera rättigheter
 
 #Admin -groups
 is.your.headgroup.cant.erase = %s är din huvudgrupp och du kan inte radera denna

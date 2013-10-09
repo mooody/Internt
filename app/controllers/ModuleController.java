@@ -4,19 +4,24 @@
  */
 package controllers;
 
-import controllers.PlanController;
-import java.util.ArrayList;
+import controllers.admin.AdminController;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.logging.Level;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import models.Core.Module;
+import models.Core.ModuleRights;
 import models.UserBase;
+import models.booking.Rights;
 import play.mvc.Before;
 import play.Logger;
 import play.data.validation.Validation;
 import play.i18n.Messages;
+import play.mvc.Controller;
 
 /**
  * ModuleController. 
@@ -39,6 +44,7 @@ public class ModuleController extends PlanController{
     public Object _key() {
         return getId();
     }
+   
     
     @ManyToMany
     public List<Module> modules;
@@ -106,6 +112,47 @@ public class ModuleController extends PlanController{
     }  
     
     /**
+     * Hämtar ut modulrättigheterna med ajax
+     * @param moduleId 
+     */
+    public static void setUserAccess(Long moduleId, long userId)
+    {
+        
+        ModuleRights rights = null;
+        SortedMap<String,Integer> list = null;
+        Integer userRights = null;
+        
+        //hämta in användrens rättigheter
+        rights = ModuleRights.find("select r from ModuleRights r where r.user.id = :uid and r.module.id = :module and r.company.id = :companyId")
+                    .bind("uid",userId)    
+                    .bind("module",moduleId)
+                    .bind("companyId",user().company.id)
+                    .first();
+        Logger.info("ModuleRights %s", rights);
+        
+        //om de inte finns hämta modules rättighetsklass
+        if(rights == null)
+        {
+             rights = ModuleRights.find("select r from ModuleRights r where r.user.id is null and r.module.id = :module")  
+                    .bind("module",moduleId)
+                    .first();
+        }
+        else // om de finns använd användarens rättigheter
+        {
+            userRights = rights.getRights();
+        }
+            
+        if(rights!=null) 
+        {
+            list = rights.getListOfRights();
+            Logger.info("RIGHTS: %s = %s",rights.getClass().getName(), rights.getListOfRights().size());
+        }
+        
+        
+        
+        render("/admin/modules/showModuleRights.html", list, userId, moduleId,userRights);
+    } 
+    /**
      * Är till för företagsspecifika moduleinställningar
      * @param moduleId
      * @param companyId 
@@ -133,6 +180,61 @@ public class ModuleController extends PlanController{
         else
             render("SuperAdminController/modules/noAvalibleGlobalSettings.html");
     }  
+     
+     /**
+      * Ajaccall - sparar undan användarrättigheter
+      * @param module_id
+      * @param user_id
+      * @param list Lista med rättigheter satta
+      */
+     public static void saveUserAccess(long module_id, long user_id, List<Integer> list)
+     {
+         UserBase user = UserBase.findById(user_id);
+         Module module = Module.findById(module_id);
+ 
+         Controller.notFoundIfNull(user, Messages.get("user.is.missing"));
+         Controller.notFoundIfNull(user, Messages.get("module.is.missing"));
+         ModuleRights rights = ModuleRights.find("byModule", module).first();
+         ModuleRights userRights = ModuleRights.find("select r from ModuleRights r where"
+                 + " r.user = :user and"
+                 + " r.module = :module and"
+                 + " r.company = :company")
+                 .bind("module",module)
+                 .bind("user",user)
+                 .bind("company",user().company)
+                  .first();
+
+         if(userRights == null)
+         {
+            try {
+               userRights= rights.getClass().newInstance();
+               userRights.company = user().company;
+               userRights.user = user;
+               userRights.module = module;
+               
+           } catch (InstantiationException ex) {
+               java.util.logging.Logger.getLogger(ModuleController.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (IllegalAccessException ex) {
+               java.util.logging.Logger.getLogger(ModuleController.class.getName()).log(Level.SEVERE, null, ex);
+           }
+         }
+         else
+         {
+             //nollställ alla rättigheter
+            userRights.setRights(0);
+         }
+                  
+         //lägg till rättigheterna
+         if(list!=null)
+         {
+            for(Integer i:list)
+            {
+                userRights.addRight(i);
+            }
+         }
+         userRights.save();
+         ok();
+     }
      
     
 }

@@ -3,10 +3,38 @@
 #{get 'usermodules' /}
 #{get 'companymodules' /}
 -->
-
-*{<!-- Användarmoduler-->}*
+<script>
+    jQuery(document).ready(function(){
+        jQuery("a.rights-button").each(function(){
+            jQuery(this).click(function(){
+                var id = jQuery(this).attr("but-id");
+                var uid = jQuery(this).attr("user-id");
+                jQuery("tr.rights-row").css("display","none");
+                jQuery("tr#"+id).css("display","block");
+                jQuery("#mod"+id).load('/setUserAccess/'+id+'/'+uid);
+                
+                submitForm();
+            });
+        });
+        
+        
+    });
+</script>
+<style>
+    .rights-row{
+        display:none;
+        overflow-style: auto;
+        overflow-y: auto;
+            
+    }
+    
+    a.rights-button{
+        
+    }
+</style>
+*{<!-- Anvï¿½ndarmoduler-->}*
 	#{if user}
-		*{<!-- Listar användarens ingående moduler-->}*
+		*{<!-- Listar anvï¿½ndarens ingï¿½ende moduler-->}*
 		#{if usermodules!=null && usermodules.size() != 0}
 			<h2>&{'Got.access.to.modules', user.name}</h2>
 			<table class="listtable">
@@ -21,8 +49,15 @@
 							<input type="submit" class="deletebutton" value="" alt="delete group" />
 							#{/form}
 						</td>
+                                                <td><a class="rights-button" but-id="${module.id}" user-id="${user.id}" href="javascript:void(0);">&{'set.access'}</a></td>
 						
 					</tr>
+                                        *{<!-- Visar vy med rÃ¤ttighetssÃ¤ttning-->}*
+                                        <tr class="rights-row" id="${module.id}">
+                                            <td colspan="3">
+                                                <div id="mod${module.id}" style="border:1px solid #eee;width:500px; padding:7px;"></div>
+                                            </td>
+                                        </tr>
 				#{/list}
 			</table>
 		#{/if}
