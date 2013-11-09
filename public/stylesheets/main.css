@@ -29,13 +29,6 @@ a:hover {
 	color:#999;
 	text-decoration:underline;
 }
-div.wrapper{
-    margin:0 50px;
-    margin:auto;
-    padding-top: 10px;
-    width:90%;   
-	/*height:100%;*/
-}
 
 div.logo{
     width:100%;
@@ -54,8 +47,8 @@ div.userinfo{
 }
 div.content{
     clear:both;
-	margin: 10px 20px;
-	height: 100%;
+    /*margin: 10px 20px;*/
+    height: 100%;
 }
 
 div.modulecontent{
