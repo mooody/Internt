@@ -5,7 +5,7 @@
 	<p>&{'type.your.email.to.get.recoverymail'}</p>
 	
 	#{form @Application.sendRecovory()}
-		<input type="text" name="email" value="" />
-		<input type="submit" value="&{'Send'}" />
+		<input type="email" class="form-control" type="text" name="email" value="" />
+		<input type="submit" class="btn btn-default" value="&{'Send'}" />
 	#{/form}
 </fieldset>

@@ -1,0 +1,203 @@
+
+ public static void index(int page, String search) {
+		
+		int count = 0;
+		int size = 1;
+		int pages = 0;
+		if(page == 0) page = 1;
+		
+		List<Contact> contacts = null;
+		if(search == null||search != null&&search.isEmpty()){				
+			
+			count = (int)Contact.count();
+			pages = count/size + (count%size>0?1:0);
+
+			if(page>pages){
+				page = pages;
+			}
+		
+			contacts = Contact.find("select c from Contact c order by c.name")
+				.fetch(page,size);
+			
+			Logger.info("No Search: pages = %s, page = %s, count = %s", pages, page, count);
+		}
+		else
+		{
+			count = (int)Contact.count("select count(c) from Contact c where lower(c.name) like ?", "%"+search+"%");
+			pages = (int)count/size +(count%size>0?1:0);
+			
+			if(page>pages){
+				page = pages;
+			}
+			
+			contacts = Contact.find("select c from Contact c where lower(c.name) like :search order by c.name")
+				.bind("search", "%"+search.toLowerCase()+"%")
+				.fetch(page,size);
+			
+			Logger.info("Search[%s]: pages = %s, page = %s, count = %s",search, pages, page, count);
+		}
+		
+		/*List<MyList> lists = MyList.all().fetch();
+		
+		List<MyList> allFalse = MyList.find("select distinct l from MyList l join l.objects o where o.ok = 0").fetch();
+
+		Query query = JPA.em().createQuery("select distinct l from MyList l inner join l.objects o where o.ok = 0");
+
+		List<MyList> allTrue = query.getResultList();
+        
+		render(lists, allFalse, allTrue);
+		*/ 
+		//if(page!=null)
+			render("Application/page.html",contacts, page, pages, search);
+		//render("Application/frombegining.html");
+    }
+	
+	public static void getNamesByAjax(String search){
+		List<Contact> contacts = Contact.find("select c from Contact c where lower(c.name) like :search order by c.name")
+				.bind("search", "%"+search.toLowerCase()+"%")
+				.fetch();
+		Controller.renderJSON(contacts);
+	}
+
+	//-------------------------------------------
+
+	<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!--<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/assets/bootstrap.css'}">-->
+
+		<script src="@{'/public/javascripts/angular.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+		 <script src="https://code.jquery.com/jquery.js"></script>
+		 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		 <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
+		<!-- Bootstrap -->
+		<link href="public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<script src="public/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="${_response_encoding}"></script>
+		<script src="/public/javascripts/page.js" type="text/javascript"></script>
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+		<![endif]-->
+		
+		<!--
+		<script src="@{'/public/javascripts/ui-bootstrap-0.6.0.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+		<script src="@{'/public/javascripts/ui-bootstrap-tpls-0.6.0.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+		<script src="/public/javascripts/page.js" type="text/javascript"></script>
+		-->
+		
+		<script>
+			$(function(){
+				$( "#names" ).autocomplete({
+					source: function( request, response ) {
+						$.ajax({
+							data:{'search':$("#names").val()},
+							url: "@{Application.getNamesByAjax()}",
+							success: function( data ) {
+								response( $.map( data, function( item ) {
+									return {
+										value:item.name
+									}
+								}));
+							}
+						});
+					},
+					minLength: 2
+					
+				});
+			});
+			
+		</script>
+		
+	</head>
+	<body>
+		<div ng-controller="AppCtrl" ng-app="PageApp">
+			
+			<nav class="navbar navbar-default" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span> 
+    </button>
+	<a class="navbar-brand" href="#">Brand</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	  <menu></menu>
+	<ul class="">
+	<form class="navbar-form navbar-right" role="search" action="@{Application.index(page)}">
+		<div class="form-group">
+			<input type="text" id="names" name="search"class="form-control" placeholder="Search">
+		</div>
+		<input type="submit" class="btn btn-default" value="Submit"/>
+		</form>
+	</ul>
+  </div>
+</nav>
+			{{title}}
+			<div style="margin:20px; padding:10px; border:solid 1px #ddd; background-color:#eee;">
+				<ng-view></ng-view>
+			</div>
+			
+			
+		</div>
+		
+		
+		*{<!--
+		index(int page)
+		{
+			if(page == 0) page = 1;
+			int size = 50;
+			int pages = (int)Contact.count()/size + (Contact.count()%size>0?1:0);
+
+			if(page>pages){
+				page = pages;
+			}
+
+			List<Contact> contacts = Contact.find("select c from Contact c order by c.name").fetch(page,size);
+		}
+		-->}*
+		<div style="margin:20px; padding:20px;">
+		
+		#{if pages > 1}
+			%{ 
+				def first = page-3;
+				if(first<1) first = 1;
+				def last = page +3;
+				if(last>pages) last = pages;
+
+			}%
+			<div style="width:100%; text-align:center">
+				<div class="center-block clear-fix">
+					<ul class="pagination">
+						#{if page != 1 && page > 0}
+						<li class="next"><a href="@{index(1, search)}">&larr; &{'First'}</a></li>
+						<li><a href="@{index(page-1,search)}">&laquo;</a></li>
+						#{/if}
+						#{list items:first..last, as:'num'}
+						<li #{if num==page}class="active"#{/if}><a href="@{index(num,search)}">${num}</a></li>
+						#{/list}
+						#{if page != last}
+						<li><a href="@{index(page+1,search)}">&raquo;</a></li>
+						<li class="next"><a href="@{index(pages,search)}">&{'Last'} &rarr; <span class="badge">${pages}</span></a></li>
+						#{/if}
+					</ul>
+				</div>
+			</div>
+		#{/if}
+		#{list items:contacts, as:'contact'}
+			<div class="col-md-5 col-xs-11" style="border:1px solid #ccc; padding:20px; margin:2px 30px;">${contact.name}</div>
+		#{/list}
+		</div>
+		<!-- class="col-md-6 col-xs-12" -->
+		
+</body>
+</html>
+

@@ -46,6 +46,7 @@ core.Email = Email
 core.pass = Ange nytt lösenord
 core.pass2 = Ange nytt lösenord igen
 you.need.to.login.again = Du måste logga in igen
+ChooseCompany = Välj företag
 
 #Users
 add.user.to.group = Lägg till användaren till gruppen

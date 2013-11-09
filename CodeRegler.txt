@@ -112,6 +112,25 @@ från företagsmenyn i Hantera företag. Går läses cus ut genom samma metod so
 
 SuperAdministratören kan där efter lägga till moduler till Administratören. 
 
+Huvudvyn för moduler
+#{extends 'main.html' /}
+#{stylesheet 'booking/booking.css' /}
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/jquery-ui/jquery-ui.css'}">
+<script src="@{'/public/javascripts/jquery-1.8.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+<script src="@{'/public/javascripts/jquery-ui/jquery-ui.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+
+	
+<div class="modulecontent">	
+<div id="menu">
+	<ul id="mainmenu">
+		<li id="start"><a href="@{booking.Booking.index()}">&{'Start'}</a></li>
+                <li id="print" style="float:right; display:none"></li>
+	</ul>
+</div>
+<div style="clear:both;"></div>
+        #{doLayout /}
+</div>
+
 
 
 

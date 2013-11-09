@@ -3,20 +3,49 @@
 #{set title:'Logga in' /}
 
 
-<fieldset class="loginform">
+
 
    
-    <legend>&{'login.as.user'}</legend>
-    #{form @Application.login() }
+<div class="form-horizontal center-block">
+    #{form @Application.login(), 'role':'form'}
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">&{'email'}</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control col-sm-10#{ifError 'email'} error#{/ifError}"  id="email" name="email" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">&{'password'}</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control#{ifError 'password'} error#{/ifError}" id="password" name="password" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-7">
+            <input class="btn btn-default pull-right" style="width:150px;" type="submit" value="&{'buttons.login'}" /> 
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-7">
+            <a class="pull-right" href="@{Application.recoveryView()}">&{'mail.lostPassword'}</a>
+        </div>
+    </div>
+    #{/form}
+</div>
+      *{<!-- 
+        <fieldset class="loginform">
+       <legend>&{'login.as.user'}</legend>
+      #{form @Application.login() }
+       
     <table class=""fullwidth">
         <thead></thead>
         <tbody>
             <tr>
                 <td class="right">
-                    <label for="email">&{'email'}</label>
+                    <label for="email" class="control-label">&{'email'}</label>
                 </td>
                 <td> 
-                   <input type="text" style="width:250px;" class="inputbox" id="email" name="email" />
+                   <input type="text" style="width:250px;" class="form-control"  id="email" name="email" />
 				   <span class="error">#{error 'email' /}</span>
                 </td>
             </tr>
@@ -25,19 +54,18 @@
                    <label for="password">&{'password'}</label> 
                 </td>
                 <td>
-                    <input type="password" style="width:250px;" class="inputbox" id="password" name="password" />
+                    <input type="password" class="form-control" style="width:250px;" id="password" name="password" />
 					<span class="error">#{error 'password' /}</span>
                 </td>
             </tr>
             <tr>
-                <td colspan="2" class="right">
-                <input class="inputbutton" style="width:150px;" type="submit" value="&{'buttons.login'}" /> 
+                <td colspan="2" class="">
+                <input class="btn btn-default pull-right" style="width:150px;" type="submit" value="&{'buttons.login'}" /> 
                 </td>
             </tr>
         </tbody>        
-    </table>         
     #{/form}
 	<div style="width:100%; text-align:right; padding-top:10px;">
 	<a href="@{Application.recoveryView()}">&{'mail.lostPassword'}</a>
 	</div>
-</fieldset>
+</fieldset>    </table>         -->}*

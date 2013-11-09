@@ -4,29 +4,30 @@
 $("li#mypage").addClass("active");
 </script>
 
-
-
-<h1>MyPage</h1>
-<h2>Modules</h2>
+<div style="width=100% border:1px solid">
 #{list items:modules, as:'module'}
-<div class="divmenu-holder" goal="@{ModuleController.index(module.id)}">
-<a href="@{ModuleController.index(module.id)}" id="a-${module.name}" /><h2>&{module.name}</h2></a>
-<br />
-<div id="${module.name}"></div>
-
-<script type="text/javascript">
-    $(document).ready(
-    function(){
-        $("#${module.name}").load("@{ModuleController.peek(module.id)}");
-    });
-</script>
+<div class="divmenu-holder col-md-6 col-xs-12" goal="@{ModuleController.index(module.id)}">
+    <div class="menu-object-holder">
+        <a href="@{ModuleController.index(module.id)}" id="a-${module.name}" /><h2>&{module.name}</h2></a>
+        <div class="title" id="${module.name}">&nbsp;
+        <script type="text/javascript">
+            $(document).ready(
+            function(){
+                $("#${module.name}").load("@{ModuleController.peek(module.id)}");
+            });
+        </script>
+        </div>
+    </div>
 </div>
 #{/list}
-
+</div>
+<div style="clear:both;"></div>
 <h2>Grupper</h2>
 
 #{list items:sessionuser.getAllGroups(), as:'group'}
 	${group.name}<br />
 #{/list}
+
+</div>
 
 

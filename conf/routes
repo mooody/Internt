@@ -15,9 +15,9 @@ GET		/selectCompany							Application.selectCompany
 GET		/loadCompany							Application.loadCompany
 GET		/activate/{token}						Application.activate
 GET		/reactivate/{email}						Application.resendActivationMail
-GET		/mail/recovery/{token} 					Application.recoveryView
-GET		/mail/recovery 							Application.recoveryView
-POST	/mail/recovery 							Application.sendRecovory
+GET		/system-mail/recovery/{token}                                   Application.recoveryView
+GET		/system-mail/recovery 						Application.recoveryView
+POST            /system-mail/recovery                                           Application.sendRecovory
 
 #AdminController 
 GET     /admin                                    admin.AdminController.index
@@ -91,6 +91,7 @@ POST    /saveUserAccess/{module_id}/{user_id}     ModuleController.saveUserAcces
 *   /project                                    module:project
 *   /passwords                                  module:passwords
 *   /files                                  	module:files
+*   /mail                                  	module:mail
 #----------------------
 #groups
 

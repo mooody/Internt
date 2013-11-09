@@ -58,21 +58,32 @@ public class Company extends Model{
      */
     @OneToMany(fetch=FetchType.LAZY)
     @JoinColumn(name="user_company", referencedColumnName="id")
-	public List<UserBase> users;
+    public List<UserBase> users;
 	
-	@ManyToMany
-	 @JoinTable(name = "multiple_companies", 
-        inverseJoinColumns = {@JoinColumn(name ="user_id") }, 
-        joinColumns = { @JoinColumn(name = "company_id") })
+    public List<UserBase> getUsers(){
+        List<UserBase> temp =  users;
+        for(UserBase user:this.usersWithMultipleAccounts)
+        {
+            if(!temp.contains(user))
+            {
+                temp.add(user);
+            }
+        }
+        return temp;
+    }
+    @ManyToMany
+    @JoinTable(name = "multiple_companies", 
+    inverseJoinColumns = {@JoinColumn(name ="user_id") }, 
+    joinColumns = { @JoinColumn(name = "company_id") })
     public List<UserBase> usersWithMultipleAccounts;
 	
-	@ManyToMany
-	 @JoinTable(name = "company_modules", 
-        inverseJoinColumns = {@JoinColumn(name ="module_id") }, 
-        joinColumns = { @JoinColumn(name = "company_id") },
-		uniqueConstraints = @UniqueConstraint(name = "oneOneModulePerCompany",
-		columnNames = {"company_id", "module_id"})
-	)
+    @ManyToMany
+     @JoinTable(name = "company_modules", 
+    inverseJoinColumns = {@JoinColumn(name ="module_id") }, 
+    joinColumns = { @JoinColumn(name = "company_id") },
+            uniqueConstraints = @UniqueConstraint(name = "oneOneModulePerCompany",
+            columnNames = {"company_id", "module_id"})
+    )
     public List<Module> modules;
 
 	public List<Module> getCompanyModules()
@@ -103,21 +114,21 @@ public class Company extends Model{
         this.users.add(user);
     }
 	
-	@Override
-	public String toString()
-	{
-		return "Company:"+this.name;
-	}
+    @Override
+    public String toString()
+    {
+            return "Company:"+this.name;
+    }
 
-	public int countUsers()
-	{
-		//long count = UserBase.count("select count(u.id) from UserBase u where u.company.id = ?", this.id );
-		return this.usersWithMultipleAccounts.size();
-	}
-	
-	public static List<PrivilegeUser> getPrivilegeUsers(Company company)
-	{
-		return PrivilegeUser.find("byCompany", company).fetch();
-	}
+    public int countUsers()
+    {
+            //long count = UserBase.count("select count(u.id) from UserBase u where u.company.id = ?", this.id );
+            return this.usersWithMultipleAccounts.size();
+    }
+
+    public static List<PrivilegeUser> getPrivilegeUsers(Company company)
+    {
+            return PrivilegeUser.find("byCompany", company).fetch();
+    }
 
 }

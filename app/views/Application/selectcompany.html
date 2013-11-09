@@ -5,7 +5,7 @@
 		jQuery(".divmenu-holder").each(
 			function(){
 			
-				//när man klickar på modulen
+				//nï¿½r man klickar pï¿½ modulen
 				jQuery(this).click(function(){
 					var href = jQuery(this).attr("goal");
 					location.href=href;
@@ -30,9 +30,12 @@
 <h1>&{'YouGotMultipleCompanies'}</h1>
 <h3>-&{'ChooseCompany'}</h3>
 </div>
+    
 #{list items:companies,as:'company'}
-<div class="divmenu-holder" goal="@{Application.loadCompany(company.id)}" style="float:left;">
-<a href="@{Application.loadCompany(company.id)}" id="a-${company.name}" /><h2>&{company.name}</h2></a>
+<div class="divmenu-holder col-md-6 col-xs-12;" goal="@{Application.loadCompany(company.id)}">
+    <div class="menu-object-holder">
+        <a href="@{Application.loadCompany(company.id)}" id="a-${company.name}" /><h2>&{company.name}</h2></a>
+    </div>
 </div>
 #{/list}
 </div>

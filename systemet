@@ -1,0 +1,17 @@
+Core
+Kontrollers
+Application
+- Hanterar inloggning, samt andra sidor som kräver inloggning
+PlanController
+- Hanterar inloggad användare mellan requests. Sparar i session osv
+/admin
+ Hanterar 
+-AdminController (basKontroller till alla admin ärenden)
+-CompanyController
+-GroupController
+-UsersController
+
+
+
+Module
+Alla controllers i moduler ska ärva ModuleController (ModuleKontroller ärver i sin tur från planKontroller)

@@ -24,6 +24,10 @@ import play.mvc.Finally;
  */
 public class PlanController extends Controller{
     
+    /**
+     * Ger ut den inloggade användaren
+     * @return 
+     */
     protected static UserBase user()
 	{
 		UserBase user = Cache.get(session.getId()+"user", UserBase.class);

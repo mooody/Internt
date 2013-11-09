@@ -30,9 +30,10 @@ a:hover {
 	text-decoration:underline;
 }
 div.wrapper{
+    margin:0 50px;
     margin:auto;
     padding-top: 10px;
-    width:1000px;   
+    width:90%;   
 	/*height:100%;*/
 }
 
@@ -98,28 +99,44 @@ form.delete{
 }
 
 body {
-	font-family: StMarieThin !important;
+	/*font-family: StMarieThin !important;*/
 }
 
 div.divmenu-holder{
-	padding:18px;
-	width:45%;
-	height:70px;
-	margin:2px 2px 4px 0;
 	cursor:pointer;
+        /*padding:18px;
+        border:1px solid #ccc;
+	 margin:2px 2px 4px 0;
+       
+	
+        height:100px;
+        max-width:45%;
+	margin:2px 2px 4px 0;
+	
 	border:1px solid #ccc;
 	display:inline;
-	display:inline-block;
+	display:inline-block;*/
+}
+
+div.divmenu-holder .title{
+    width:300px;
 }
 
 div.divmenu-holder h2{
 	margin:auto;
 }
-	
+div.menu-object-holder{
+    width:97%;
+    margin:5px; 
+    padding:15px; 
+    border:1px 
+    solid #ccc;
+}
 div.divmenu-hover{
-	border:1px solid #eee;
-	background-image: url('/public/images/menudiv.png');
-	border: 1px solid #ccc;
+	/*border:1px solid #eee;*/
+	/*background-image: url('/public/images/menudiv.png');*/
+	/*border: 1px solid #ccc;*/
+        background-color: #eee;
 }
 div.divmenu-holder a:hover{
 	text-decoration:none;
@@ -134,7 +151,7 @@ input.error{
 	border: #f00 1px solid !important;
 }
 
-
+/*
 input[type=text], 
 input[type=password], 
 input[type=file], 
@@ -156,7 +173,7 @@ input[type=text]:focus, input[type=password]:focus, input[type=file]:focus{
 	border-color: #339933;
 }
 
-
+*/
 
 /* buttons */
 input.button{
@@ -175,13 +192,14 @@ border: 1px solid #ccc;
 	-webkit-box-shadow: 2px 2px 3px #666;
 	box-shadow: 2px 2px 3px #666;
 }
+/*
 a.button, input[type=submit]{
 	padding:2px 5px;
 	background-color: #0c0c0c;
 	text-decoration:none;
 	color:#e0e0e0;
 	margin: 2px;
-	/**/
+	
 	border: 1px solid #ccc;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -189,19 +207,20 @@ a.button, input[type=submit]{
 	-moz-box-shadow: 2px 2px 3px #666;
 	-webkit-box-shadow: 2px 2px 3px #666;
 	box-shadow: 2px 2px 3px #666;
-	/*font-size: 12px;*/
+
 	padding: 4px 7px;
 	outline: 0;
 	-webkit-appearance: none;
 	alignment-adjust: central;
-}
+}*/
 
+/*
 a.overbutton, input[type=submit].overbutton{
 	border:#111 1ps solid;
 	background-color: #0e0e0e;
 	color:#FFF;
 }
-
+*/
 input[type=submit].deletebutton {
     background-image: url('/public/images/trash20px.jpeg');
     background-color: transparent;

@@ -1,4 +1,4 @@
-package controllers.mail;
+package controllers.systemmail;
 
 import play.mvc.Controller;
 import models.UserBase;

@@ -1,28 +1,29 @@
 #{mainpage title:'Signup' /}
 
-#{form @Application.createAccount()}
-
+<div class="center-block">
+#{form @Application.createAccount(), 'role':'form'}
 <table>
     <tr>
         <td>Namn:</td>
-        <td><input type="text" style="width:200px;" name="user.name" /></td>
+        <td><input type="text" class="form-control" style="width:200px;" name="user.name" /></td>
     </tr>
     <tr>
         <td>Email</td>
-        <td><input type="text"  style="width:200px;" name="user.email" /></td>
+        <td><input type="email"  class="form-control" style="width:200px;" name="user.email" /></td>
     </tr>
     <tr>
         <td>Lösen</td>
-        <td><input type="password"  style="width:200px;" name="user.password" /></td>
+        <td><input type="password"  class="form-control" style="width:200px;" name="user.password" /></td>
     </tr>
     <tr>
         <td>&nbsp;</td>
-        <td><input type="submit" value="signup" /></td>
+        <td><input type="submit" class="btn btn-default" value="signup" /></td>
     </tr>
 </table>
-
-
-
-
-
 #{/form}
+</div>
+
+
+
+
+
