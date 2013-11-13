@@ -72,6 +72,24 @@
 
 	});
 	</script>
+        
+        <script>
+	jQuery(document).ready(function(){
+            jQuery("#modal-open").each(function(){
+                jQuery(this).click(function(){
+                        var href=jQuery(this).attr('href');
+                        var title = jQuery(this).attr('title');
+                        var data = jQuery(this).attr('data');
+                        $('#modal-window').modal('show');
+                        jQuery("#loaded-modal-header").text(title);
+                        jQuery("#loaded-modal-content").load(href,data);
+                        
+                        return false;
+                });
+            });
+	});
+        </script>
+
         <style>
 div.module-holder{
 	padding:2%;
@@ -128,7 +146,7 @@ div.module-hover{
                     </li>
                     #{/if}
                     #{elseif !loginform}
-                    <li><a href="@{Application.loginform()}">&{'user.login'}</a></li>
+                    <li><a id="modal-open" title="&{'user.login'}" href="@{Application.loginform()}">&{'user.login'}</a></li>
                     <li><a href="@{Application.signup()}">&{'user.signup'}</a></li>
                     #{/elseif}
                 </ul>
@@ -193,5 +211,23 @@ div.module-hover{
                 #{/if}
         </div>
     </div>
+    <!-- class="col-md-6 col-xs-12" -->
+    <div class="modal fade" id="modal-window" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+                <div class="modal-content">
+                        <div class="modal-header">                                  
+                            <h1 id="loaded-modal-header"></h1><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="loaded-modal-content">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                </div>
+        </div>
+    </div>
+
 </body>
 </html>
