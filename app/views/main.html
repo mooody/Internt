@@ -32,23 +32,23 @@
     <script>
 		//stäng av all autocomplete i HTML5 kompitibla webbläsare
         jQuery(document).ready(function(){
-			jQuery("input").attr("autocomplete","off");
-			
-			//Huvudmenyn
-			jQuery("ul#headmenu li").mouseover(function(){
-				jQuery(this).addClass("m-over");
-			});
-			jQuery("ul#headmenu li").mouseout(function(){
-				jQuery(this).removeClass("m-over");
-			});
-			
-			//modulemenyn
-			jQuery("ul#mainmenu li").mouseover(function(){
-				jQuery(this).addClass("m-over");
-			});
-			jQuery("ul#mainmenu li").mouseout(function(){
-				jQuery(this).removeClass("m-over");
-			});
+                jQuery("input").attr("autocomplete","off");
+
+                //Huvudmenyn
+                jQuery("ul#headmenu li").mouseover(function(){
+                        jQuery(this).addClass("m-over");
+                });
+                jQuery("ul#headmenu li").mouseout(function(){
+                        jQuery(this).removeClass("m-over");
+                });
+
+                //modulemenyn
+                jQuery("ul#mainmenu li").mouseover(function(){
+                        jQuery(this).addClass("m-over");
+                });
+                jQuery("ul#mainmenu li").mouseout(function(){
+                        jQuery(this).removeClass("m-over");
+                });
 		//hanterar rutor i menyer
                 
                 //n�r man klickar p� modulen
@@ -216,7 +216,7 @@ div.module-hover{
         <div class="modal-dialog">
                 <div class="modal-content">
                         <div class="modal-header">                                  
-                            <h1 id="loaded-modal-header"></h1><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <span id="loaded-modal-header">&nbsp;</span><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
                             <div id="loaded-modal-content">
