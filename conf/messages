@@ -78,6 +78,7 @@ zipcode = Postnummer
 city = Stad
 cellphone = Mobil	
 phone = Telefon
+mypage = Hem
 
 #Company
 first.company.info = Var vänlig att fyll i nedanstående uppgifter.

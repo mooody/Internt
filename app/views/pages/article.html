@@ -1,0 +1,10 @@
+#{extends 'main.html' /}
+<div class="panel panel-default">
+        <div class="panel-heading">
+                <h2>${article.title}</h2>
+        </div>
+        <div class="panel-body">
+                <p>${article.content.replace("#","/pages").raw()}</p>
+        </div>
+</div>
+

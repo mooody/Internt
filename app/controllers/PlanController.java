@@ -5,9 +5,12 @@
 package controllers;
 
 import controllers.admin.CompanyController;
+import java.util.List;
 import models.UserBase;
 import models.Admin;
 import models.User;
+import models.pages.Article;
+import models.pages.HomePage;
 import play.Logger;
 import play.cache.Cache;
 import play.db.jpa.GenericModel;
@@ -69,6 +72,23 @@ public class PlanController extends Controller{
     @Before
     private static void getArgs()
     {
+        //Hämtar in de sidor som finns kopplade till företaget för att visa i menyn
+        List<Article> articles = Article.find("byCompanyAndMenuitemAndGlobal", user().company, true, false)
+                .fetch();
+        
+        List<Article> globalArticles = Article.find("byGlobal", true)
+                .fetch();
+        //Hämtar in företagets startsida
+        HomePage home = HomePage.find("byCompany", user().company).first();
+               
+        //lägger menyföremål samt hemsida som parametrar
+        renderArgs.put("articles", articles);
+        renderArgs.put("globalArticles", globalArticles);
+        if(home!=null&&home.frontpage != null)
+        {
+            renderArgs.put("home", home);
+        }
+        
         Logger.info("planController.getArgs()");
         //long userAuth = 0;
         /*

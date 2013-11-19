@@ -67,7 +67,6 @@ public class Application extends Controller {
         if(email==null||password==null||email.isEmpty()||password.isEmpty())
         {
             message = Messages.get("you.need.to.type.pass.and.name");
-            Logger.info("just render");
             flash.put("message", message);
             render("Application/login.html");
         }
@@ -77,50 +76,50 @@ public class Application extends Controller {
         {
             Logger.info("check username %s", email);
             UserBase user = null;
-			try {
+            try {
 
-				user = UserBase.login(email,password);
-				
-				if(user!=null&&!user.activated)
-				{
-					flash.put("message", Messages.get("account.not.activated"));
-					flash.put("resend", user.email);
-					Application.loginform();
-				}
-				
-			} catch(Exception ex) {
-				message = "some.error.occord.contact.site.help";
-				Logger.info(ex.getMessage()+" "+ex.getCause());
-			}
+                    user = UserBase.login(email,password);
+
+                    if(user!=null&&!user.activated)
+                    {
+                            flash.put("message", Messages.get("account.not.activated"));
+                            flash.put("resend", user.email);
+                            Application.loginform();
+                    }
+
+            } catch(Exception ex) {
+                    message = "some.error.occord.contact.site.help";
+                    Logger.info(ex.getMessage()+" "+ex.getCause());
+            }
             if(user != null)
             {
-				/*List<Invite> invites = Invite.getInvites(user);
-				if(invites != null && invites.size() > 0)
-				{
-					flash.put("hasInvites", true);
-				}
-				*/
+                /*List<Invite> invites = Invite.getInvites(user);
+                if(invites != null && invites.size() > 0)
+                {
+                        flash.put("hasInvites", true);
+                }
+                */
                 message = Messages.get("login.ok");
                 //Vi sätter användaren som inloggad
                 session.put("userid", user.id);
                 Cache.set(session.getId()+"user", user, "30mn");
 				
                 flash.put("message", message);
-				//om användaren har varit användare i flera företag och borttaget från ett.
-				//fixa med företaget
-				if(user.company==null && user.companies.size()==1)
-				{
-					user.company = user.companies.get(0);
-					user.save();
-				}
-				//om användaren har mera än 1 företag kopplat till sig, gå till välj företag
-				if(user.companies.size() > 1)
-				{
-					selectCompany(user);
-					Logger.info("More Companys");
-				}
-				
-				loadComanyUserSetting(user, user.company);
+                //om användaren har varit användare i flera företag och borttaget från ett.
+                //fixa med företaget
+                if(user.company==null && user.companies.size()==1)
+                {
+                        user.company = user.companies.get(0);
+                        user.save();
+                }
+                //om användaren har mera än 1 företag kopplat till sig, gå till välj företag
+                if(user.companies.size() > 1)
+                {
+                        selectCompany(user);
+                        Logger.info("More Companys");
+                }
+
+                loadComanyUserSetting(user, user.company);
 				//gå till inloggningen
                 redirect("users.mypage");
             }   
