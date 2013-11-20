@@ -111,11 +111,11 @@ controllers.controller("ArticleCtrl", function($scope, $routeParams, ArticleServ
 	}
 
 	//tar bort en artikel
-	$scope.removeArticle = function(id){
+	$scope.removeArticle = function(article){
 		var Article = new ArticleService();
-		if(confirm("&{'sure.to.delete'}"))
+		if(confirm("Radera artikeln "+article.title+"?"))
 		{
-			var promise = Article.$remove({id:id});
+			var promise = Article.$remove({id:article.id});
 
 			promise.then(function(data){
 				$scope.fetch();
