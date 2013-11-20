@@ -1,0 +1,109 @@
+#{extends 'main.html' /}
+		
+		 
+		<script src="@{'/public/javascripts/angular.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+		<script src="@{'/public/javascripts/angular-route.min.js'}"></script>
+		<script src="@{'/public/javascripts/angular-resource.min.js'}"></script>
+		<script src="@{'/public/javascripts/angular-sanitize.min.js'}"></script>
+		<script src="@{'/public/javascripts/tinymce/tinymce.min.js'}"></script>
+		*{<!-- amgular directive -->}*
+		<script src="@{'/public/javascripts/tinymce.js'}"></script>
+		
+		 
+		 <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
+		 
+		 <!-- Home -->
+		 <script src="@{'/public/javascripts/pages/controllers.js'}"></script>
+		 <script src="@{'/public/javascripts/pages/services.js'}"></script>
+		 
+		 <script src="@{'/public/javascripts/pages/directives.js'}"></script>
+		 <script src="@{'/public/javascripts/pages/app.js'}"></script>
+		<!-- Bootstrap -->
+		
+	<div ng-app="HomeApp" ng-controller="MenuCtrl">
+
+			<nav class="navbar navbar-default" role="navigation">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span> 
+						</button>
+						<div ng-show="home.title"><a class="navbar-brand" href="#">{{home.title}}</a></div>
+						<div ng-hide="home.title"><a class="navbar-brand" href="/app">none</a></div>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li ng-class="{'active':item.active}" ng-repeat="item in menuItems" ng-click="active(item)"><a href="#/article/{{item.id}}">{{item.title}}</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="#/admin">Artiklar</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+
+				</nav>		
+
+			
+            <div>
+                    <div ng-view></div>
+            </div>
+
+	
+                
+<script type="text/ng-template" id="public/pages/admin.html">
+    <div class="panel panel-success">
+	<div class="panel-body">
+		<div ng-controller="ArticleCtrl">
+			<div class="col-lg-6">
+				<table class="table table-seperated">
+					<tr>
+						<th>Name</th>
+						<th >FrontPage</th>
+						<th>MenuItem</th>
+                                                #{if sessionuser instanceof models.SuperAdmin}
+                                                    <th>Global</th>
+                                                #{/if}
+						<th>Trash</th>
+					</tr>
+					<tr ng-repeat="article in articles" ng-click="getArticle(article.id)">
+						<td>{{article.title}}</td>
+						<td><span class="center-block glyphicon glyphicon-asterisk" ng-show="article.id==home.id"></span></td>
+						<td><span class="center-block glyphicon glyphicon-ok" ng-show="article.menuitem"></span></td>
+                                                #{if sessionuser instanceof models.SuperAdmin}
+                                                    <td><span class="center-block glyphicon glyphicon-ok" ng-show="article.global"></span></td>
+                                                #{/if}
+                                                <td><span class="center-block glyphicon glyphicon-trash" ng-click="removeArticle(article.id)"></span></td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="col-lg-6">	
+				<form name="articleForm" ng-submit="save(article, frontpage)">
+				<input type="hidden" ng-model="article.id"/>
+				<input type="text" class="form-control" ng-model="article.title" required ng-class="{error:articleForm.article.title.$error.required}"/><br />
+				<textarea links="pages/links" ui-tinymce="tinymceOptions" rows="10" class="form-control" required ng-model="article.content" ng-class="{error:articleForm.article.content.$error.required}"/></textarea><br />
+				<input type="checkbox" ng-model="article.menuitem" /> menuitem<br />
+                                #{if sessionuser instanceof models.SuperAdmin}
+                                    <input type="checkbox" ng-model="article.global" /> global<br />
+                                #{/if}
+				<input type="checkbox" ng-model="frontpage" ng-checked="article.id==home.id&&article.id!=null"/> frontpage<br />
+				<button class="btn btn-default" type="submit">Save</button>
+				</form>
+				
+			</div>
+		</div>
+	</div>
+</div>
+</script>
+
+</div>
+

@@ -19,8 +19,10 @@
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
         <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         <script src="/public/bootstrap/js/bootstrap.min.js"></script>
+        
+        <script type="text/javascript" src="@{'/public/javascripts/tinymce/tinymce.min.js'}"></script>
+        
         *{<!--
-          
          <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/jquery-ui/jquery-ui.css'}">
         <script src="@{'/public/javascripts/jquery-1.8.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
         <script src="@{'/public/javascripts/jquery-ui/jquery-ui.js'}" type="text/javascript" charset="${_response_encoding}"></script>
@@ -72,23 +74,6 @@
 
 	});
 	</script>
-        
-        <script>
-	jQuery(document).ready(function(){
-            jQuery("#modal-open").each(function(){
-                jQuery(this).click(function(){
-                        var href=jQuery(this).attr('href');
-                        var title = jQuery(this).attr('title');
-                        var data = jQuery(this).attr('data');
-                        $('#modal-window').modal('show');
-                        jQuery("#loaded-modal-header").text(title);
-                        jQuery("#loaded-modal-content").load(href,data);
-                        
-                        return false;
-                });
-            });
-	});
-        </script>
 
         <style>
 div.module-holder{
@@ -106,12 +91,12 @@ div.module-hover{
 	background-color:#ccc;
 }
 </style>
-<body>
+<body ng-app="HomeApp" ng-controller="MenuCtrl">
     <div class="container">
         <div class="logo">
             <h1>${sessionuser!=null?sessionuser?.company?.name:'Internt.nu'}</h1>
         </div>
-
+        
         <nav class="navbar navbar-default" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -121,29 +106,45 @@ div.module-hover{
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span> 
               </button>
-              <a class="navbar-brand" href="/">Home</a>
+              
+              <div>
+                  #{if home}
+                    <a class="navbar-brand" href="/pages/article/${home.frontpage.id}">${home.frontpage.title}</a>
+                  #{/if}
+                  #{else}
+                    <a class="navbar-brand" href="@{Users.mypage()}">&{'mypage'}</a>
+                  #{/else}
+              </div>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
+            
             <div class="collapse navbar-collapse" id="mainmenu">
                 <ul class="nav navbar-nav">
-                    #{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
-                        #{include 'admin/menu.html' /}
-                    #{/if}
-                    #{if sessionuser.getClass() == models.SuperAdmin.class}
-                        #{include 'bigadmin/menu.html' /}
-                    #{/if}
+                    *{<!-- menu links here-->}*
+                    #{list items:articles, as:'article'}
+                    <li><a href="/pages/article/${article.id}">${article.title}</a></li>
+                    #{/list}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                #{if sessionuser}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">&{'logged.in.as'} ${sessionuser.name}<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            #{include 'Users/menu.html' /}
-                            <li class="divider"></li>
-                            <li><a href="@{Application.logout()}">&{'user.logout'}</a></li>
-                        </ul>
-                    </li>
+                    #{list items:globalArticles, as:'global'}
+                    <li><a href="/pages/article/${global.id}">${global.title}</a></li>
+                    #{/list}
+                    #{if sessionuser}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">&{'logged.in.as'} ${sessionuser.name}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                #{include 'Users/menu.html' /}
+                                #{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
+                                    #{include 'admin/menu.html' /}
+                                #{/if}
+                                #{if sessionuser.getClass() == models.SuperAdmin.class}
+                                    #{include 'bigadmin/menu.html' /}
+                                #{/if}
+                                <li class="divider"></li>
+                                <li><a href="@{Application.logout()}">&{'user.logout'}</a></li>
+                            </ul>
+                        </li>
                     #{/if}
                     #{elseif !loginform}
                     <li><a id="modal-open" title="&{'user.login'}" href="@{Application.loginform()}">&{'user.login'}</a></li>
@@ -212,22 +213,6 @@ div.module-hover{
         </div>
     </div>
     <!-- class="col-md-6 col-xs-12" -->
-    <div class="modal fade" id="modal-window" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-                <div class="modal-content">
-                        <div class="modal-header">                                  
-                            <span id="loaded-modal-header">&nbsp;</span><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="loaded-modal-content">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                </div>
-        </div>
-    </div>
 
 </body>
 </html>

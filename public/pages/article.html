@@ -1,0 +1,13 @@
+<div>
+	<ol ng-show="breadcrumbs.length>0" class="breadcrumb">
+		<li ng-repeat="crumbs in breadcrumbs"><a href="#/article/{{crumbs.id}}">{{crumbs.title}}</a></li>
+	</ol>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2>{{article.title}}</h2>
+		</div>
+		<div class="panel-body">
+			<p ng-bind-html="article.content"></p>
+		</div>
+	</div>
+</div>

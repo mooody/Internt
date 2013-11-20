@@ -96,6 +96,22 @@ POST    /saveUserAccess/{module_id}/{user_id}     ModuleController.saveUserAcces
 #groups
 
 
+#pages
+GET     /pages                                  pages.Pages.index
+GET     /pages/article/{id}                     pages.Pages.showArticle
+GET     /pages/article/pages/article/{id}       pages.Pages.showArticle
+GET	/homepage                               pages.Pages.getHomePageAsJson
+GET	/home/menu                      	pages.Pages.getMenuItemsAsJson
+GET	/home/article                           pages.Pages.getArticlesAsJson
+GET	/home/article/{id}                      pages.Pages.getArticleAsJson
+POST	/home/article				pages.Pages.addArticle
+DELETE	/home/article/{id}			pages.Pages.removeArticle
+
+GET     /pages/links                            pages.Pages.links
+
+GET		/home/categorys							Home.getCategorysAsJson();
+
+
 
 
 
