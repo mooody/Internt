@@ -92,6 +92,7 @@ div.module-hover{
 }
 </style>
 <body ng-app="HomeApp" ng-controller="MenuCtrl">
+
     <div class="container">
         <div class="logo">
             <h1>${sessionuser!=null?sessionuser?.company?.name:'Internt.nu'}</h1>
@@ -194,7 +195,7 @@ div.module-hover{
 	
         *{<!-- Messagebox ERROR -->}*
         #{if errors }
-            <div class="alert alert-danger" *{<!--class="message ui-state-error ui-corner-all"-->}* display:${errors?'block':'none'};">
+            <div class="alert alert-danger" display:${errors?'block':'none'};">
                 #{errors}
                 <span class="glyphicon glyphicon-wrench"></span> ${error}<br />
                 #{/errors}
@@ -205,13 +206,16 @@ div.module-hover{
         </div>
 
         <div class="footer">
+            <div class="container">
                 #{if sessionuser}
                         &{'logged.in.as'} ${sessionuser.name}
                         ( &{sessionuser.getClass().getSimpleName()} )<br />
                         &{'Company'}: ${sessionuser?.company?.name}
                 #{/if}
+             </div>
         </div>
     </div>
+    
     <!-- class="col-md-6 col-xs-12" -->
 
 </body>

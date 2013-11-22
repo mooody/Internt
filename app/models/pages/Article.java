@@ -38,6 +38,6 @@ public class Article extends Model{
 	@Override
 	public String toString()
 	{
-		return "{"+this.id+":"+this.title+":"+this.content+"}";
+		return "{Id:"+this.id+" title:"+this.title+" global:"+this.global+" company:"+this.company+"}";
 	}
 }

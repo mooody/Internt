@@ -70,34 +70,28 @@ public class PlanController extends Controller{
 	}
 	
     @Before
+    /**
+     * Plockar in olika argument. Globala sidor från pages.
+     * Företagets startsida och artiklar
+     */
     private static void getArgs()
     {
+        //Hämtar in globla artiklar
+        List<Article> globalArticles = Article.find("byGlobalAndMenuitem", true, true)
+                .fetch();
         //Hämtar in de sidor som finns kopplade till företaget för att visa i menyn
         List<Article> articles = Article.find("byCompanyAndMenuitemAndGlobal", user().company, true, false)
                 .fetch();
-        
-        List<Article> globalArticles = Article.find("byGlobal", true)
-                .fetch();
+       
         //Hämtar in företagets startsida
         HomePage home = HomePage.find("byCompany", user().company).first();
                
         //lägger menyföremål samt hemsida som parametrar
         renderArgs.put("articles", articles);
         renderArgs.put("globalArticles", globalArticles);
-        if(home!=null&&home.frontpage != null)
-        {
-            renderArgs.put("home", home);
-        }
-        
-        Logger.info("planController.getArgs()");
-        //long userAuth = 0;
-        /*
-		try{
-			userAuth = UserBase.count("select count(u.id) from UserBase u where u.id = ?", getUserId() );
-		} catch (NumberFormatException ne) {
-		}
-        */
-		UserBase userAuth = user();
+        renderArgs.put("home", home);
+       
+        UserBase userAuth = user();
         if(userAuth==null)
         {
             Logger.info("planController.getArgs() USER = NULL");

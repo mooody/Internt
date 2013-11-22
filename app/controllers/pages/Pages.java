@@ -11,6 +11,7 @@ import java.util.List;
 import models.SuperAdmin;
 import models.pages.Article;
 import models.pages.HomePage;
+import play.Logger;
 import play.mvc.Before;
 
 /**
@@ -22,10 +23,11 @@ public class Pages extends PlanController{
         @Before(unless="showArticle")
         public static void checkAuthentification() 
         {
-            if(!(user() instanceof models.Admin))
+          /*  if(!(user() instanceof models.Admin))
             {
+                Logger.info("User not admin");
                 forbidden();
-            }
+            }*/
         }
 	public static void index(){
 		render("/pages/index.html");
@@ -72,6 +74,13 @@ public class Pages extends PlanController{
 	public static void getArticleAsJson(long id)
         {
 		Article article = Article.findById(id);
+                
+                if(!(user() instanceof SuperAdmin))
+                {
+                    if(!article.global && article.company.id != user().company.id){
+                        forbidden("You dont have access to this article");
+                    }
+                }
                 article.company = null;
 		renderJSON(article);
 	}
@@ -80,6 +89,13 @@ public class Pages extends PlanController{
         {		
 		List<Article> articles = Article.find("byCompany", user().company)
                         .fetch();	
+                //Om superadmin, lägg till de globala artiklarna
+                if(user() instanceof SuperAdmin)
+                {
+                       List<Article> globals = Article.find("byGlobal", true).fetch();
+                       articles.addAll(globals);
+                }
+                
                 for(Article article : articles)
                 {
                     article.company = null;
@@ -91,8 +107,11 @@ public class Pages extends PlanController{
         {		
 		Article article = Article.findById(id);
 		
-                if(article.company != user().company){
-                    forbidden();
+                if(!(user() instanceof SuperAdmin))
+                {
+                    if(article.company != user().company){
+                        forbidden();
+                    }
                 }
                 
 		HomePage home = HomePage.find("byCompany", user().company).first();
@@ -100,7 +119,9 @@ public class Pages extends PlanController{
 		{
 			if(home.frontpage.id == id)
 			{
-				home.delete();
+                            home.frontpage = null;
+                            home.save();
+                            home.delete();
 			}
 		}
 		article.delete();
@@ -115,12 +136,11 @@ public class Pages extends PlanController{
             //sparar ett specielobject som adapter
             Gson gson = new Gson();
             Adapter adapter = gson.fromJson(params.get("body"),Adapter.class);
-	
             //Strulade lite med hibernate när vi skulle förändra
             //objektet som skapades. Det fanns 2, en i databasen och en här lokalt
             //med samma id, så detta blir en liten workaround
             Article detached = adapter.article;
-
+            Logger.info("%s = %s", detached, adapter.frontpage);
             Article article = null;
 		
             //Kollar om det är en redan sparad artikel
@@ -130,7 +150,8 @@ public class Pages extends PlanController{
                 //om den inte hittades sätt över objectet som hämtades in
                 if(article == null)
                 {
-                        article = detached;
+                    detached.id=0L;
+                    article = detached;
                 }
                 else // Annars kopierar vi över allt
                 {
@@ -142,19 +163,30 @@ public class Pages extends PlanController{
                     article = detached;
             }
 			
+            Logger.info("%s", article);
             //Hämta in startsidan
             HomePage home = HomePage.find("byCompany", user().company).first();
 
             article.company = user().company;
+            
+            Logger.info("%s", article);
 
             //Det är endast superadministratörer som får skapa globala artiklar
             if(user() instanceof SuperAdmin)
             {
-                if(adapter.global)
+                if(article.global)
                 {
                     article.global = true;
+                    article.company = null;
+                    
                 }
             }
+            else
+            {
+                 article.global = false;
+            }
+            
+            Logger.info("%s", article);
             
             //Kolla om sidan är startsidan
             if(adapter.frontpage)
@@ -163,6 +195,7 @@ public class Pages extends PlanController{
                 if(home == null) home = new HomePage();
                 
                 home.frontpage = article;
+                home.company = article.company;
                 article.menuitem = false;
                 article.save();
                 home.save();
@@ -183,11 +216,11 @@ public class Pages extends PlanController{
             renderJSON(article);
 	}
 	//adapterclass för att hantera json
-	private static class Adapter
+	private class Adapter
 	{
             Article article;
             boolean frontpage;
-            boolean global;
+
 	}
 	
 	public static void getCategorysAsJson(){
