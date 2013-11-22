@@ -117,12 +117,13 @@ public class Pages extends PlanController{
 		HomePage home = HomePage.find("byCompany", user().company).first();
 		if(home!=null)
 		{
-			if(home.frontpage.id == id)
-			{
-                            home.frontpage = null;
-                            home.save();
-                            home.delete();
-			}
+                    //Ligger något fel!                       
+                    if(home.frontpage.id == id)
+                    {
+                        home.frontpage = null;
+                        home.save();
+                        home.delete();
+                    }
 		}
 		article.delete();
 		
@@ -186,7 +187,6 @@ public class Pages extends PlanController{
                  article.global = false;
             }
             
-            Logger.info("%s", article);
             
             //Kolla om sidan är startsidan
             if(adapter.frontpage)
@@ -206,7 +206,7 @@ public class Pages extends PlanController{
                 if(home != null && home.frontpage!=null && home.frontpage.equals(article))
                 {
                     home.frontpage = null;
-                    home.save();
+                    home.delete();
                 }
                 article.save();
             }

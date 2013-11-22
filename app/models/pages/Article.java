@@ -33,6 +33,7 @@ public class Article extends Model{
 		this.title = source.title;
 		this.content = source.content;
 		this.menuitem = source.menuitem;
+                this.global = source.global;
 	}
 	
 	@Override

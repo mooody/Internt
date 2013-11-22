@@ -5,6 +5,7 @@ var controllers = angular.module('HomeControllers',['HomeServices'])
 });
  **/
 controllers.controller("AdminCtrl", function($scope,ArticleService){
+        $scope.article = {};
 	//Lägger artiklar i AdminCtrl.$scope.artiklar
 	$scope.fetch = function(){
 		var promise = ArticleService.query();
@@ -17,6 +18,11 @@ controllers.controller("AdminCtrl", function($scope,ArticleService){
 			});
 		});
 	}
+        
+        $scope.clear = function(){
+            $scope.article = {id:null, title:null, content:null, menuitem:null};
+            tinymce.activeEditor.execCommand('mceSetContent', false, ' ');
+        }
 
 	$scope.tinymceOptions = {
 		handle_event_callback: function (e) {
@@ -98,13 +104,11 @@ controllers.controller("ArticleCtrl", function($scope, $routeParams, ArticleServ
 		var Adapter = new ArticleService();
 		Adapter.article = article;
 		Adapter.frontpage = frontpage;
-		console.log("ArticleCtrl Save");
 		var promise = Adapter.$save();
 
 		promise.then(function(data){
 
-			$scope.article = {id:null, title:null, content:null, menuitem:null};
-			tinymce.activeEditor.execCommand('mceSetContent', false, ' ');
+			$scope.clear();
 			$scope.fetch();		
 			$scope.updateMenu();
 		});
@@ -129,9 +133,7 @@ controllers.controller("ArticleCtrl", function($scope, $routeParams, ArticleServ
 		var Article = new ArticleService();
 		var promise = Article.$get({id:id});
 
-		console.log("waiting...");
 		promise.then(function(data){
-			console.log("Gotit");
 			$scope.article = data;
 			$scope.$emit('articleChange',data);
 			if(tinymce && tinymce.activeEditor){
@@ -140,13 +142,11 @@ controllers.controller("ArticleCtrl", function($scope, $routeParams, ArticleServ
 		})
 	}
 	
+        //Visa artikeln
 	if($routeParams.id){
-		console.log('getting article '+$routeParams.id);
 		$scope.getArticle($routeParams.id);
 		
 	}
-	
-	
 });
 
 
