@@ -17,6 +17,10 @@ HomeApp.config(['$routeProvider',
 			templateUrl: 'public/pages/admin.html',
 			controller:'AdminCtrl'
 		})
+                .when('/admin/:id', {
+			templateUrl: 'public/pages/admin.html',
+			controller:'AdminCtrl'
+		})
 		.when('/article/:id',{
 			templateUrl:'public/pages/article.html',
 			controller:'ArticleCtrl'

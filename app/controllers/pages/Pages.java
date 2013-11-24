@@ -6,47 +6,29 @@ package controllers.pages;
 
 import com.google.gson.Gson;
 import controllers.PlanController;
+import controllers.admin.AdminController;
 import java.util.ArrayList;
 import java.util.List;
 import models.SuperAdmin;
 import models.pages.Article;
 import models.pages.HomePage;
 import play.Logger;
+import play.cache.Cache;
 import play.mvc.Before;
 
 /**
  *
  * @author mikael
  */
-public class Pages extends PlanController{
+public class Pages extends AdminController{
     
-        @Before(unless="showArticle")
-        public static void checkAuthentification() 
-        {
-          /*  if(!(user() instanceof models.Admin))
-            {
-                Logger.info("User not admin");
-                forbidden();
-            }*/
-        }
+        
 	public static void index(){
 		render("/pages/index.html");
 	}
+
         
-        public static List<Article> getGlobalMenuItems()
-        {
-             List<Article> globalArticles = Article.find("byGlobalAndMenuitem", true,true).fetch();
-             return globalArticles;
-        }
-	
-        public static void showArticle(long id)
-        {
-            
-            Article article = Article.findById(id);
-            article.company = null;
-            
-            render("/pages/article.html",article);
-        }
+        
 	public static void getHomePageAsJson()
         {
             HomePage home = HomePage.find("byCompany", user().company).first();

@@ -34,7 +34,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                        <li ng-class="{'active':item.active}" ng-repeat="item in menuItems" ng-click="active(item)"><a href="#/article/{{item.id}}">{{item.title}}</a></li>
+                    <li ng-class="{'active':item.active}" ng-repeat="item in menuItems" ng-click="active(item)"><a href="#/article/{{item.id}}">{{item.title}}</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -61,6 +61,7 @@
                         <textarea links="pages/links" ui-tinymce="tinymceOptions" rows="10" class="form-control" required ng-model="article.content" ng-class="{error:articleForm.article.content.$error.required}"/></textarea><br />
                         <div>
                             <span class="pull-right">
+                            <button class="btn btn-default" type="button" ng-click="clear()">&{'Rensa'}</button>
                                 <button class="btn btn-default" type="submit">&{'Save'}</button>
                             </span>
                     
@@ -91,21 +92,21 @@
                         </tr>
                         <tr>
                             <th>Name</th>
-                            <th >FrontPage</th>
-                            <th>MenuItem</th>
+                            <th ><span title="&{'pages.homepage'}" class="center-block glyphicon glyphicon-home"></span></th>
+                            <th><span title="&{'pages.menuitem'}" class="center-block glyphicon glyphicon-list"></span></th>
                             #{if sessionuser instanceof models.SuperAdmin}
-                                <th>Global</th>
+                                <th><span title="&{'pages.global'}" class="center-block glyphicon glyphicon-globe"></span></th>
                             #{/if}
-                            <th>&{'pages.Trash'}</th>
+                            <th>&nbsp;</th>
                         </tr>
                         <tr ng-repeat="article in articles | filter:search" ng-click="getArticle(article.id)">
                             <td>{{article.title}}</td>
-                            <td><span class="center-block glyphicon glyphicon-asterisk" ng-show="article.id==home.id"></span></td>
-                            <td><span class="center-block glyphicon glyphicon-ok" ng-show="article.menuitem"></span></td>
+                            <td><span class="center-block glyphicon glyphicon-home" title="&{'pages.homepage'}" ng-show="article.id==home.id"></span></td>
+                            <td><span class="center-block glyphicon glyphicon-list" title="&{'pages.menuitem'}" ng-show="article.menuitem"></span></td>
                             #{if sessionuser instanceof models.SuperAdmin}
-                                <td><span class="center-block glyphicon glyphicon-ok" ng-show="article.global"></span></td>
+                                <td><span class="center-block glyphicon glyphicon-globe" title="&{'pages.global'}" ng-show="article.global"></span></td>
                             #{/if}
-                            <td><span class="center-block glyphicon glyphicon-trash" ng-click="removeArticle(article)"></span></td>
+                            <td><span class="center-block glyphicon glyphicon-trash" title="&{'pages.Trash'}" ng-click="removeArticle(article)"></span></td>
                         </tr>
                     </table>
                 </div>

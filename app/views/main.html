@@ -147,10 +147,12 @@ div.module-hover{
                             </ul>
                         </li>
                     #{/if}
-                    #{elseif !loginform}
+                    *{<!--#{elseif !loginform}-->}*
+                    #{else}
                     <li><a id="modal-open" title="&{'user.login'}" href="@{Application.loginform()}">&{'user.login'}</a></li>
                     <li><a href="@{Application.signup()}">&{'user.signup'}</a></li>
-                    #{/elseif}
+                    #{/else} 
+                    *{<!--#{/elseif}-->}*
                 </ul>
             </div>
         </nav>
@@ -204,7 +206,7 @@ div.module-hover{
         <div class="content" #{if loginform}style="border:none;background-color:transparent;"#{/if}>
                 #{doLayout /}
         </div>
-
+        
         <div class="footer">
             <div class="container">
                 #{if sessionuser}

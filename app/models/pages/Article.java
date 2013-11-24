@@ -4,7 +4,9 @@
  */
 package models.pages;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -20,7 +22,9 @@ import play.db.jpa.Model;
 @Table(name="core_article")
 public class Article extends Model{
 	public String title;
+        @Basic(fetch=FetchType.LAZY)
 	public String content;
+        
 	public boolean menuitem=false;
 	public int menyorder = 0;
         @ManyToOne

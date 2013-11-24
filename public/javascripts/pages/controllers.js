@@ -4,8 +4,8 @@ var controllers = angular.module('HomeControllers',['HomeServices'])
     alert("!");
 });
  **/
-controllers.controller("AdminCtrl", function($scope,ArticleService){
-        $scope.article = {};
+controllers.controller("AdminCtrl", function($scope,$routeParams,ArticleService){
+        
 	//Lägger artiklar i AdminCtrl.$scope.artiklar
 	$scope.fetch = function(){
 		var promise = ArticleService.query();
@@ -19,19 +19,30 @@ controllers.controller("AdminCtrl", function($scope,ArticleService){
 		});
 	}
         
-        $scope.clear = function(){
-            $scope.article = {id:null, title:null, content:null, menuitem:null};
-            tinymce.activeEditor.execCommand('mceSetContent', false, ' ');
-        }
-
 	$scope.tinymceOptions = {
 		handle_event_callback: function (e) {
 				
 		}
 
 	};
-	
-	
+	//dublett pga bad coding...
+        $scope.getArticle = function(id){
+		var Article = new ArticleService();
+		var promise = Article.$get({id:id});
+
+		promise.then(function(data){
+			$scope.article = data;
+			$scope.$emit('articleChange',data);
+			if(tinymce && tinymce.activeEditor){
+				tinymce.activeEditor.execCommand('mceSetContent', false, data.content);
+			}
+		})
+	}
+	//Visa artikeln
+	if($routeParams.id){
+		$scope.getArticle($routeParams.id);
+		
+	}
 	
 	$scope.fetch();
 })
@@ -113,6 +124,11 @@ controllers.controller("ArticleCtrl", function($scope, $routeParams, ArticleServ
 			$scope.updateMenu();
 		});
 	}
+        
+        $scope.clear = function(){
+            $scope.article = {id:null, title:null, content:null, menuitem:null};
+            tinymce.activeEditor.execCommand('mceSetContent', false, ' ');
+        }
 
 	//tar bort en artikel
 	$scope.removeArticle = function(article){

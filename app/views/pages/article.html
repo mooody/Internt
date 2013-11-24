@@ -1,6 +1,17 @@
 #{extends 'main.html' /}
+
+#{if breadcrumb&&breadcrumb.size()>1}
+    <ol class="breadcrumb">
+        #{list items:breadcrumb, as:'crumb'}
+            <li ><a href="@{pages.PagesUsers.showArticle(crumb.id)}">${crumb.title}</a></li>
+        #{/list}
+    </ol>
+#{/if}
 <div class="panel panel-default">
         <div class="panel-heading">
+            #{if (sessionuser instanceof models.Admin && !article.global) || (sessionuser instanceof models.SuperAdmin && article.global)}
+            <div class="pull-right"><a href="/pages#/admin/${article.id}"><span class="glyphicon glyphicon-edit" title="&{'edit'}"></a></span></div>
+            #{/if}
                 <h2>${article.title}</h2>
         </div>
         <div class="panel-body">
