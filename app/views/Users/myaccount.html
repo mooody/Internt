@@ -22,30 +22,35 @@ $("li#myaccount").addClass("active");
 		#{/ifError}
 	});
 </script>
-#{form @Users.myaccount(), method:'post' }
-<input type="hidden" name="user.id" value="${user.id}" />
-<div style="width:400px; position:absolute; text-align:right;"><input type="submit" value="Spara" /></div>
-<table>
-    <tr>
-        <td>&{'core.Name'}:</td><td><input id="name" style="width:200px;" type="text" name="user.name" value="${user.name}" /></td>
-    </tr>
-    <tr>
-        <td>&{'core.Email'}:</td><td><input id="email" style="width:200px;" type="text" name="user.email" value="${user.email}" /></td>
-    </tr>	
-	<tr>
-		<td colspan="2"><span id="change-pw-button" class="button">Byt lösen</span></td>
-	</tr>
-</table>
-<div id="change-pw" style="display:none">
-<table>
-<tr>
-		<td>&{'core.pass'}:</td><td><input id="pw" style="width:200px;" type="password" name="password1" /></td>
-	</tr>
-	 <tr>
-		<td>&{'core.pass2'}:</td><td><input id="pw2" style="width:200px;" type="password" name="password2" /></td>
-	</tr>
-</table>
+
+<div class="col-sm-6">
+    #{form @Users.myaccount(), method:'post', 'data-role':'form' }
+        <input type="hidden" name="user.id" value="${user.id}" />
+        <div class="form-group">
+            <label for="name" class="control-label">&{'core.Name'}:</label>
+            <input id="name" type="text" name="user.name" class="form-control" value="${user.name}" />
+        </div>
+        <div class="form-group">
+            <label for="email" class="control-label">&{'core.Email'}:</label>
+            <input id="email" type="text" name="user.email" class="form-control" value="${user.email}" />
+        </div>
+        <div class="form-group">
+            <span id="change-pw-button" class="btn btn-primary">Byt lösen</span>
+            *{<!-- Hidden until button is pressed -->}*
+            <div id="change-pw" style="display:none">
+
+                <label for="pw" class="control-label">&{'core.old.pass'}:</label>
+                <input id="pw" class="form-control" type="password" name="oldpassword" disabled="disabled" />
+
+                <label for="pw" class="control-label">&{'core.pass'}:</label>
+                <input id="pw" class="form-control" type="password" name="password1" />
+
+                <label for="pw2" class="control-label">&{'core.pass2'}</label>
+                <input id="pw2" class="form-control" type="password" name="password2" />
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Spara" />
+        </div>
+    #{/form}
 </div>
-
-
-#{/form}

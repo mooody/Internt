@@ -5,15 +5,24 @@
 <table>
     <tr>
         <td>Namn:</td>
-        <td><input type="text" class="form-control" style="width:200px;" name="user.name" /></td>
+        <td><input type="text" class="form-control" name="user.name" /></td>
     </tr>
     <tr>
         <td>Email</td>
-        <td><input type="email"  class="form-control" style="width:200px;" name="user.email" /></td>
+        <td><input type="email"  class="form-control" name="user.email" /></td>
     </tr>
     <tr>
         <td>Lösen</td>
-        <td><input type="password"  class="form-control" style="width:200px;" name="user.password" /></td>
+        <td><input type="password"  class="form-control" name="user.password" /></td>
+    </tr>
+    <tr>
+        <td>
+            <img src="@{Application.captcha(codeid)}" alt="spam-control"/>
+        </td>
+        <td>
+            <input type="password"  class="form-control" name="captcha" />
+            <input type="hidden" name="codeid" value="${codeid}" />
+        </td>
     </tr>
     <tr>
         <td>&nbsp;</td>

@@ -17,25 +17,13 @@
 </style>
 
 <h2>&{'create.user'}</h2>
-#{form @admin.UsersController.save() } 
-<table>
-	<tr>
-		<td>&{'Name'}:</td>
-		<td><input type="text" name="user.name" /></td>
-	</tr>
-	<tr>
-		<td>&{'Email'}:</td>
-		<td><input type="text" name="user.email"/></td>
-	</tr>
-	<tr>
-		<td>&{'Password'}:</td>
-		<td><input type="text" name="user.password"/></td>
-	</tr>
-	<tr>
-		<td colspan="2" style="text-align:right">
-			<input class="button" type="submit" value="Spara" />
-		</td>
-	</tr>
-</table>
+#{form @admin.UsersController.save(), 'data-role':'form' } 
+<label for="name" class="control-label">&{'Name'}:</label>
+<input id="name"class="form-control" type="text" name="user.name" />
+<label for="email" class="control-label">&{'Email'}:</label>
+<input id="email" class="form-control" type="text" name="user.email"/>
+<label for="pw" class="control-label">&{'Password'}:</label>
+<input id="pw" class="form-control" type="text" name="user.password"/>
+<input class="btn btn-default" type="submit" value="Spara" />	
 #{/form}
 

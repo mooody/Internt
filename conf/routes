@@ -9,15 +9,16 @@ POST     /login                                 Application.login
 *       /logout                                 Application.logout
 GET     /signup                                 Application.signup
 POST    /account                                Application.createAccount
+GET     /captcha                                Application.captcha
 #Om användaren har flera företag gå till valfälten
-GET		/selectCompany							Application.selectCompany
+GET	/selectCompany							Application.selectCompany
 #När användaren valt vilket företag han ska logga in i	
-GET		/loadCompany							Application.loadCompany
-GET		/activate/{token}						Application.activate
-GET		/reactivate/{email}						Application.resendActivationMail
-GET		/system-mail/recovery/{token}                                   Application.recoveryView
-GET		/system-mail/recovery 						Application.recoveryView
-POST            /system-mail/recovery                                           Application.sendRecovory
+GET	/loadCompany							Application.loadCompany
+GET	/activate/{token}						Application.activate
+GET	/reactivate/{email}						Application.resendActivationMail
+GET	/system-mail/recovery/{token}                                   Application.recoveryView
+GET	/system-mail/recovery 						Application.recoveryView
+POST    /system-mail/recovery                                           Application.sendRecovory
 
 #AdminController 
 GET     /admin                                    admin.AdminController.index
@@ -42,18 +43,18 @@ POST    /admin/groups/delete                    admin.GruppController.delete
 
 #Admincontroller
 # - Company
-GET    /company                                admin.CompanyController.index
-POST	/company/company                   		admin.CompanyController.create
-GET    /company/addcompany                     admin.CompanyController.addCompany
+GET     /company                                admin.CompanyController.index
+POST    /company/company                   	admin.CompanyController.create
+GET     /company/addcompany                     admin.CompanyController.addCompany
 
 #AdminController
 # - Modules
 GET     /modules                                admin.AdminController.modules
 POST    /modules/addUser                        admin.AdminController.addModuleToUser
-POST	/modules/removeModule 					admin.AdminController.removeModuleFromUser
-GET		/admin/group/modules					admin.GruppController.modules
-POST	/admin/group/addModule					admin.GruppController.addModuleToGroup
-POST	/admin/group/removeModule 				admin.GruppController.removeModuleFromGroup
+POST	/modules/removeModule 			admin.AdminController.removeModuleFromUser
+GET	/admin/group/modules    		admin.GruppController.modules
+POST	/admin/group/addModule			admin.GruppController.addModuleToGroup
+POST	/admin/group/removeModule 		admin.GruppController.removeModuleFromGroup
 			
 
 #SuperAdminController
@@ -63,11 +64,11 @@ GET     /super/users                            SuperAdminController.users
 GET     /super/modules                          SuperAdminController.modules
 GET     /super/groups                           SuperAdminController.groups
 POST    /super/modules/addAdmin                 SuperAdminController.addAdminToModule
-POST 	/super/modules/addCompany				SuperAdminController.addModuleToCompany
-POST 	/super/modules/removeCompany			SuperAdminController.removeModuleFromCompany
-GET		/super/company/all						SuperAdminController.showCompanies
-GET		/super/company/{id}						SuperAdminController.showCompany
-POST	/super/company/update					SuperAdminController.updateCompany
+POST 	/super/modules/addCompany		SuperAdminController.addModuleToCompany
+POST 	/super/modules/removeCompany		SuperAdminController.removeModuleFromCompany
+GET	/super/company/all                      SuperAdminController.showCompanies
+GET	/super/company/{id}                     SuperAdminController.showCompany
+POST	/super/company/update			SuperAdminController.updateCompany
 
 #user regular
 GET     /mypage                                 Users.mypage
@@ -103,7 +104,7 @@ GET	/home/article                           pages.Pages.getArticlesAsJson
 GET	/home/article/{id}                      pages.Pages.getArticleAsJson
 POST	/home/article				pages.Pages.addArticle
 DELETE	/home/article/{id}			pages.Pages.removeArticle
-GET	/home/categorys                         pages.getCategorysAsJson();
+GET	/home/categorys                         pages.getCategorysAsJson
 GET     /pages/links                            pages.Pages.links
 GET	/homepage                               pages.Pages.getHomePageAsJson
 #pagesusers

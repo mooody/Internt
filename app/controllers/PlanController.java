@@ -76,7 +76,30 @@ public class PlanController extends Controller{
      */
     private static void getArgs()
     {
-        //Hämtar in globla artiklar
+       
+       
+        UserBase userAuth = user();
+        if(userAuth==null)
+        {
+            Logger.info("planController.getArgs() USER = NULL");
+            renderArgs.put("loginform",1);
+            Application.loginform();
+        }
+        else
+        {
+           Logger.info("planController.getArgs() USER");
+           UserBase user = UserBase.findById(getUserId());
+           renderArgs.put("sessionuser",user);
+           Cache.set(session.getId()+"user", user, "30mn");
+        }
+    }
+    
+    @After
+    private static void getArticles()
+    {
+        //TODO:se till att spara undan i Cache:en lägg en uppdate grej på något sätt så man vet när man ska hämta ut det.
+        //Alternativt spara till Cachen direkt när du sparar
+         //Hämtar in globla artiklar
         List<Article> globalArticles = Article.find("byGlobalAndMenuitem", true, true)
                 .fetch();
         //Hämtar in de sidor som finns kopplade till företaget för att visa i menyn
@@ -90,21 +113,6 @@ public class PlanController extends Controller{
         renderArgs.put("articles", articles);
         renderArgs.put("globalArticles", globalArticles);
         renderArgs.put("home", home);
-       
-        UserBase userAuth = user();
-        if(userAuth==null)
-        {
-            Logger.info("planController.getArgs() USER = NULL");
-            renderArgs.put("loginform",1);
-            Application.loginform();
-        }
-        else
-        {
-            Logger.info("planController.getArgs() USER");
-           UserBase user = UserBase.findById(getUserId());
-           renderArgs.put("sessionuser",user);
-           Cache.set(session.getId()+"user", user, "30mn");
-        }
     }
     
     @After

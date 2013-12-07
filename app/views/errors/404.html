@@ -1,13 +1,13 @@
 ﻿#{mainpage title:'Saknad sida' /}
 
 
-        #{if play.mode.name() == 'DEV'}
-            #{404 result /}
-        #{/if}
-        #{else}
-            <h1>Not found</h1>
-            <p>
-                ${result.message}
-            </p>
-        #{/else}
+#{if play.mode.name() == 'DEV'}
+    #{404 result /}
+#{/if}
+#{else}
+    <h1>Not found</h1>
+    <p>
+        ${result.message}
+    </p>
+#{/else}
    

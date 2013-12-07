@@ -46,48 +46,48 @@ import java.security.NoSuchAlgorithmException;
 	resultSetMapping = "dummy")
 public class UserBase extends Model{
  
-	public UserBase()
-	{
-		this.activated = false;
-		try
-		{
-			this.token = utils.Cryptography.getPasswordToken();
-		} 
-		catch(UnsupportedEncodingException use)
-		{}
-		catch(NoSuchAlgorithmException nsa)
-		{}
-	}
+    public UserBase()
+    {
+            this.activated = false;
+            try
+            {
+                    this.token = utils.Cryptography.getPasswordToken();
+            } 
+            catch(UnsupportedEncodingException use)
+            {}
+            catch(NoSuchAlgorithmException nsa)
+            {}
+    }
 	
-	private static final String DES_ENCRYPTION_KEY = Play.configuration.getProperty("application.secret");
+    private static final String DES_ENCRYPTION_KEY = Play.configuration.getProperty("application.secret");
 	
     @Required
     public String name;
     @Required
     private String password;
-	public String getPassword() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException
-	{
+    public String getPassword() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException
+    {
 		return Cryptography.decrypt(this.password,DES_ENCRYPTION_KEY);
 	}
 	
-	public void setPassword(String _pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException
-	{
-		this.password =Cryptography.encrypt(_pw,DES_ENCRYPTION_KEY);
-	}
+    public void setPassword(String _pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+    {
+            this.password =Cryptography.encrypt(_pw,DES_ENCRYPTION_KEY);
+    }
 
     @Column(unique = true)
     @Required
     public String email;
     
-	public String street;
-	public String zipcode;
-	public String city;
-	public String cellphone;
-	public String phone;
-	//Uses for activation and pw recovery
-	public String token;
-	@Column(nullable=false)
-	public boolean activated=false;
+    public String street;
+    public String zipcode;
+    public String city;
+    public String cellphone;
+    public String phone;
+    //Uses for activation and pw recovery
+    public String token;
+    @Column(nullable=false)
+    public boolean activated=false;
     //public String lang;
     
     @Transient
@@ -97,11 +97,11 @@ public class UserBase extends Model{
     @JoinColumn(name="user_company")
     public Company company;
     
-	@ManyToMany(cascade=CascadeType.ALL)
-	 @JoinTable(name = "multiple_companies", 
-        joinColumns = {@JoinColumn(name ="user_id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "company_id") })
-	public List<Company> companies;
+    @ManyToMany(cascade=CascadeType.ALL)
+     @JoinTable(name = "multiple_companies", 
+    joinColumns = {@JoinColumn(name ="user_id") }, 
+    inverseJoinColumns = { @JoinColumn(name = "company_id") })
+    public List<Company> companies;
     
 	/*
     @Basic(fetch=FetchType.LAZY)
@@ -124,14 +124,9 @@ public class UserBase extends Model{
     @OneToMany
     private List<Module> modules;
 
-    
-    @Basic(fetch=FetchType.LAZY)
     @ManyToMany(targetEntity=Grupp.class, mappedBy="users")
     private List<Grupp> groups;
     
-   /* @Basic(fetch=FetchType.LAZY)
-    @OneToMany(mappedBy="owner")
-    public List<Content> contents;*/
    
     /**
      * Samma som this.groups
