@@ -48,12 +48,6 @@ public class Application extends Controller {
         render("Application/login.html");
     }
     
-    private static boolean ipCheckFail()
-    {
-        String ip = request.remoteAddress;
-        return IP.toManyTimes(ip);				
-    }
-    
     /**
     * Inloggning.
     * 1: om det inte finns mail och lösen skickas med direkt tillbaka
@@ -65,7 +59,7 @@ public class Application extends Controller {
     */
     public static void login()      
     {
-        if(ipCheckFail()) forbidden(Messages.get("spamprotection.activated.to.many.tries.wait.30.min"));
+        if(IP.toManyTimes(request.remoteAddress)) forbidden(Messages.get("spamprotection.activated.to.many.tries.wait.30.min"));
 	//lägger in till routingen så vi vet att vi kommer från loginform
         renderArgs.put("loginform",true);
 	//Hämtar ut email
@@ -124,12 +118,15 @@ public class Application extends Controller {
                         user.company = user.companies.get(0);
                         user.save();
                 }
+                //resetta ip.skyddet
+                IP.ipReset(request.remoteAddress);
+                
                 //om användaren har mera än 1 företag kopplat till sig, gå till välj företag
                 if(user.companies.size() > 1)
                 {
                         selectCompany(user);
                 }
-
+                
                 loadComanyUserSetting(user, user.company);
 		//gå till inloggningen
                 redirect("users.mypage");

@@ -48,6 +48,11 @@ public class IP extends Model
         obj.save();	
         return obj.count;
     }
+    
+    public static void ipReset(String ip)
+    {
+         IP.delete("delete from core.ip i where i.ip = ?", ip);
+    }
     public static boolean toManyTimes(String ip)
     {
         Calendar calendar = GregorianCalendar.getInstance();

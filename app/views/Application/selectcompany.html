@@ -26,10 +26,13 @@
 
 
 <div style="text-align:center">
-<div style="width:500px;margin:auto;text-align:left;">
-<h1>&{'YouGotMultipleCompanies'}</h1>
-<h3>-&{'ChooseCompany'}</h3>
-</div>
+   
+   <div class="page-header">
+   <h1>&{'YouGotMultipleCompanies'}</h1>
+   <h3>-&{'ChooseCompany'}</h3>
+   </div>
+
+
     
 #{list items:companies,as:'company'}
 <div class="divmenu-holder col-md-6 col-xs-12;" goal="@{Application.loadCompany(company.id)}">

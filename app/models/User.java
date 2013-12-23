@@ -14,5 +14,5 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("User")
 public class User extends UserBase{
-    
+   
 }
