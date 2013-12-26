@@ -1,6 +1,15 @@
 ﻿#{mainpage title:'Förbjuden sida' /}
 
+#{if result.message.isEmpty()}
 <div style="padding:20px; margin:auto;">
- <h1>Du har inte tillräckliga rättigheter på din användare för access till denna sida</h1>
- </div>
+    <h1>Du har inte tillräckliga rättigheter på din användare för access till denna sida</h1>
+</div>
+#{/if}
+#{else}
+<div style="padding:20px; margin:auto;">
+    <h1>${result.message}</h1>
+</div>
+#{/else}
+
+
           

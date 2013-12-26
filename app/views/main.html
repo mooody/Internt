@@ -14,10 +14,10 @@
         #{get 'moreStyles' /}
         
         
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <link rel="stylesheet" href="/public/javascripts/jquery-ui/jquery-ui.css" />
+        <script src="/public/javascripts/jquery-ui/jquery-1.9.1.js"></script>
+        <script src="/public/javascripts/jquery-ui/jquery-ui.js"></script>
+        <script src="/public/javascripts/jquery-ui/jquery-migrate-1.2.1.min.js"></script>
         <script src="/public/bootstrap/js/bootstrap.min.js"></script>
         
         <script type="text/javascript" src="@{'/public/javascripts/tinymce/tinymce.min.js'}"></script>
@@ -197,13 +197,13 @@ div.module-hover{
 	
         *{<!-- Messagebox ERROR -->}*
         #{if errors }
-            <div class="alert alert-danger" display:${errors?'block':'none'};">
+            <div class="alert alert-danger">
                 #{errors}
-                <span class="glyphicon glyphicon-wrench"></span> ${error}<br />
+                <span id="errortext" class="glyphicon glyphicon-wrench"></span> ${error}<br />
                 #{/errors}
             </div>
         #{/if}
-        <div class="content" #{if loginform}style="border:none;background-color:transparent;"#{/if}>
+        <div class="content" #{if loginform}style="clear:both; border:none;background-color:transparent;"#{/if}>
                 #{doLayout /}
         </div>
         

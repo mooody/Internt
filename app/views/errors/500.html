@@ -1,14 +1,14 @@
 ï»¿#{mainpage title:'Error' /}
 
-        #{if play.mode.name() == 'DEV'}
-            #{500 exception /}
-        #{/if}
-        #{else}
-            <h1>Oj, något fel har inträffat!</h1>
-            #{if exception instanceof play.exceptions.PlayException}
-                <p>
-                    This exception has been logged with id <strong>${exception.id}</strong>.
-                </p>
-            #{/if}
-        #{/else}
+#{if play.mode.name() == 'DEV'}
+    #{500 exception /}
+#{/if}
+#{else}
+    <h1>Oj, nï¿½got fel har intrï¿½ffat!</h1>
+    #{if exception instanceof play.exceptions.PlayException}
+        <p>
+            This exception has been logged with id <strong>${exception.id}</strong>.
+        </p>
+    #{/if}
+#{/else}
     

@@ -22,36 +22,36 @@ public class Company extends Model{
     /**
      * företagets namn
      */
-	@Required(message="you.need.a.company.name")
+    @Required(message="you.need.a.company.name")
     public String name;
     /**
      * Företagets orgnr
      */
-	@Required(message="you.need.a.company.orgnr")
+    @Required(message="you.need.a.company.orgnr")
     public String orgnr;
-	public String mail;
-	public String street;
-	public String zipcode;
-	public String city;
-	public String phone;
-	public String cellphone;
-	public String website;
+    public String mail;
+    public String street;
+    public String zipcode;
+    public String city;
+    public String phone;
+    public String cellphone;
+    public String website;
+
+    @Column(name="users_count", nullable=false)
+    private long usersCount=5;
+    @Column(name="admin_count", nullable=false)
+    private long adminsCount=1;
+    @Column(name="privuser_count", nullable=false)
+    private long privilegeUsersCount=1;
 	
-	@Column(name="users_count", nullable=false)
-	private long usersCount=5;
-	@Column(name="admin_count", nullable=false)
-	private long adminsCount=1;
-	@Column(name="privuser_count", nullable=false)
-	private long privilegeUsersCount=1;
 	
-	
-	public void setUsersCount(long _value){this.usersCount = _value;}
-	public void setAdminsCount(long _value){this.adminsCount = _value;}
-	public void setPrivilegeUsersCount(long _value){this.privilegeUsersCount = _value;}
-	
-	public long getUsersCount(){return this.usersCount;}
-	public long getAdminsCount(){return this.adminsCount;}
-	public long getPrivilegeUsersCount(){return this.privilegeUsersCount;}
+    public void setUsersCount(long _value){this.usersCount = _value;}
+    public void setAdminsCount(long _value){this.adminsCount = _value;}
+    public void setPrivilegeUsersCount(long _value){this.privilegeUsersCount = _value;}
+
+    public long getUsersCount(){return this.usersCount;}
+    public long getAdminsCount(){return this.adminsCount;}
+    public long getPrivilegeUsersCount(){return this.privilegeUsersCount;}
 
     /**
      * Användare som är kopplade till företaget

@@ -8,6 +8,8 @@ import play.cache.Cache;
 import play.i18n.Messages;
 import models.Core.*;
 import models.mail.Invite;
+import play.libs.Codec;
+import play.libs.Images;
 
 /**
  * Application controllern har hand om inloggning. 
@@ -16,9 +18,10 @@ import models.mail.Invite;
  */
 public class Application extends Controller {
 
-	/**
-	* Om sessionen finns med ett userid så blir det en redirect till User.mypage
-	*/
+    /**
+    * Om sessionen finns med ett userid så blir det en redirect till User.mypage
+    * Annars index-sidan
+    */
     public static void index() {
 
         //Om sessionen lever så redirect till mypage
@@ -36,34 +39,37 @@ public class Application extends Controller {
         render();
     }
     
-	public static void loginform()
+    /**
+     * Visar loginformuläret
+     */
+    public static void loginform()
     {
         renderArgs.put("loginform",true);
-        Logger.info("Loginform");
         render("Application/login.html");
     }
     
-	/**
-	* Inloggning.
-	* 1: om det inte finns mail och lösen skickas med direkt tillbaka
-	* 2: om det finns mail och lösen inskrivet hämtas användaren ut.
-	* 3: om användaren är null skickas man direkt tillbaka igen
-	* 4: om den uthämtade användaren inte är null kontrolleras om det finns flera företag kopplade
-	* 5: om det finns flera företag kopplade skickas man till selectCompany för att välja
-	* 6: 
-	*/
+    /**
+    * Inloggning.
+    * 1: om det inte finns mail och lösen skickas med direkt tillbaka
+    * 2: om det finns mail och lösen inskrivet hämtas användaren ut.
+    * 3: om användaren är null skickas man direkt tillbaka igen
+    * 4: om den uthämtade användaren inte är null kontrolleras om det finns flera företag kopplade
+    * 5: om det finns flera företag kopplade skickas man till selectCompany för att välja
+    * 6: 
+    */
     public static void login()      
     {
-		//lägger in till routingen så vi vet att vi kommer från loginform
+        if(IP.toManyTimes(request.remoteAddress)) forbidden(Messages.get("spamprotection.activated.to.many.tries.wait.30.min"));
+	//lägger in till routingen så vi vet att vi kommer från loginform
         renderArgs.put("loginform",true);
-		//Hämtar ut email
+	//Hämtar ut email
         String email = params.get("email", String.class);
         String password = params.get("password", String.class);
         
         //fördefiniera resultatmeddelande
         String message = Messages.get("login.failed");
         
-		//Om email eller lösen inte existerar, avbryt
+	//Om email eller lösen inte existerar, avbryt
         if(email==null||password==null||email.isEmpty()||password.isEmpty())
         {
             message = Messages.get("you.need.to.type.pass.and.name");
@@ -76,16 +82,16 @@ public class Application extends Controller {
         {
             Logger.info("check username %s", email);
             UserBase user = null;
-            try {
+            try 
+            {
+                user = UserBase.login(email,password);
 
-                    user = UserBase.login(email,password);
-
-                    if(user!=null&&!user.activated)
-                    {
-                            flash.put("message", Messages.get("account.not.activated"));
-                            flash.put("resend", user.email);
-                            Application.loginform();
-                    }
+                if(user!=null&&!user.activated)
+                {
+                        flash.put("message", Messages.get("account.not.activated"));
+                        flash.put("resend", user.email);
+                        Application.loginform();
+                }
 
             } catch(Exception ex) {
                     message = "some.error.occord.contact.site.help";
@@ -112,15 +118,17 @@ public class Application extends Controller {
                         user.company = user.companies.get(0);
                         user.save();
                 }
+                //resetta ip.skyddet
+                IP.ipReset(request.remoteAddress);
+                
                 //om användaren har mera än 1 företag kopplat till sig, gå till välj företag
                 if(user.companies.size() > 1)
                 {
                         selectCompany(user);
-                        Logger.info("More Companys");
                 }
-
+                
                 loadComanyUserSetting(user, user.company);
-				//gå till inloggningen
+		//gå till inloggningen
                 redirect("users.mypage");
             }   
         }
@@ -129,12 +137,11 @@ public class Application extends Controller {
         render("Application/login.html");
     }
     
-	/**
-	* Logger ut och skickar vidare till startsidan.
-	*/
+    /**
+    * Logger ut och skickar vidare till startsidan.
+    */
     public static void logout()
     {
-        Logger.info("Logout");
         session.clear();
         
         flash.put("message", Messages.get("you.have.been.logged.out"));
@@ -143,7 +150,8 @@ public class Application extends Controller {
     
     public static void signup()
     {
-        render();
+        String codeid = Codec.UUID();
+        render(codeid);
     }
 	
 	/**
@@ -152,74 +160,83 @@ public class Application extends Controller {
 	*/
 	private static void selectCompany(UserBase user)
 	{
-		List<Company> companies = null;
-		if(user.companies != null)
-        {
-            companies = Company.find("select c from Company c left join c.usersWithMultipleAccounts u where u.id = :uid")
+            List<Company> companies = null;
+            if(user.companies != null)
+            {
+                companies = Company.find("select c from Company c left join c.usersWithMultipleAccounts u where u.id = :uid")
 				.bind("uid", user.id)
 				.fetch();
 				
-			Logger.info("Application.selectCompany_ size:%s", companies.size());
-        }
-		render("Application/selectcompany.html", companies);
+		Logger.info("Application.selectCompany_ size:%s", companies.size());
+            }
+            render("Application/selectcompany.html", companies);
 	}
 	
 	//Sätter användarens företag till valt företag
 	public static void loadCompany(long id)
 	{
-		long userid = new Long(session.get("userid")).longValue();
-		
-		Company company = Company.find("select c from models.UserBase u left join u.companies c where u.id = :uid and c.id = :cid")
-			.bind("cid", id).bind("uid", userid).first();
-		UserBase user = UserBase.findById(userid);
+            long userid = new Long(session.get("userid")).longValue();
 
-		if(company==null)
-			forbidden("Felaktig inloggning");
-		user.company = company;
-		user.save();
-		
-		loadComanyUserSetting(user, company);
-		
-		redirect("users.mypage");
+            Company company = Company.find("select c from models.UserBase u left join u.companies c where u.id = :uid and c.id = :cid")
+                    .bind("cid", id).bind("uid", userid).first();
+            UserBase user = UserBase.findById(userid);
+
+            if(company==null)
+            {
+                forbidden("Felaktig inloggning");
+            }
+            user.company = company;
+            user.save();
+
+            loadComanyUserSetting(user, company);
+
+            redirect("users.mypage");
 	}
 	
+        /**
+         * Sätter Laddar in användarens företagsinställningar
+         * 
+         * @param user
+         * @param company 
+         */
 	private static void loadComanyUserSetting(UserBase user, Company company){
 	
-		//Om det inte finns något företag. Exempelvis vid nyregistrering
-		if (company == null) return;
-		
-		CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
-		
-		//Om det inte finns en cus (Exempelvis vid inbjudan)
-		if(cus==null)
-		{
-			cus = new CompanyUserSettings(user, company);
-			cus.save();
-		}
-		
-		String usertype = cus.getUserType();
-		
-		//Sätt användartyp på den inloggade användaren.
-		play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")
-			.setParameter("type",usertype).setParameter("id",user.id)
-			.executeUpdate();
-		
-		List<Module> modules = cus.getModules();
-		
-		if(user.getModules() != null) 
-		{
-			user.clearModules();
-			user.save();
-		}
-		
-		for(Module module: modules)
-		{
-			if(company.modules.contains(module)) //så företaget fortfarande har access till modulen
-			{
-				user.addModule(module);
-			}
-		}
-		user.save();
+            //Om det inte finns något företag. Exempelvis vid nyregistrering
+            if (company == null) return;
+
+            CompanyUserSettings cus = CompanyUserSettings.find("byUserAndCompany", user, company).first();
+
+            //Om det inte finns en cus (Exempelvis vid inbjudan)
+            if(cus==null)
+            {
+                cus = new CompanyUserSettings(user, company);
+                cus.save();
+            }
+
+            String usertype = cus.getUserType();
+
+            //Sätt användartyp på den inloggade användaren.
+            play.db.jpa.JPA.em().createNamedQuery("UserBase.changeUserType")
+                    .setParameter("type",usertype).setParameter("id",user.id)
+                    .executeUpdate();
+
+            //Hämtar in alla moduler
+            List<Module> modules = cus.getModules();
+
+            if(user.getModules() != null) 
+            {
+                    user.clearModules();
+                    user.save();
+            }
+
+            for(Module module: modules)
+            {
+                    if(company.modules.contains(module)) //så företaget fortfarande har access till modulen
+                    {
+                            user.addModule(module);
+                    }
+            }
+            user.save();
 	}
     
     /**
@@ -230,11 +247,23 @@ public class Application extends Controller {
      */
     public static void createAccount(Admin user)
     {
+        String codeid = params.get("codeid");
+        String captcha = params.get("captcha");
+        String code = (String) Cache.get(codeid);
+        validation.equals(captcha, code).message("validation.wrong.captcha.code");
+        
+        if(validation.hasErrors())
+        {
+            validation.keep();
+            Application.signup();
+        }
         if(UserBase.find("byEmail", user.email).first()!=null)
         {
                 flash.put("message", Messages.get("email.exists.in.system"));
                 Application.signup();
         }
+        
+        user.activated = false;
         user.save();
 		
 	notifiers.Mails.welcome(user);
@@ -248,42 +277,45 @@ public class Application extends Controller {
 	*/
 	public static void resendActivationMail(String email)
 	{
-		UserBase user = UserBase.find("byEmail", email).first();
-		if(user.activated)
-		{
-			flash.put("message", Messages.get("your.account.is.already.activated"));
-			Application.index();
-		}
-		
-		if(user.token == null)
-		{
-			try{
-				user.token = utils.Cryptography.getPasswordToken();
-			} catch(Exception ex)
-			{
-				flash.put("message", Messages.get("Error.with.password.token"));
-				Application.index();
-			}
-		}
-		user.save();
-		notifiers.Mails.welcome(user);
-		flash.put("message", Messages.get("Activationmail.sent"));
-		Application.loginform();
+            UserBase user = UserBase.find("byEmail", email).first();
+            if(user.activated)
+            {
+                flash.put("message", Messages.get("your.account.is.already.activated"));
+                Application.index();
+            }
+
+            if(user.token == null)
+            {
+                try
+                {
+                        user.token = utils.Cryptography.getPasswordToken();
+                } 
+                catch(Exception ex)
+                {
+                        flash.put("message", Messages.get("Error.with.password.token"));
+                        Application.index();
+                }
+            }
+            user.save();
+            notifiers.Mails.welcome(user);
+            flash.put("message", Messages.get("Activationmail.sent"));
+            Application.loginform();
 	}
+        
 	public static void activate(String token)
 	{
-		UserBase user = UserBase.find("byToken", token).first();
-		
-		if(user == null)
-		{
-			renderText("NO USER");
-		}
-		
-		user.activated = true;
-		user.token = null;
-		user.save();
-		flash("message", Messages.get("you.are.activated", user.name));
-		Application.loginform();
+            UserBase user = UserBase.find("byToken", token).first();
+
+            if(user == null)
+            {
+                    renderText("NO USER");
+            }
+
+            user.activated = true;
+            user.token = null;
+            user.save();
+            flash("message", Messages.get("you.are.activated", user.name));
+            Application.loginform();
 	}
 	
 	/**
@@ -336,5 +368,13 @@ public class Application extends Controller {
 		}
 		render("Application/login.html");
 	}
+        
+        public static void captcha(String codeid)
+        {
+            Images.Captcha captcha= Images.captcha();
+            String code = captcha.getText("#c0c0c0");
+            Cache.set(codeid, code, "5mn");
+            renderBinary(captcha);
+        }
 
 }
