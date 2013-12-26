@@ -137,6 +137,15 @@ pages.search = Fri sök
 pages.homepage = Startsida
 pages.Trash = Radera artikel
 
+#sign up
+validation.wrong.captcha.code = Fel spamkod
+validation.signup.pw.not.equal = Lösenorden är inte lika
+validation.name.is.required = Namn är obligatoriskt
+validation.email.is.required = Din email är obligatoriskt
+validation.email.exists.in.system = Din email finns redan i systemet. Begär nytt lösen.
+validation.password.failed = Lösenordet är ogiltigt, minst en siffra samt minst en bokstav (a-z) och minst 6 tecken
+validation.password.error = Lösenords error
+Account.created.successful = Ditt konto är skapat. Kontrollera din epost efter aktiveringsmailet. (Kontrollera även skräpposten)
 
 
 

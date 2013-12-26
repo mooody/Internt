@@ -27,6 +27,11 @@ import java.io.IOException;
 import models.Core.CompanyUserSettings;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import play.data.validation.Check;
+import play.data.validation.CheckWith;
+import play.data.validation.Email;
+import play.i18n.Messages;
 
 /**
  *
@@ -62,9 +67,9 @@ public class UserBase extends Model
       }
    }
    private static final String DES_ENCRYPTION_KEY = Play.configuration.getProperty("application.secret");
-   @Required
+   @Required(message="validation.name.is.required")
    public String name;
-   @Required
+   @CheckWith(UserBase.PwChecker.class)
    private String password;
 
    public String getPassword() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException
@@ -77,7 +82,8 @@ public class UserBase extends Model
       this.password = Cryptography.encrypt(_pw, DES_ENCRYPTION_KEY);
    }
    @Column(unique = true)
-   @Required
+   @Required(message="validation.email.is.required")
+   @Email
    public String email;
    public String street;
    public String zipcode;
@@ -458,4 +464,53 @@ public class UserBase extends Model
       notifiers.Mails.welcome(this);
    }
    //</editor-fold>
+   
+   static class PwChecker extends Check 
+    {
+        public boolean isSatisfied(Object user, Object password) 
+        {
+           String pw = "";
+           boolean pwerror = false;
+           try
+           {
+              pw = ((UserBase)user).getPassword();
+           } catch (InvalidKeyException ex)
+           {
+              pwerror=true;
+              java.util.logging.Logger.getLogger(UserBase.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (IllegalBlockSizeException ex)
+           {
+              pwerror=true;
+              java.util.logging.Logger.getLogger(UserBase.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (BadPaddingException ex)
+           {
+              pwerror=true;
+              java.util.logging.Logger.getLogger(UserBase.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (IOException ex)
+           {
+              pwerror=true;
+              java.util.logging.Logger.getLogger(UserBase.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           finally
+           {
+              if(pwerror)
+              {
+                 setMessage("validation.password.error");
+                 return false;
+              }
+           }
+  
+            Logger.info("pw =%s %s %s %s", pw, pw.length() < 6,pw.matches("\\d"),pw.matches("[a-zA-Z]"));
+            
+           if(pw.length() < 6 || !((pw.matches("\\d")) && pw.matches("[a-zA-Z]")) )
+           {
+              setMessage("validation.password.failed");
+              return false;
+           }
+           
+           
+           return true;
+            
+        }
+    }
 }

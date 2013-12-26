@@ -1,35 +1,36 @@
 #{mainpage title:'Signup' /}
 
 <div class="center-block">
-#{form @Application.createAccount(), 'role':'form'}
-<table>
-    <tr>
-        <td>Namn:</td>
-        <td><input type="text" class="form-control" name="user.name" /></td>
-    </tr>
-    <tr>
-        <td>Email</td>
-        <td><input type="email"  class="form-control" name="user.email" /></td>
-    </tr>
-    <tr>
-        <td>Lösen</td>
-        <td><input type="password"  class="form-control" name="user.password" /></td>
-    </tr>
-    <tr>
-        <td>
-            <img src="@{Application.captcha(codeid)}" alt="spam-control"/>
-        </td>
-        <td>
-            <input type="password"  class="form-control" name="captcha" />
-            <input type="hidden" name="codeid" value="${codeid}" />
-        </td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td><input type="submit" class="btn btn-default" value="signup" /></td>
-    </tr>
-</table>
-#{/form}
+   #{form @Application.createAccount(), 'role':'form'}
+
+      <div class="form-group">
+         <label for="name" class="control-label">Namn:</label>
+         <input id="name" type="text" class="form-control" name="user.name" value="${flash['user.name']}"/>
+      </div>
+      <div class="form-group">
+         <label for="email" class="control-label">Email:</label>
+         <input type="email" id="email" class="form-control" name="user.email"  value="${flash['user.email']}" />
+      </div>
+      <div class="form-group">
+         <div class="col-sm-6">
+            <label for="pw" class="control-label">Lösenord:</label>
+            <input type="password" id="pw" class="form-control" name="user.password" />
+         </div>
+         <div class="col-sm-6">
+            <label for="pw2" class="control-label">Repetera lösenordet:</label>
+           <input type="password" id="pw2" class="form-control" name="password" />
+         </div>
+      </div>
+   
+      <div class="form-group">
+         <img src="@{Application.captcha(codeid)}" alt="spam-control"/>
+         <input type="text"  class="form-control" name="captcha" />
+         <input type="hidden" name="codeid" value="${codeid}" />
+      </div>
+      <div class="form-group">
+         <input type="submit" class="btn btn-default" value="signup" />
+      </div>
+   #{/form}
 </div>
 
 
