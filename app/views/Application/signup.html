@@ -1,5 +1,11 @@
+
 #{mainpage title:'Signup' /}
 
+
+<div class="alert alert-danger">
+   <span class="glyphicon glyphicon-warning-sign"></span>
+   Om du har hittat hit nu så är du tyvärr lite för tidigt ute. Vi har inte öppnat ännu så det kommer inte att komma något mail till dig även om webbsidan säger så!
+</div>
 <div class="center-block">
    #{form @Application.createAccount(), 'role':'form'}
 
@@ -23,12 +29,13 @@
       </div>
    
       <div class="form-group">
-         <img src="@{Application.captcha(codeid)}" alt="spam-control"/>
-         <input type="text"  class="form-control" name="captcha" />
+         <img src="@{Application.captcha(codeid)}" alt="spam-control" />
+         <label for="captcha" class="control-label" />&{'core.securitycode'}</label>
+         <input type="text" class="form-control" name="captcha" id="captcha" />
          <input type="hidden" name="codeid" value="${codeid}" />
       </div>
       <div class="form-group">
-         <input type="submit" class="btn btn-default" value="signup" />
+         <input type="submit" class="btn btn-default" value="&{'user.signup'}" />
       </div>
    #{/form}
 </div>
