@@ -76,8 +76,6 @@ public class PlanController extends Controller{
      */
     private static void getArgs()
     {
-       
-       
         UserBase userAuth = user();
         if(userAuth==null)
         {
@@ -92,9 +90,16 @@ public class PlanController extends Controller{
            renderArgs.put("sessionuser",user);
            Cache.set(session.getId()+"user", user, "30mn");
         }
+        getArticles();
     }
     
-    @After
+ 
+    /**
+     * Putting the articles in renderArgs and is called in @before
+     * - homepage
+     * - globals
+     * - companyartikles
+     */
     private static void getArticles()
     {
         //TODO:se till att spara undan i Cache:en lägg en uppdate grej på något sätt så man vet när man ska hämta ut det.

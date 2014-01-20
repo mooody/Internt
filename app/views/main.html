@@ -91,11 +91,69 @@ div.module-hover{
 	background-color:#ccc;
 }
 </style>
+
+*{<!-- HELP-->}*
+<script>
+         jQuery(document).ready(function(){
+                 jQuery(".help").each(function(){
+                        jQuery(this).click(function(){
+                                var title = jQuery(this).attr('title');
+                                var source = jQuery(this).attr('src');
+
+                                jQuery.ajax({
+                                        url:source,
+                                        success:function(result){
+                                                jQuery('.modal-body').html(result);
+                                                jQuery('#myModalLabel').text(title);
+                                                jQuery('#helpModal').modal('toggle');
+                                                jQuery("img").addClass('img-responsive')
+                                        },
+                                        error:function(){
+                                                alert("Error");
+                                        }
+                                })
+
+
+                        });
+                 });
+         });
+ </script>
+ <style>
+         .help{
+                 cursor:pointer;
+                 color:blue;
+         }
+ </style>
+ *{<!--
+   Spara hjälpfilerna i eg public/help
+   <span class="pull-right help glyphicon glyphicon-question-sign" title="Hjälp" src="/public/help/files/files.html"></span>
+   -->}*
+ *{<!-- END HELPMODAL-->}*
 <body ng-app="HomeApp" ng-controller="MenuCtrl">
+   <!-- Start HELP-Modal -->
+	<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body">
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+        *{<!-- SLUT modalfönstret för hjälp -->}*
 
     <div class="container">
         <div class="logo">
+           <div class="pull-right" style="background-image:url('/public/images/internt.png'); width:92px; height:63px;"></div>
             <h1>${sessionuser!=null?sessionuser?.company?.name:'Internt.nu'}</h1>
+            
         </div>
         
         <nav class="navbar navbar-default" role="navigation">
@@ -113,7 +171,12 @@ div.module-hover{
                     <a class="navbar-brand" href="/pages/article/${home.frontpage.id}">${home.frontpage.title}</a>
                   #{/if}
                   #{else}
-                    <a class="navbar-brand" href="@{Users.mypage()}">&{'mypage'}</a>
+                     #{if sessionuser!=null}
+                     <a class="navbar-brand" href="@{Users.mypage()}">&{'mypage'}</a>
+                    #{/if}
+                    #{else}
+                     <a class="navbar-brand" href="@{Application.index()}">&{'mypage'}</a>
+                    #{/else}
                   #{/else}
               </div>
             </div>

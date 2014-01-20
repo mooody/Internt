@@ -9,7 +9,11 @@ jQuery(document).ready(function(){
     //Sätter email focuserad
     $('#modal-window').on('shown.bs.modal', function () {
           $("#email").focus();
-    });            
+    });   
+    
+    $('#modal-window').on('hidden.bs.modal', function (e) {
+       window.location.href="@{Application.index()}";
+   });
 });
 </script>
 #{form @Application.login(), 'role':'form'}
