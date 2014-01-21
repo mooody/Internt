@@ -62,6 +62,7 @@ public class Company extends Model{
 	
     public List<UserBase> getUsers(){
         List<UserBase> temp =  users;
+        if(this.usersWithMultipleAccounts == null) this.usersWithMultipleAccounts = new ArrayList<UserBase>();
         for(UserBase user:this.usersWithMultipleAccounts)
         {
             if(!temp.contains(user))

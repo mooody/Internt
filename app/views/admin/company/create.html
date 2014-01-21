@@ -26,95 +26,73 @@ input.error{
     #{if sessionuser.company == null}
 		&{'first.company.info'}
     #{/if}
-
+    <div class="page-header">
     #{if newCompany!=null}
-            <h2>Fyll i organisationsuppgifter</h2>
+        <h2>Fyll i organisationsuppgifter</h2>
     #{/if}
     #{else}
         <h2>Organisationsuppgifter</h2>
     #{/else}
-    <table>
-    #{form @admin.CompanyController.create()}
+    </div>
+  
+    #{form @admin.CompanyController.create(), 'role':'form', 'class':'form-horizontal'}
     #{if company && company.id != null}
         <input type="hidden" name="company.id" value="${sessionuser.company?.id}" />
     #{/if}
-		
-		*{<!-- Organisationsnamn -->}*
-        <tr>
-            <td>
-                <label for="name">Organisationsnamn:</label>
-            </td>
-            <td>
-                <input id="name" type="text" name="company.name" value="${flash['company.name']?flash['company.name']:company?.name}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="orgnr">Organisationsnummer:</label>
-            </td>
-            <td>
-                <input id="orgnr" type="text" name="company.orgnr" value="${flash['company.orgnr']?flash['company.orgnr']:company?.orgnr}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>Gatuadress:</label>
-            </td>
-            <td>
-                <input id="street" type="text" name="company.street" value="${company?.street}"/>
-            </td>
-        </tr>
-		 *{<!-- zip -->}*
-		<tr>
-            <td>
-                <label>Postnr:</label>
-            </td>
-            <td>
-                <input id="zipcode" type="text" name="company.zipcode" value="${company?.zipcode}"/>
-            </td>
-        </tr>
-		*{<!-- city -->}*
-		<tr>
-            <td>
-                <label>Stad:</label>
-            </td>
-            <td>
-                <input id="city" type="text" name="company.city" value="${company?.city}"/>
-            </td>
-        </tr>
-		*{<!-- mail -->}*
-		<tr>
-            <td>
-                <label>Kontaktmail:</label>
-            </td>
-            <td>
-                <input type="text" name="company.mail" value="${company?.mail}"/>
-            </td>
-        </tr>
-		*{<!-- phone -->}*
-		<tr>
-            <td>
-                <label>Företagstelefon (fast): </label>
-            </td>
-            <td>
-                <input type="text" name="company.phone" value="${company?.phone}"/>
-            </td>
-        </tr>
-		*{<!-- cellphone -->}*
-		<tr>
-            <td>
-                <label>Företagstelefon (mobil):</label>
-            </td>
-            <td>
-                <input type="text" name="company.cellphone" value="${company?.cellphone}"/>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align:right;">
-                <input type="submit" class="button" value="&{'save'}" />
-            </td>
-        </tr> 
-    </table>
+    <div class="form-group">
+       <div class="col-sm-12">          
+        <input type="submit" class="btn btn-default pull-right" value="&{'save'}" />
+       </div>
+    </div>
+    <div class="form-group">
+       
+		*{<!-- Organisationsnamn -->}*       
+                <label for="name" class="control-label col-sm-3">Organisationsnamn:</label>  
+                <div class="col-sm-9">
+                  <input id="name" class="form-control" type="text" name="company.name" value="${flash['company.name']?flash['company.name']:company?.name}"/>
+                </div>
+                <label for="orgnr" class="control-label col-sm-3">Organisationsnummer:</label>            
+                <div class="col-sm-9">
+                  <input id="orgnr" class="form-control"  type="text" name="company.orgnr" value="${flash['company.orgnr']?flash['company.orgnr']:company?.orgnr}"/>
+                </div>
+    </div>
+    <div class="form-group">
+                <label for="street" class="control-label col-sm-3">Gatuadress:</label>            
+                <div class="col-sm-9">
+                  <input id="street" class="form-control"  type="text" name="company.street" value="${company?.street}"/>
+                </div>
+           
+                <label for="zipcode" class="control-label col-sm-3">Postnr:</label>            
+                <div class="col-sm-9">
+                  <input id="zipcode" class="form-control"  type="text" name="company.zipcode" value="${company?.zipcode}"/>
+                </div>
+           
+                <label for="city" class="control-label col-sm-3">Stad:</label>  
+                <div class="col-sm-9">
+                  <input id="city" class="form-control"  type="text" name="company.city" value="${company?.zipcode}"/>
+                </div>
+    </div>
+    <div class="form-group">
+                <label for="email" class="control-label col-sm-3">Kontaktmail:</label>     
+                <div class="col-sm-9">
+                  <input id="mail" class="form-control"  type="text" name="company.mail" value="${company?.mail}"/>
+                </div>
+                
+                <label for="phone" class="control-label col-sm-3">Företagstelefon (fast): </label>
+                <div class="col-sm-9">
+                  <input id="phone" class="form-control"  type="text" name="company.phone" value="${company?.phone}"/>
+                </div>
+            
+                <label for="cellphone" class="control-label col-sm-3">Företagstelefon (mobil):</label>    
+                <div class="col-sm-9">
+                  <input id="phone" class="form-control"  type="text" name="company.cellphone" value="${company?.cellphone}"/>  
+                </div>
+   </div>
+    <div class="form-group">
+       <div class="col-sm-12">          
+        <input type="submit" class="btn btn-default pull-right" value="&{'save'}" />
+       </div>
+    </div>
 	
 	*{<!-- om vi laddar vårt nuvarande företag visa länken till att skapa ett nytt -->}*
 	
@@ -122,15 +100,28 @@ input.error{
     
     #{if newCompany==null && companies.size()>1}
             *{<!-- Lista alla företag -->}*
-            <h2>&{'other.companies.account.attached.to'}</h2>
-            <ul>
-            #{list items:companies, as:'companyObject'}
-                    <li><a href="@{Application.loadCompany(companyObject.id)}">${companyObject.name}</a></li>
+            <div class="page-header">
+               <h2>&{'other.companies.account.attached.to'}</h2>          
+            </div>
+            
+            #{list items:companies, as:'company'}
+            <div class="divmenu-holder col-md-6 col-xs-12;" goal="@{Application.loadCompany(company.id)}">
+               <div class="menu-object-holder">
+                   <a href="@{Application.loadCompany(company.id)}" id="a-${company.name}" />
+                       <h2>&{company.name}</h2>
+                   </a>
+               </div>
+           </div>
             #{/list}
-            </ul>
 
     #{/if}
-    
+    <div style="clear:both"></div>
     *{<!-- newCompany kommer från action addCompany -->}*
-    <a class="button" href="@{admin.CompanyController.addCompany()}">&{'CreateNewCompany'}</a>
+    #{if newCompany==null}
+      <a class="btn btn-default" href="@{admin.CompanyController.addCompany()}">&{'core.CreateNewCompany'}</a>
+    #{/if}
+    #{else}
+      <a class="btn btn-default" href="@{admin.CompanyController.index()}">&{'core.abort'}</a>
+    #{/else}
 #{/if}
+

@@ -67,6 +67,7 @@ edit = Ändra
 Name = Namn
 Email = Epost
 Password = Lösenord
+core.old.pass = Ange gammalt lösenord
 Choose.group.dots = Välj grupp...
 UserType = Användartyp
 change.usertype = Ändra användartyp
@@ -91,6 +92,10 @@ you.cant.add.user.your.company.has.accounts = Du måste uppgradera företaget. N
 you.have.to.upgrade.admin.counts = Du måste uppgradera företaget. Nu har företaget totalt %s administratörskonton
 you.have.to.upgrade.privilegue.counts = Du måste uppgradera företaget. Nu har företaget totalt %s konton med privilegium
 Company.updated = Företaget är uppdaterat
+core.CreateNewCompany = Skapa nytt företag
+core.abort = Avbryt
+core.company.created = Företaget %s är skapat, du är inloggad i detta företag nu
+
 #SuperAdmin
 company.created = Företaget %s är skapat
 No.modules.was.added.to = Ingen modul blev tillagd till %s

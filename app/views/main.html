@@ -269,8 +269,8 @@ div.module-hover{
                 #{doLayout /}
         </div>
         
-        <div class="footer">
-            <div class="container">
+        <div class="panel panel-default" style="clear:both; margin-top:20px;">
+            <div class="panel-body">
                 #{if sessionuser}
                         &{'logged.in.as'} ${sessionuser.name}
                         ( &{sessionuser.getClass().getSimpleName()} )<br />

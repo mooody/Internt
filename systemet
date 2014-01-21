@@ -15,3 +15,13 @@ PlanController
 
 Module
 Alla controllers i moduler ska ärva ModuleController (ModuleKontroller ärver i sin tur från planKontroller)
+
+Klickruta ex:
+
+<div class="divmenu-holder col-md-6 col-xs-12;" goal="@{Application.loadCompany(company.id)}">
+   <div class="menu-object-holder">
+       <a href="@{Application.loadCompany(company.id)}" id="a-${company.name}" />
+           <h2>&{company.name}</h2>
+       </a>
+   </div>
+</div>
