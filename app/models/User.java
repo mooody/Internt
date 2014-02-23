@@ -6,6 +6,7 @@ package models;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import play.db.jpa.JPABase;
 
 /**
  *
@@ -14,5 +15,6 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("User")
 public class User extends UserBase{
+  
    
 }

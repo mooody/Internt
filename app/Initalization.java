@@ -5,8 +5,8 @@ import models.Company;
 import models.Grupp;
 import models.SuperAdmin;
 import models.UserBase;
-import models.booking.BookingYear;
-import models.booking.Verification;
+//import models.booking.BookingYear;
+//import models.booking.Verification;
 import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
@@ -44,6 +44,8 @@ public class Initalization extends Job {
             user.email = play.Play.configuration.getProperty("defaultuser.email");
             user.name = play.Play.configuration.getProperty("defaultuser.name");
             user.setPassword(play.Play.configuration.getProperty("defaultuser.pass"));
+            user.token = null;
+            user.activated = true;
             
             Logger.info("Creating default user %s", user.email);
             
@@ -78,7 +80,7 @@ public class Initalization extends Job {
 	
     //se till att fixa unika constrains i databasen, year, company, verid
     //Samt även radera gamla year-fältet i bookingsettings
-	public void setYear(Company company)
+	/*public void setYear(Company company)
 	{
                 if(company == null) return;
 		List<BookingYear> years = BookingYear.find("byCompany", company).fetch();
@@ -111,7 +113,7 @@ public class Initalization extends Job {
 			count = 0;
 		}
 	}
-	
+	*/
 	/*
 	public void ver()
 	{

@@ -154,7 +154,9 @@ validation.password.failed = Lösenordet är ogiltigt, minst en siffra samt mins
 validation.password.error = Lösenords error
 Account.created.successful = Ditt konto är skapat. Kontrollera din epost efter aktiveringsmailet. (Kontrollera även skräpposten)
 
-
+#help
+help = Hjälp
+modulehelp = Moduler
 
 
 

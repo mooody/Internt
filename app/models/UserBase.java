@@ -31,6 +31,7 @@ import java.util.logging.Level;
 import play.data.validation.Check;
 import play.data.validation.CheckWith;
 import play.data.validation.Email;
+import play.db.jpa.JPABase;
 import play.i18n.Messages;
 
 /**
@@ -500,9 +501,9 @@ public class UserBase extends Model
               }
            }
   
-            Logger.info("pw =%s %s %s %s", pw, pw.length() < 6,pw.matches("\\d"),pw.matches("[a-zA-Z]"));
+            Logger.info("pw =%s %s %s %s", pw, pw.length() < 6,pw.matches("(.*)[0-9](.*)"),pw.matches("(.*)[a-zA-Z](.*)"));
             
-           if(pw.length() < 6 || !((pw.matches("\\d")) && pw.matches("[a-zA-Z]")) )
+           if(pw.length() < 6 || !((pw.matches("(.*)[0-9](.*)")) && pw.matches("(.*)[a-zA-Z](.*)")) )
            {
               setMessage("validation.password.failed");
               return false;

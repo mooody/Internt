@@ -1,0 +1,86 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+<script>
+   jQuery(document).ready(function() {
+      //fileclick
+      jQuery('a.file').click(function() {
+         jQuery("#result").html('');
+         jQuery.ajax({
+            url: jQuery(this).attr('href'),
+            success: function(result) {
+               jQuery("#result").append('<div class="panel panel-default"><div class="panel-body">' + result + '</div></div>');
+            },
+            error: function() {
+               jQuery("#result").html("NOK");
+            }
+         });
+         return false;
+      });
+      //panelclick
+      jQuery('a[data-toggle="collapse"]').click(function() {
+         jQuery("#result").html('');
+         var target = jQuery(this).attr('data-target');
+         jQuery(target).find("a.file").each(function() {
+            jQuery.ajax({
+               url: jQuery(this).attr('href'),
+               success: function(result) {
+                  jQuery("#result").append('<div class="panel panel-default"><div class="panel-body">' + result + '</div></div>');
+             
+               },
+               error: function() {
+                  jQuery("#result").html("NOK");
+               }
+            })
+         })
+      });
+   });
+</script>
+%{def list = [] }%
+%{def count = 0;}%
+<div class="">
+   <nav class="navbar navbar-left col-md-3">
+      <div class="panel-group" id="accordion0">
+         <div class="panel panel-default">
+            #{list items:map.keySet(), as:'file'}
+            %{def tab = map.get(file)}% *{<!-- har koll på menynivån -->}*
+            *{<!-- kataloger -->}*
+            #{if file.isDirectory()}
+            %{count++}% *{<!--räknar katalogern, behövs för accordions -->}*
+            %{while (list.size() != 0 && list.last() >= tab){ }%
+         </div>  *{<!-- panelbody close-->}*
+      </div>  *{<!-- collased closed-->}*
+      %{ list.pop();
+      }
+      }%
+      %{list.add(tab)}%
+      <div class="panel-heading">  *{<!-- start heading -->}*
+         <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapse${count}">
+               &{file.getName()}
+            </a>
+         </h4>
+      </div> *{<!-- stop heading -->}*
+      <div id="collapse${count}" data-target class="panel-collapse collapse#{if tab==1}in#{/if}">  *{<!-- collased open-->}*
+         <div class="panel-body"> *{<!-- panelbody open-->}*
+            #{/if}
+            *{<!-- Filer -->}*
+            #{else}
+            %{ 
+            def path= file.getAbsolutePath();            
+            path = path.substring(0,path.length());
+            }%
+
+            <a class="file" href="/${path.substring(path.indexOf("public"), path.length()).replace("\\","/")}">&{file.getName().replace(".html","")}</a><br />
+            #{/else}
+            #{/list}
+         </div> *{<!-- panelbody close-->}*
+      </div> *{<!-- collased closed-->}*
+   </nav>
+</div>
+<div class="col-md-9">  
+   <div id="result" style="margin:5px;"></div>
+</div>
+
+
+
+

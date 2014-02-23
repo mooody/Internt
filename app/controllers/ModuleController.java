@@ -16,7 +16,6 @@ import javax.persistence.ManyToMany;
 import models.Core.Module;
 import models.Core.ModuleRights;
 import models.UserBase;
-import models.booking.Rights;
 import play.mvc.Before;
 import play.Logger;
 import play.data.validation.Validation;

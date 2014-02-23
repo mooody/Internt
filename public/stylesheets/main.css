@@ -101,21 +101,26 @@ form.delete{
 body {
 	/*font-family: StMarieThin !important;*/
 }
+div.divmenu-holder {
+   cursor:pointer;
+}
+div.divmenu-holder h2 {
+   margin:auto;
+}
+div.divmenu-holder a:hover{
+	text-decoration:none;
+        
+}
+div.divmenu-hover{
+        background-color: #eee;
+        border-color: #aaa;
+}
 
+
+/*
 div.divmenu-holder{
 	cursor:pointer;
-        /*padding:18px;
-        border:1px solid #ccc;
-	 margin:2px 2px 4px 0;
-       
-	
-        height:100px;
-        max-width:45%;
-	margin:2px 2px 4px 0;
-	
-	border:1px solid #ccc;
-	display:inline;
-	display:inline-block;*/
+
 }
 
 div.divmenu-holder .title{
@@ -126,22 +131,21 @@ div.divmenu-holder h2{
 	margin:auto;
 }
 div.menu-object-holder{
-    width:97%;
+   *width:97%;
     margin:5px; 
     padding:15px; 
     border:1px 
     solid #ccc;
+   
 }
 div.divmenu-hover{
-	/*border:1px solid #eee;*/
-	/*background-image: url('/public/images/menudiv.png');*/
-	/*border: 1px solid #ccc;*/
+
         background-color: #eee;
 }
 div.divmenu-holder a:hover{
 	text-decoration:none;
 }
-
+*/
 /* errors */
 span.error{
 	color:#ff0000;

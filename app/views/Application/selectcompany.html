@@ -33,7 +33,7 @@
    </div>
 
 
-    
+*{<!--    
 #{list items:companies,as:'company'}
 <div class="divmenu-holder col-md-6 col-xs-12;" goal="@{Application.loadCompany(company.id)}">
     <div class="menu-object-holder">
@@ -41,6 +41,19 @@
             <h2>&{company.name}</h2>
         </a>
     </div>
+</div>
+#{/list}
+-->}*
+#{list items:companies,as:'company'}
+<div class="col-sm-6">
+   <div class="panel panel-default divmenu-holder" goal="@{Application.loadCompany(company.id)}">
+      
+      <div class="panel-body">
+         <a href="@{Application.loadCompany(company.id)}" id="a-${company.name}" />
+            <h2>&{company.name}</h2>
+        </a>
+      </div>
+   </div>
 </div>
 #{/list}
 </div>

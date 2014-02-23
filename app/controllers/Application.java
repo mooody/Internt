@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import play.*;
@@ -187,7 +188,6 @@ public class Application extends Controller
    public static void loadCompany(long id)
    {
       long userid = new Long(session.get("userid")).longValue();
-
       Company company = Company.find("select c from models.UserBase u left join u.companies c where u.id = :uid and c.id = :cid")
               .bind("cid", id).bind("uid", userid).first();
       UserBase user = UserBase.findById(userid);
@@ -246,7 +246,7 @@ public class Application extends Controller
 
       for (Module module : modules)
       {
-         if (company.modules.contains(module)) //så företaget fortfarande har access till modulen
+         if (!modules.contains(module) && company.modules.contains(module)) //så företaget fortfarande har access till modulen
          {
             user.addModule(module);
          }
@@ -273,12 +273,12 @@ public class Application extends Controller
          params.flash();
          Application.signup();
       }
-      
-      boolean pwerror=false;
+
+      boolean pwerror = false;
       try
       {
-         if(!user.getPassword().equals(params.get("password")))
-         {  
+         if (!user.getPassword().equals(params.get("password")))
+         {
             pwerror = true;
          }
       } catch (InvalidKeyException ex)
@@ -297,18 +297,17 @@ public class Application extends Controller
       {
          pwerror = true;
          java.util.logging.Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-      }
-      finally
+      } finally
       {
-         if(pwerror)
+         if (pwerror)
          {
             validation.addError("user.password", Messages.get("validation.signup.pw.not.equal"));
          }
       }
-      
+
       validation.valid(user);
-      validation.equals(captcha, code).message("validation.wrong.captcha.code");  
-      
+      validation.equals(captcha, code).message("validation.wrong.captcha.code");
+
       if (validation.hasErrors())
       {
          validation.keep();
@@ -320,7 +319,7 @@ public class Application extends Controller
       user.save();
 
       notifiers.Mails.welcome(user);
-      flash.put("message", "Account.created.successful");
+      flash.put("message", Messages.get("Account.created.successful"));
       params.data.clear();
       Application.loginform();
    }
@@ -426,4 +425,118 @@ public class Application extends Controller
       Cache.set(codeid, code, "5mn");
       renderBinary(captcha);
    }
+
+   //<editor-fold default-state="collapsed" desc=" helpmenu">
+   public static void helpfiles(String module, String dir)
+   { 
+      File path = Play.applicationPath;
+      MenuItem menus = new MenuItem(new File(path, "public/help"));
+      getMenu(menus,".html");
+      SortedMap<File,Integer> map = (SortedMap<File, Integer>) new TreeMap<File, Integer>();
+      
+      for(File file:(new File(path, "planningmodules")).listFiles())
+      {
+         File modulehelp = new File(file, "public/modulehelp");
+         if(modulehelp.isDirectory())
+         {
+            MenuItem menu = new MenuItem(modulehelp);
+            getMenu(menu,".html");
+            menus.childs.add(menu);
+         }
+         else{
+            Logger.info("Not Exists %s", modulehelp.getPath());
+         }
+      }
+      
+      get(map,menus,1);
+      if(session.get("userid")!=null)
+      {
+         Logger.info("USERID REDIRECT TO PLANCONTROLLER");
+         PlanController.help(map);
+      }
+      render(map) ;
+   }   
+   private static void get(Map<File, Integer> list, MenuItem item, int level)
+   {
+      if (item == null)
+      {
+         return;
+      }
+      list.put(item.file, level);
+
+      level++;
+      for (MenuItem m : item.childs)
+      {
+         list.put(m.file, level);
+         if (m.items != null)
+         {
+            for (File s : m.items)
+            {
+               list.put(s, level);
+            }
+            get(list, m, level);
+         }
+      }
+   }
+
+   private static void getMenu(MenuItem menu, String filter)
+   {
+      File root = menu.file;
+      File[] list = root.listFiles();
+
+      if (list == null)
+      {
+         return;
+      }
+
+      for (File f : list)
+      {
+         if (f.isDirectory())
+         {
+            MenuItem child = new MenuItem(f);
+            menu.childs.add(child);
+            getMenu(child, filter);
+         } else
+         {
+            if (f.getName().contains(filter) && f.exists())
+            {
+               menu.items.add(f);
+            }
+         }
+      }
+   }
+
+   public static class MenuItem
+   {
+      public List<MenuItem> childs;
+      public List<File> items;
+      public MenuItem parent;
+      File file;
+
+      public MenuItem(File _file)
+      {
+         Logger.info("%s", _file);
+         this.file = _file;
+         this.childs = new ArrayList<MenuItem>();
+         this.items = new ArrayList<File>();
+      }
+
+      public void addItem(File file)
+      {
+         this.items.add(file);
+      }
+
+      public MenuItem addChild(File file)
+      {
+         MenuItem temp = new MenuItem(file);
+         this.childs.add(temp);
+         return temp;
+      }
+
+      public String getPath()
+      {
+         return this.file.getName();
+      }
+   }
+   //</editor-fold>
 }

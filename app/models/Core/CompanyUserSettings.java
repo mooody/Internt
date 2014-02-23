@@ -27,6 +27,7 @@ public class CompanyUserSettings extends Model{
 	public CompanyUserSettings(UserBase _user, Company _company){
 		this.user = _user;
 		this.company = _company;
+                //this.usertype = _user.getClass().
 		this.save();
 	}
 	

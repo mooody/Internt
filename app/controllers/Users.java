@@ -26,7 +26,7 @@ import models.Core.Module;
  */
 public class Users extends PlanController{
     
-	/**
+/**
 	* H�mtar in alla moduler som anv�ndaren har. Om f�retaget har blivit av med r�ttigheterna f�r modulen 
 	* s� kommer den tas bort fr�n listan.
 	*/
@@ -35,16 +35,22 @@ public class Users extends PlanController{
 		UserBase user = user();
 		Company company = user.company;
 		List<Module> useraccess = user.getUserAndGroupModules();
-                if(useraccess==null) render();
-		List<Module> modules = new ArrayList<Module>();
-		for(Module module: useraccess)
-		{
-			if(!modules.contains(module)&&company.modules.contains(module))
-			{
-                                    modules.add(module);
-			}
-		}
-                render(modules);
+                if(useraccess==null)
+                {
+                   render();
+                }
+                else
+                {
+                  List<Module> modules = new ArrayList<Module>();
+                  for(Module module: useraccess)
+                  {
+                          if(!modules.contains(module)&&company.modules.contains(module))
+                          {
+                                      modules.add(module);
+                          }
+                  }
+                  render(modules);
+                }
     }
     
     public static void myaccount()

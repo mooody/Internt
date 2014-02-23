@@ -4,24 +4,42 @@ $("li#superadmin").addClass("active");
 </script>
 
 <h1>Superadministratör</h1>
+<div class="col-sm-6">
+   <div class="panel panel-default divmenu-holder" goal="@{SuperAdminController.modules()}">
+      <div class="panel-body">
+         <a href="@{SuperAdminController.modules()}"/>
+            <h2>Hantera moduler</h2>
+         </a>
+      </div>
+   </div>
+</div>
 
-<div class="divmenu-holder col-md-6 col-xs-12" goal="@{SuperAdminController.modules()}">
-    <div class="menu-object-holder">
-        <h2>Hantera moduler</h2>
-    </div>
+<div class="col-sm-6">
+   <div class="panel panel-default divmenu-holder" goal="@{SuperAdminController.users()}">
+      <div class="panel-body">
+         <a href="@{SuperAdminController.users()}"/>
+            <h2>Hantera Användare</h2>
+         </a>
+      </div>
+   </div>
 </div>
-<div class="divmenu-holder col-md-6 col-xs-12" goal="@{SuperAdminController.users()}">
-    <div class="menu-object-holder">
-        <h2>Hantera Användare</h2>
-    </div>
+
+<div class="col-sm-6">
+   <div class="panel panel-default divmenu-holder" goal="@{SuperAdminController.groups()}">
+      <div class="panel-body">
+         <a href="@{SuperAdminController.groups()}"/>
+            <h2>Hantera grupper</h2>
+         </a>
+      </div>
+   </div>
 </div>
-<div class="divmenu-holder col-md-6 col-xs-12" goal="@{SuperAdminController.groups()}">
-    <div class="menu-object-holder">
-        <h2>Hantera grupper</h2>
-    </div>
-</div>
-<div class="divmenu-holder col-md-6 col-xs-12" goal="@{SuperAdminController.showCompanies()}">
-    <div class="menu-object-holder">
-        <h2>Hantera Företag</h2>
-    </div>
+
+<div class="col-sm-6">
+   <div class="panel panel-default divmenu-holder" goal="@{SuperAdminController.showCompanies()}">
+      <div class="panel-body">
+         <a href="@{SuperAdminController.showCompanies()}"/>
+            <h2>Hantera Företag</h2>
+         </a>
+      </div>
+   </div>
 </div>
