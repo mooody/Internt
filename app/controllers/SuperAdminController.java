@@ -62,6 +62,7 @@ public class SuperAdminController extends PlanController {
 		Company company = Company.findById(id!=null?id.longValue():(flashid!=null?new Long(flashid).longValue():0));
 		List<Company> companies = Company.findAll();
 		List<Module> modules = Module.findAll();
+                Logger.info("HER");
         render("bigadmin/modules.html", companies, modules, company);
     }
     

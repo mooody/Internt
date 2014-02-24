@@ -14,7 +14,7 @@ jQuery(document).ready(function(){
 </script>
 
 <br />
-<a class="button" href="@{admin.UsersController.create()}">&{'create.user'}</a>
+<a class="btn btn-default" href="@{admin.UsersController.create()}">&{'create.user'}</a>
 <br />
 <hr />
 #{list items:users, as:'user'}
@@ -26,9 +26,9 @@ jQuery(document).ready(function(){
     [${user.company.name}]
     
 	
-    <a href="@{admin.UsersController.edit(user.id)}"><img src="/public/images/edit_small.png" alt="" /></a>
+    <a href="@{admin.UsersController.edit(user.id)}"><span class="glyphicon glyphicon-edit"></span></a>
      #{form @admin.UsersController.deleteUser(user.id), class:'delete', username:user.name}
-        <input type="submit" class="deletebutton" alt="&{'delete'}" value="" />
+     <button type="submit" alt="&{'delete'}"><span class="glyphicon glyphicon-trash"></span></button>
      #{/form}
       
     <br />

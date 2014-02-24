@@ -10,8 +10,10 @@ import models.UserBase;
 import models.Core.Module;
 import play.Logger;
 import java.util.ArrayList;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "core_company_user_settings")
 public class CompanyUserSettings extends Model{
     
 	@OneToOne

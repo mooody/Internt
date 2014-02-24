@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import models.Company;
+import models.Core.CompanyUserSettings;
 import models.Grupp;
 import models.SuperAdmin;
 import models.UserBase;
@@ -59,6 +60,8 @@ public class Initalization extends Job {
 			if(user.companies == null) user.companies = new ArrayList<Company>();
 			user.companies.add(company);
             company.save();
+            
+            new CompanyUserSettings(user, company).setUserType("SuperAdmin");
             
             String defaultgrupp = play.Play.configuration.getProperty("defaultuser.grupp");
             

@@ -16,6 +16,7 @@ import models.Core.Module;
  * @author weetech
  */
 @Entity
+@Table(name = "core_grupp")
 public class Grupp extends Model{
     public String name;
     

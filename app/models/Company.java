@@ -16,6 +16,7 @@ import play.data.validation.Required;
  * @author weetech
  */
 @Entity
+@Table(name = "core_company")
 public class Company extends Model{
 
 	
@@ -73,13 +74,13 @@ public class Company extends Model{
         return temp;
     }
     @ManyToMany
-    @JoinTable(name = "multiple_companies", 
+    @JoinTable(name = "core_multiple_companies", 
     inverseJoinColumns = {@JoinColumn(name ="user_id") }, 
     joinColumns = { @JoinColumn(name = "company_id") })
     public List<UserBase> usersWithMultipleAccounts;
 	
     @ManyToMany
-     @JoinTable(name = "company_modules", 
+     @JoinTable(name = "core_company_modules", 
     inverseJoinColumns = {@JoinColumn(name ="module_id") }, 
     joinColumns = { @JoinColumn(name = "company_id") },
             uniqueConstraints = @UniqueConstraint(name = "oneOneModulePerCompany",

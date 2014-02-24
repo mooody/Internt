@@ -12,8 +12,8 @@ import play.db.jpa.Model;
  *
  * @author mikael
  */
-@Entity(name="core.ArticleCategory")
-@Table(name="core_ArticleCategory")
+@Entity(name="pages.ArticleCategory")
+@Table(name="pages_ArticleCategory")
 public class ArticleCategory extends Model{
 	public String Name;
 	

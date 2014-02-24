@@ -41,7 +41,7 @@ import play.i18n.Messages;
 @Entity
 @Inheritance
 @DiscriminatorColumn(name = "UserType", discriminatorType = DiscriminatorType.STRING, length = 32)
-@Table(name = "User")
+@Table(name = "core_user")
 @SqlResultSetMappings(
 {
    @SqlResultSetMapping(name = "dummy", columns =
@@ -50,7 +50,7 @@ import play.i18n.Messages;
    })
 })
 @NamedNativeQuery(name = "UserBase.changeUserType",
-        query = "update User set UserType = :type where id = :id",
+        query = "update core_user set UserType = :type where id = :id",
         resultSetMapping = "dummy")
 public class UserBase extends Model
 {
@@ -102,25 +102,12 @@ public class UserBase extends Model
    @JoinColumn(name = "user_company")
    public Company company;
    @ManyToMany(cascade = CascadeType.ALL)
-   @JoinTable(name = "multiple_companies",
-           joinColumns =
-   {
-      @JoinColumn(name = "user_id")
-   },
-           inverseJoinColumns =
-   {
-      @JoinColumn(name = "company_id")
+   @JoinTable(name = "core_multiple_companies",
+           joinColumns = {@JoinColumn(name = "user_id")},
+           inverseJoinColumns ={@JoinColumn(name = "company_id")
    })
    public List<Company> companies;
-
-   /*
-    @Basic(fetch=FetchType.LAZY)
-    @ManyToMany(targetEntity=Content.class)
-    @JoinTable(name = "content_read_by_user", 
-    joinColumns = {@JoinColumn(name ="user_id") }, 
-    inverseJoinColumns = { @JoinColumn(name = "content_id") })
-    public List<Content> contentsRead;
-    */
+  
    public void setCompany(Company _company)
    {
       this.company = _company;

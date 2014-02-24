@@ -3,114 +3,118 @@
 #{stylesheet 'login.html.css' /}
 
 
-<h2>&{'edit.user', user.name}</h2>
-*{<!-- Visa / ändra användaruppgifter -->}*
-&{'UserType'}: &{user.getClass().getSimpleName()}<br />
-#{form @admin.UsersController.save()}
-	<input type="hidden" name="user.id" value="${user.id}" />
-	<table>
-		<tr>
-			<td>&{'Name'}:</td>
-			<td><input type="text" name="user.name" value="${user.name}"/></td>
-		</tr>
-		<tr>
-			<td>&{'Email'}:</td>
-			<td><input type="text" name="user.email" value="${user.email}"/></td>
-		</tr>
-		<tr>
-			<td>&{'Street'}:</td>
-			<td><input type="text" name="user.street" value="${user.street}"/></td>
-		</tr>
-		<tr>
-			<td>&{'zipcode'}:</td>
-			<td><input type="text" name="user.zipcode" value="${user.zipcode}"/></td>
-		</tr>
-		<tr>
-			<td>&{'city'}:</td>
-			<td><input type="text" name="user.city" value="${user.city}"/></td>
-		</tr>
-		<tr>
-			<td>&{'cellphone'}:</td>
-			<td><input type="text" name="user.cellphone" value="${user.cellphone}"/></td>
-		</tr>
-		<tr>
-			<td>&{'phone'}:</td>
-			<td><input type="text" name="user.phone" value="${user.phone}"/></td>
-		</tr>
-		<tr>
-			<td colspan="2" style="text-align:right;">
-				<input class="button" type="submit" value="&{'Save'}" />
-			</td>
-		</td>
-	</table>
-#{/form}
 
-    *{<!-- Visa alla grupper som användaren har -->}*
-    <ul>
-    #{list items:user.groups, as:'group'}
-        <li>[${group.parent!=null?group.parent.name+' -> ':''}${group.name}] 
-		*{<!-- en admin kan inte ta bort en grupp från en superadmin -->}*
-		#{if (sessionuser.getClass() == models.Admin.class && user.getClass() != models.SuperAdmin.class) || sessionuser.getClass() == models.SuperAdmin.class }
-            #{form @admin.UsersController.removeUserFromGroup(user.id, group.id), class:'delete'}
-				<input type="submit" class="deletebutton" alt="remove group" value="" />
-            #{/form}
-		#{/if}
-        </li>
-    #{/list}
-    </ul>
-    #{else}
-        &{"user.has.no.groups"}
-    #{/else}
-    
-    *{<!-- Lägg till användaren i ny grupp -->}*
-    #{form @admin.UsersController.addGroupToUser()}
-        <input type="hidden" name="userid" value="${user.id}" />
-        #{group.showgroups groups:sessionuser.company.getCompanyGroups(), key:'groupId', option:'Choose.group.dots' /}
-        <input type="submit" class="button" value="&{'add.user.to.group'}" />
-    #{/form}
-    <hr />
-    *{<!-- Ändra användartype -->}*
-	#{if (sessionuser.getClass() == models.Admin.class && user.getClass() != models.SuperAdmin.class) || sessionuser.getClass() == models.SuperAdmin.class}
+*{<!-- Visa / ändra användaruppgifter -->}*
+
+<div class="col-sm-6">
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <h3>${user.name}</h3>
+         &{'UserType'}: &{user.getClass().getSimpleName()}
+      </div>
+      <div class="panel-body">
+         #{form @admin.UsersController.save(), 'role':'form', class:'form-horizontal'}
+	<input type="hidden" name="user.id" value="${user.id}" />
+        <label for="name" class="control-label">&{'Name'}:</label>
+	<input id="name" class="form-control" type="text" name="user.name" value="${user.name}"/>
 	
-    #{form @admin.UsersController.setUserType()}
-    <input type="hidden" name="id" value="${user.id}" />
-    <table>
-		<tr>
-			<td>
-				<input type="radio" id="user" name="usertype" value="0" #{if user.getClass() == models.User.class}checked="checked"#{/if} />
-				<label for="user">&{'User'}</label>
-			</td>
-		</tr>
-		<tr>
-			<td>	
-				<input type="radio" id="admin" name="usertype" value="3" #{if user.getClass() == models.PrivilegeUser.class}checked="checked"#{/if}/>
-				<label for="admin">&{'PrivilegeUser'}</label>
-			</td>
-		</tr>
-		<tr>
-			<td>	
-				<input type="radio" id="admin" name="usertype" value="1" #{if user.getClass() == models.Admin.class}checked="checked"#{/if}/>
-				<label for="admin">&{'Admin'}</label>
-			</td>
-		</tr>
-		#{if sessionuser.getClass() == models.SuperAdmin.class}
-			<tr>
-				<td>
-					<input type="radio" id="superadmin" name="usertype" value="2" #{if user.getClass() == models.SuperAdmin.class}checked="checked"#{/if}/>
-					<label for="superadmin">&{'SuperAdmin'}</label>
-				</td>
-			</tr>
-		#{/if}
-		<tr>
-			<td style="text-align:right;">
-				<input type="submit" value="&{'change.usertype'}"/>
-			</td>
-		</tr>
-	</table>
-    #{/form}
-    #{/if}
-    
-    <hr />
+        <label for="email" class="control-label">&{'Email'}:</label>
+	<input id="email" class="form-control" type="text" name="user.email" value="${user.email}"/></td>
+	
+         <label for="street" class="control-label">&{'Street'}:</label>
+         <input id="street" class="form-control" type="text" name="user.street" value="${user.street}"/></td>
+                        
+         <label for="zip" class="control-label">&{'zipcode'}:</label>
+         <input id="zip" class="form-control" type="text" name="user.zipcode" value="${user.zipcode}"/></td>
+	
+         <label for="city" class="control-label">&{'city'}:</label>
+         <input id="city" class="form-control" type="text" name="user.city" value="${user.city}"/></td>
+	
+         <label for="cell" class="control-label">&{'cellphone'}:</label>
+         <input id="cell" class="form-control" type="text" name="user.cellphone" value="${user.cellphone}"/></td>
+	
+         <label for="phone" class="control-label">&{'phone'}:</label>
+         <input id="phone" class="form-control" type="text" name="user.phone" value="${user.phone}"/>
+
+         <input class="btn btn-default pull-right" type="submit" value="&{'Save'}" />
+         #{/form}
+      </div>
+   </div>
+
+</div>
+<div class="col-sm-6">
+   *{<!-- Visa alla grupper som användaren har -->}*
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <h3>&{'user.groups'}</h3>
+      </div>
+      <div class="panel-body">
+         <table class="table table-condensed table-hover">
+         #{list items:user.groups, as:'group'}
+             <tr>
+                <td><b>${group.parent!=null?group.parent.name+' -> ':''}${group.name}</b></td>
+                *{<!-- en admin kan inte ta bort en grupp från en superadmin -->}*
+                #{if (sessionuser.getClass() == models.Admin.class && user.getClass() != models.SuperAdmin.class) || sessionuser.getClass() == models.SuperAdmin.class }
+                <td>
+                   #{form @admin.UsersController.removeUserFromGroup(user.id, group.id), class:'delete'}
+                     <button type="submit" class="" alt="remove group" value="" />
+                        <span class="glyphicon glyphicon-trash"></span>
+                     </button>
+                  #{/form}
+                </td>
+                #{/if}
+             
+         #{/list}
+         </table>
+         #{else}
+             &{"user.has.no.groups"}
+         #{/else}
+         
+         *{<!-- Add group to user-->}*
+         #{form @admin.UsersController.addGroupToUser()}
+            <input type="hidden" name="userid" value="${user.id}" />       
+            <div class="input-group">
+               #{group.showgroups groups:sessionuser.company.getCompanyGroups(), key:'groupId', option:'Choose.group.dots' /} 
+               <div class="input-group-btn">
+                  <input type="submit" class="btn btn-default" value="&{'add.user.to.group'}" />
+               </div>
+            </div>        
+         #{/form}
+      </div>
+  
+   </div>
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <h3>&{'UserType'}</h3>
+      </div>
+      <div class="panel-body">
+         *{<!-- Ändra användartype -->}*
+         #{if (sessionuser.getClass() == models.Admin.class && user.getClass() != models.SuperAdmin.class) || sessionuser.getClass() == models.SuperAdmin.class}
+         #{form @admin.UsersController.setUserType(), 'role':'form'}
+         <input type="hidden" name="id" value="${user.id}" />
+         
+         <input type="radio" id="user" name="usertype" value="0" #{if user.getClass() == models.User.class}checked="checked"#{/if} />
+         <label for="user">&{'User'}</label>
+         <br />
+         <input type="radio" id="prev" name="usertype" value="3" #{if user.getClass() == models.PrivilegeUser.class}checked="checked"#{/if}/>
+         <label for="prev">&{'PrivilegeUser'}</label>
+         <br />
+         <input type="radio" id="admin" name="usertype" value="1" #{if user.getClass() == models.Admin.class}checked="checked"#{/if}/>
+         <label for="admin">&{'Admin'}</label>
+         
+         *{<!-- bara en superadmin kan tilldela en annan superadmin-->}*
+         #{if sessionuser.getClass() == models.SuperAdmin.class}
+            <br />
+            <input type="radio" id="superadmin" name="usertype" value="2" #{if user.getClass() == models.SuperAdmin.class}checked="checked"#{/if}/>
+            <label for="superadmin">&{'SuperAdmin'}</label>
+            #{/if}
+            <input type="submit" class="btn btn-default pull-right" value="&{'change.usertype'}"/>			
+         #{/form}
+         #{/if} 
+      </div>
+   </div>    
+</div>
+
 
 
 

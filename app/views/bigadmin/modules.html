@@ -22,17 +22,21 @@ td{
 	padding: 0 20px;
 }
 </style>
-#{form @SuperAdminController.modules() }
+#{form @SuperAdminController.modules(), 'role':'form' }
 <h2>&{'superAdmin.GiveCompanyModuleAccess'}</h2>
 
-<select id="companies" name="cId" >
+<div class="input-group">
+<select id="companies" class="form-control" name="cId" >
     <option value="">&{'superAdmin.choose.company'}:</option>
 
     #{list items:companies, as:'c'}
     <option value="${c.id}" #{if company}${company.id==c.id?'selected="selected"'.raw():0}#{/if}>${c.name} ${companyid}</option>
     #{/list}
 </select>
-<input type="submit" value="&{'Get'}" />
+   <div class="input-group-btn">
+      <input type="submit" class="btn btn-default" value="&{'Get'}" />
+   </div>
+</div>
 #{/form}
 
 	#{if company}
@@ -95,5 +99,13 @@ td{
 *{<!-- Global settings-->}*
 <h1>&{'core.global.settings'}</h1>
 #{list items:modules, as: 'module'}
-<a href="@{ModuleController.globalSettings(module.id)}">${module.name}</a>
+<div class="col-sm-6">
+   <div class="panel panel-default divmenu-holder" goal="@{ModuleController.globalSettings(module.id)}">
+      <div class="panel-body">
+         <a href="@{ModuleController.globalSettings(module.id)}" />
+            <h2>${module.name}</h2>
+        </a>
+      </div>
+   </div>
+</div>
 #{/list}

@@ -11,12 +11,14 @@ import javax.persistence.ManyToOne;
 import models.Company;
 import models.UserBase;
 import java.util.List;
+import javax.persistence.Table;
 
 /**
  *
  * @author weetech
  */
 @Entity
+@Table(name = "core_invite")
 public class Invite extends Model{
 
 	private String msg;

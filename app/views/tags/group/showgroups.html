@@ -1,4 +1,4 @@
-<select name="${_key}">
+<select class="form-control" name="${_key}">
     <option value="0">#{if _option == null}&('select_option_default')}#{/if}#{else}&{_option}#{/else}</option>
     #{list items:_groups, as:'group'}
     <option value="${group.id}">${group.parent?group.parent.name+':':''}${group.name}</option>

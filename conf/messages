@@ -49,6 +49,7 @@ core.pass2 = Ange nytt lösenord igen
 you.need.to.login.again = Du måste logga in igen
 ChooseCompany = Välj företag
 spamprotection.activated.to.many.tries.wait.30.min = Skydd aktiverat, vänta 30 minuter innan nästa inloggningsförsök
+
 #Users
 add.user.to.group = Lägg till användaren till gruppen
 users.saved.ok = Användaren sparad
@@ -81,7 +82,9 @@ city = Stad
 cellphone = Mobil	
 phone = Telefon
 mypage = Hem
-
+user.groups = Användarens grupper
+User.inready.in.parent.group = Användaren är redan med i gruppen %s (Kan vara en grupp med högre nivå)
+forbidden.task = Förbjuden åtgärd
 #Company
 first.company.info = Var vänlig att fyll i nedanstående uppgifter.
 other.companies.account.attached.to = Andra företag kontot är kopplat till
@@ -107,6 +110,7 @@ superAdmin.module.was.removed = %s blev borttagen
 Company.got.modules = %s har följande moduler
 Company.can.have.modules = %s kan få följande moduler
 module.name = Modul
+core.global.settings = Globala inställningar till moduler
 
 #Admin - module
 admin.GiveUserModuleAccess = Ge användaren modul access

@@ -18,8 +18,8 @@ import play.db.jpa.Model;
  *
  * @author mikael
  */
-@Entity(name="core.article")
-@Table(name="core_article")
+@Entity(name="pages.article")
+@Table(name="pages_article")
 public class Article extends Model{
 	public String title;
         @Basic(fetch=FetchType.LAZY)

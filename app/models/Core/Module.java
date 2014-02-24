@@ -15,6 +15,7 @@ import javax.persistence.Column;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import models.Admin;
 import models.UserBase;
 import play.Logger;
@@ -29,6 +30,7 @@ import play.mvc.Router;
  * @author weetech
  */
 @Entity
+@Table(name="core_module")
 public class Module extends Model{
    
     public String name;

@@ -22,9 +22,7 @@ import play.db.jpa.Model;
  * Klass som håller i rättigheter mellan användare och modul.
  */
 @Entity
-@Table(
-        name="core_modulerights"
-        )
+@Table(name="core_modulerights")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class ModuleRights extends play.db.jpa.GenericModel
 {

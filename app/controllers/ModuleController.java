@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import models.Core.Module;
 import models.Core.ModuleRights;
 import models.UserBase;
@@ -30,6 +31,7 @@ import play.mvc.Controller;
  * @author weetech
  */
 @Entity
+@Table(name="core_modulecontroller")
 public class ModuleController extends PlanController{
 	
     @Id 

@@ -102,10 +102,10 @@ public class Users extends PlanController{
 		if(validation.hasErrors())
 		{
 			validation.keep();
-            myaccount();
+                        myaccount();
 		}
         
-
+                UserBase userToSave = User.findById(user.id);
         user.save();
         flash.put("message", Messages.get("user.updated"));
         myaccount();

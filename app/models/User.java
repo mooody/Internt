@@ -6,6 +6,7 @@ package models;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import play.db.jpa.JPABase;
 
 /**

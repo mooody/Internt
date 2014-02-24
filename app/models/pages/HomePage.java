@@ -16,8 +16,8 @@ import play.db.jpa.Model;
  *
  * @author mikael
  */
-@Entity(name="core.homepage")
-@Table(name="core_homepage")
+@Entity(name="pages.homepage")
+@Table(name="pages_homepage")
 public class HomePage extends Model{
 	@OneToOne
 	public Article frontpage;
