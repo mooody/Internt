@@ -28,7 +28,7 @@ import play.mvc.Finally;
  *
  * @author weetech
  */
-public class PlanController extends Controller
+public class PlanController extends Application
 {
 
    /**
@@ -94,7 +94,7 @@ public class PlanController extends Controller
       {
          Logger.info("planController.getArgs() USER");
          userAuth = UserBase.findById(getUserId());
-         renderArgs.put("sessionuser", userAuth);
+         //renderArgs.put("sessionuser", userAuth);
          Cache.set(session.getId() + "user", userAuth, "30mn");
       }
       if (userAuth.companies.size() > 1)

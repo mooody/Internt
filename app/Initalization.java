@@ -34,11 +34,11 @@ public class Initalization extends Job {
                 create = true;
             }
         } catch (Exception ex){
-            create = true;
+            create = true&&!play.Play.id.equals("test");
         }
             
-		//Skapar upp default admin
-		//s�tt defaultuser.email, defaultuser.name, defaultuser.pass, defaultuser.company, defaultuser.group i application.conf
+         //Skapar upp default admin
+         //s�tt defaultuser.email, defaultuser.name, defaultuser.pass, defaultuser.company, defaultuser.group i application.conf
         if(create){
             
             SuperAdmin user = new SuperAdmin();

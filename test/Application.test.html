@@ -1,7 +1,21 @@
-*{ You can use plain selenium command using the selenium tag }*
-
-#{selenium}
-    // Open the home page, and check that no error occured
+#{fixture delete:'all', load:'data.yml' /}
+ 
+#{selenium 'open startpage'}    
+ clearSession()
     open('/')
-    assertNotTitle('Application error')
+    assertTextPresent('Internt.nu')   
+
+   clickAndWait('css=a[href="/login"]')
+   assertTextPresent('Logga in')
+   
+   type('email','mikael@internt.nu')
+   type('password', 'password')
+   
+   clickAndWait('css=input[value="Logga in"]')
+   pause(10000)
+   assertTextPresent('Nora Software')
+   
+   
+   
+   
 #{/selenium}

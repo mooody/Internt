@@ -3,7 +3,7 @@
 # ~~~~
 
 # ApplicationController
-GET     /                                       Application.index
+GET     /                                       Application.start
 GET     /login                                  Application.loginform
 POST     /login                                 Application.login
 *       /logout                                 Application.logout
@@ -76,6 +76,7 @@ POST	/super/company/update			SuperAdminController.updateCompany
 GET     /mypage                                 Users.mypage
 GET     /myaccount                              Users.myaccount
 POST    /myaccount                              Users.save
+GET     /user/show/{userId}                    Users.viewSingelUser
 
 #ModuleController
 GET     /getmodule/{moduleId}                     ModuleController.index                  

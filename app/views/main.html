@@ -56,7 +56,7 @@
                 //n�r man klickar p� modulen
                 jQuery(".divmenu-holder").each(function(){
                      jQuery(this).click(function(){
-                             var href = jQuery(this).attr("goal");
+                             var href = jQuery(this).attr("goal");                             
                              location.href=href;
                      });
                      jQuery(this).mouseover(function(){
@@ -104,18 +104,20 @@ div.module-hover{
 *{<!-- HELP-->}*
 <script>
          jQuery(document).ready(function(){
-                 jQuery(".help").each(function(){
+                 jQuery(".wee-dialog").each(function(){
                         jQuery(this).click(function(){
                                 var title = jQuery(this).attr('title');
+                                if(title === undefined) title = '&nbsp;';
                                 var source = jQuery(this).attr('src');
 
                                 jQuery.ajax({
                                         url:source,
                                         success:function(result){
+                                          
                                                 jQuery('.modal-body').html(result);
-                                                //jQuery('#myModalLabel').text(title);
+                                                jQuery('h4.modal-title').html(title);
                                                 jQuery('#helpModal').modal('toggle');
-                                                jQuery("img").addClass('img-responsive')
+                                                jQuery("img").addClass('img-responsive');
                                         },
                                         error:function(){
                                                 alert("Error");
@@ -128,10 +130,10 @@ div.module-hover{
          });
  </script>
  <style>
-         .help{
-                 cursor:pointer;
-                 color:blue;
-         }
+   .help{
+           cursor:pointer;
+           color:#111;
+   }
  </style>
  *{<!--
    Spara hjälpfilerna i eg public/help
@@ -144,16 +146,18 @@ div.module-hover{
 		<div class="modal-dialog">
 			<div class="modal-content">
 			<div class="modal-header">
-				&nbsp;<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				*{<!--<h4 class="modal-title" id="myModalLabel">Modal title</h4>-->}*
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title"></h4>
 			</div>
 			<div class="modal-body">
 
 			</div>
                         
+                           *{<!--
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">&{'close'}</button>
 			</div>
+                        -->}*
                         
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -162,11 +166,10 @@ div.module-hover{
 
     <div class="container">
         <div class="logo">           
-            <h1>${sessionuser!=null?sessionuser?.company?.name:'Internt.nu'}</h1>
-            
+            <h1>${sessionuser!=null?sessionuser?.company?.name:'Internt.nu'}</h1>            
         </div>
         
-        <nav class="navbar navbar-default" role="navigation">
+        <nav class="navbar navbar-${sessionuser?'default':'inverse'}" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainmenu">
@@ -185,7 +188,7 @@ div.module-hover{
                      <a class="navbar-brand" href="@{Users.mypage()}">&{'mypage'}</a>
                     #{/if}
                     #{else}
-                     <a class="navbar-brand" href="@{Application.index()}">&{'mypage'}</a>
+                     <a class="navbar-brand" href="@{Application.start()}">&{'mypage'}</a>
                     #{/else}
                   #{/else}
               </div>
@@ -206,7 +209,7 @@ div.module-hover{
                     #{/list}                 
                     
                     *{<!-- Användarmenu-->}*
-                    <li><a href="@{Application.helpfiles()}">?</a></li>
+                    
                     #{if sessionuser}
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">&{'logged.in.as'} ${sessionuser.name}<b class="caret"></b></a>
@@ -223,8 +226,17 @@ div.module-hover{
                                 <li><a href="@{Application.logout()}">&{'user.logout'}</a></li>
                             </ul>
                         </li>
-                        *{<!-- Företagsmeny -->}*
-                        #{if multipleCompanies}
+                        
+                    #{/if}                    
+                    *{<!--#{elseif !loginform}-->}*
+                    #{else}
+                    <li><a title="&{'user.login'}" class="wee-dialog" src="@{Application.loginform()}">&{'user.login'}</a></li>
+                    <li><a href="@{Application.signup()}">&{'user.signup'}</a></li>
+                    #{/else} 
+                        *{<!-- Hjälpmeny -->}*
+                    <li><a href="@{Application.helpfiles()}"><span class="glyphicon glyphicon-question-sign"></span></a></li>
+                    *{<!-- Företagsmeny -->}*
+                        #{if sessionuser && multipleCompanies}
                         <li class="dropdown">
                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-home"></span></a>
                            <ul class="dropdown-menu"  style="max-height:200px;overflow-y: scroll;">
@@ -234,14 +246,6 @@ div.module-hover{
                            </ul>
                         </li>
                         #{/if}
-                    #{/if}
-                    
-                    *{<!--#{elseif !loginform}-->}*
-                    #{else}
-                    <li><a id="modal-open" title="&{'user.login'}" href="@{Application.loginform()}">&{'user.login'}</a></li>
-                    <li><a href="@{Application.signup()}">&{'user.signup'}</a></li>
-                    #{/else} 
-                    *{<!--#{/elseif}-->}*
                 </ul>
             </div>
         </nav>

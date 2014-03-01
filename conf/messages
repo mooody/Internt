@@ -2,6 +2,8 @@
 # For example, for French create a messages.fr file
 #
 
+upload = Ladda upp
+
 #Application
 user.logout = Logga ut
 user.login = Logga in
@@ -81,6 +83,12 @@ zipcode = Postnummer
 city = Stad
 cellphone = Mobil	
 phone = Telefon
+core.username = Namn
+core.email= Email
+core.street = Gatuadress	
+core.address = Postadress
+core.cellphone = Mobil
+core.phone = Telefon
 mypage = Hem
 user.groups = Användarens grupper
 User.inready.in.parent.group = Användaren är redan med i gruppen %s (Kan vara en grupp med högre nivå)
@@ -98,6 +106,7 @@ Company.updated = Företaget är uppdaterat
 core.CreateNewCompany = Skapa nytt företag
 core.abort = Avbryt
 core.company.created = Företaget %s är skapat, du är inloggad i detta företag nu
+core.user.not.in.compay = Användaren är ej i ditt företag
 
 #SuperAdmin
 company.created = Företaget %s är skapat
@@ -111,6 +120,7 @@ Company.got.modules = %s har följande moduler
 Company.can.have.modules = %s kan få följande moduler
 module.name = Modul
 core.global.settings = Globala inställningar till moduler
+core.no.avalible.global.settings = Det finns inte några globala inställningar till modulen
 
 #Admin - module
 admin.GiveUserModuleAccess = Ge användaren modul access

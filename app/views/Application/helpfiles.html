@@ -20,7 +20,8 @@
       jQuery('a[data-toggle="collapse"]').click(function() {
          jQuery("#result").html('');
          var target = jQuery(this).attr('data-target');
-         jQuery(target).find("a.file").each(function() {
+         //jQuery(target).find("a.file").each(function() {
+         jQuery(target+" > div > a.file").each(function() {
             jQuery.ajax({
                url: jQuery(this).attr('href'),
                success: function(result) {

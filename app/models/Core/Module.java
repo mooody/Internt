@@ -49,8 +49,7 @@ public class Module extends Model{
     public Module(String _name, String _controllerName, String _moduleName)
     {
         this(_name, _controllerName, _moduleName, "User");
-    }
-	
+    }	
     
     public Module(String _name, String _controllerName, String _moduleName, String _userAccessType)
     {

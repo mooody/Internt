@@ -100,7 +100,7 @@ td{
 <h1>&{'core.global.settings'}</h1>
 #{list items:modules, as: 'module'}
 <div class="col-sm-6">
-   <div class="panel panel-default divmenu-holder" goal="@{ModuleController.globalSettings(module.id)}">
+   <div class="panel panel-default divmenu-holder" goal="@{ModuleController.globalSettings(module.id)}?authenticityToken=${session.getAuthenticityToken()}">
       <div class="panel-body">
          <a href="@{ModuleController.globalSettings(module.id)}" />
             <h2>${module.name}</h2>

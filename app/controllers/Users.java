@@ -112,7 +112,19 @@ public class Users extends PlanController{
         
     }
 	
-	
+    /**
+     * Called by AJAX
+     * @param userId 
+     */
+    public static void viewSingelUser(long userId)
+    {
+       UserBase user = UserBase.findById(userId);
+       if(user.companies.contains(user().company))
+         render(user);
+       else{
+          forbidden(Messages.get("core.user.not.in.compay"));
+       }
+    }
     
     
 }

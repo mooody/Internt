@@ -5,3 +5,30 @@
 #   email: bob@gmail.com
 #   password: secret
 #   fullname: Bob
+  models.SuperAdmin(mikael):
+    name: mikael
+    password: password
+    email:  mikael@internt.nu
+    activated:  true
+    
+  models.Company(nsab):
+    name: Nora Software
+    orgnr:  555555-5555
+    users:  
+      mikael
+    
+  models.Company(test):
+    name: Testföretag
+    orgnr:  555555-5555
+    users:  
+      mikael
+
+  models.Core.CompanyUserSettings(cus1):
+    user: mikael
+    company:  test
+    usertype: Super
+
+  models.Core.CompanyUserSettings(cus2):
+    user: mikael
+    company:  nsab
+    usertype: Super

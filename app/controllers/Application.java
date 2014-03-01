@@ -26,11 +26,20 @@ import play.libs.Images;
 public class Application extends Controller
 {
 
+   @Before
+   public static void getSessionUser()
+   {
+      UserBase user = Cache.get(session.getId() + "user", UserBase.class);
+      if(user != null)
+      {
+         renderArgs.put("sessionuser", user);
+      }
+   }
    /**
     * Om sessionen finns med ett userid så blir det en redirect till User.mypage
     * Annars index-sidan
     */
-   public static void index()
+   public static void start()
    {
 
       //Om sessionen lever så redirect till mypage
@@ -45,7 +54,7 @@ public class Application extends Controller
          renderArgs.put("message", flash.get("message"));
       }
 
-      render();
+      render("Application/index.html");
    }
 
    /**
@@ -83,9 +92,9 @@ public class Application extends Controller
       //Om email eller lösen inte existerar, avbryt
       if (email == null || password == null || email.isEmpty() || password.isEmpty())
       {
-         message = Messages.get("you.need.to.type.pass.and.name");
-         flash.put("message", message);
-         render("Application/login.html");
+         validation.addError("error", "you.need.to.type.pass.and.name");
+         validation.keep();
+         Application.start();
       }
 
       //om email och lösen finns kontrollera användaren
@@ -98,13 +107,15 @@ public class Application extends Controller
             user = UserBase.login(email, password);
 
             if (user != null && !user.activated)
-            {
-               flash.put("message", Messages.get("account.not.activated"));
+            {               
+               validation.addError("error", "account.not.activated");               
                flash.put("resend", user.email);
-               Application.loginform();
+               //Application.loginform();
+               Application.start();
             }
 
-         } catch (Exception ex)
+         } 
+         catch (Exception ex)
          {
             message = "some.error.occord.contact.site.help";
             Logger.info(ex.getMessage() + " " + ex.getCause());
@@ -146,7 +157,8 @@ public class Application extends Controller
       }
 
       flash.put("message", message);
-      render("Application/login.html");
+      //render("Application/login.html");
+      Application.start();
    }
 
    /**
@@ -157,7 +169,7 @@ public class Application extends Controller
       session.clear();
 
       flash.put("message", Messages.get("you.have.been.logged.out"));
-      Application.index();
+      Application.start();
    }
 
    public static void signup()
@@ -334,7 +346,7 @@ public class Application extends Controller
       if (user.activated)
       {
          flash.put("message", Messages.get("your.account.is.already.activated"));
-         Application.index();
+         Application.start();
       }
 
       if (user.token == null)
@@ -345,7 +357,7 @@ public class Application extends Controller
          } catch (Exception ex)
          {
             flash.put("message", Messages.get("Error.with.password.token"));
-            Application.index();
+            Application.start();
          }
       }
       user.save();
