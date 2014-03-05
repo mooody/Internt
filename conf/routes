@@ -5,6 +5,7 @@
 # ApplicationController
 GET     /                                       Application.start
 GET     /login                                  Application.loginform
+GET     /showloginform                          Application.showLoginForm  
 POST     /login                                 Application.login
 *       /logout                                 Application.logout
 GET     /signup                                 Application.signup

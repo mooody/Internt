@@ -53,8 +53,19 @@ public class Application extends Controller
       {
          renderArgs.put("message", flash.get("message"));
       }
+      
+       if (flash.contains("showLoginform"))
+       {
+          renderArgs.put("showLoginform", "1");
+       }
 
       render("Application/index.html");
+   }
+   
+   public static void showLoginForm()
+   {
+      flash.put("showLoginform", "true");
+      Application.start();
    }
 
    /**
@@ -86,8 +97,6 @@ public class Application extends Controller
       String email = params.get("email", String.class);
       String password = params.get("password", String.class);
 
-      //fördefiniera resultatmeddelande
-      String message = Messages.get("login.failed");
 
       //Om email eller lösen inte existerar, avbryt
       if (email == null || password == null || email.isEmpty() || password.isEmpty())
@@ -110,14 +119,14 @@ public class Application extends Controller
             {               
                validation.addError("error", "account.not.activated");               
                flash.put("resend", user.email);
-               //Application.loginform();
+               validation.keep();
                Application.start();
             }
 
          } 
          catch (Exception ex)
          {
-            message = "some.error.occord.contact.site.help";
+            validation.email("error","some.error.occord.contact.site.help");
             Logger.info(ex.getMessage() + " " + ex.getCause());
          }
          if (user != null)
@@ -128,12 +137,11 @@ public class Application extends Controller
              flash.put("hasInvites", true);
              }
              */
-            message = Messages.get("login.ok");
+            flash.put("message", Messages.get("login.ok"));
             //Vi sätter användaren som inloggad
             session.put("userid", user.id);
             Cache.set(session.getId() + "user", user, "30mn");
 
-            flash.put("message", message);
             //om användaren har varit användare i flera företag och borttaget från ett.
             //fixa med företaget
             if (user.company == null && user.companies.size() == 1)
@@ -156,7 +164,8 @@ public class Application extends Controller
          }
       }
 
-      flash.put("message", message);
+      validation.addError("error",  Messages.get("login.failed"));
+      validation.keep();
       //render("Application/login.html");
       Application.start();
    }

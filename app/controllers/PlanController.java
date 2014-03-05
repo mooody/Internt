@@ -59,8 +59,7 @@ public class PlanController extends Application
       //Om vi inte hittat någon användare gå till login
       if (user == null)
       {
-         renderArgs.put("loginform", 1);
-         Application.loginform();
+         Application.showLoginForm();
       }
       return user;
    }

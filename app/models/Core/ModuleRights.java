@@ -15,11 +15,25 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import models.Company;
 import models.UserBase;
+import models.booking.Rights;
+import play.Logger;
+import play.Play;
+import play.cache.Cache;
 import play.db.jpa.Model;
 
 
 /**
  * Klass som håller i rättigheter mellan användare och modul.
+ * 
+ * ex use in controller (booking.HeadBookingController)
+ * Rights rights = Cache.get(session.getId() + "booking_rights", Rights.class);
+   if(rights == null)
+   {
+      rights = Rights.find("byUser", user()).first();
+      Cache.set(session.getId() + "booking_rights", rights,Play.configuration.getProperty("session.expire"));
+   }
+
+   renderArgs.put("premissions", rights);
  */
 @Entity
 @Table(name="core_modulerights")
@@ -99,8 +113,14 @@ public abstract class ModuleRights extends play.db.jpa.GenericModel
      */
     public boolean hasRight(int bit)
     {
-        int value = this.rights&(0x01<<bit-1);
+        int value = this.rights&(0x01<<(bit-1));
+        Logger.info("%d %d %d %d",this.rights, (0x01<<(bit-1)) ,value, bit);
         return value>0?true:false;
+    }
+    
+    public boolean hasRight(Integer bit)
+    {
+        return hasRight(bit.intValue());
     }
     
     /**

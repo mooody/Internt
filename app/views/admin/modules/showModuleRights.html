@@ -19,28 +19,41 @@
 </script>
 
 *{<!-- Ritar ut listan på möjliga rättigheter-->}*
-#{if list?.size() > 0}
-    %{def formname = 'mod-access'+moduleId; }%
-    #{form @ModuleController.saveUserAccess(moduleId,userId), id:formname, onsubmit:'return false;'} 
-    <div style="float: none">
-        <div style="float:left">
-        #{list items:list?.keySet(), as:'name'}
-            *{<!-- Beräknar om användaren har rättigheten -->}*
-            %{            
-                def checked = userRights==null||userRights&0x01<<(((int)list.get(name))-1)
-            }%
-            <input${checked?' checked="checked"'.raw():''} name="list" type="checkbox" value="${list.get(name)}" id="rights-${list.get(name)}">
-            <label for="rights-${list.get(name)}">[&{name}]</label><br />
-        #{/list}
-        
-        </div>
-        <div style="float:left"><input type="submit" value="&{'save'}" />
-        
-            <img id="wait" style="display: none;" src="/public/images/wait20.gif" alt="wait"></img></div>
-    </div>
-    #{/form}
-#{/if}
-#{else}
-    &{'module.has.no.rights.settings'}
-#{/else}
 
+<div class="panel panel-default">
+   <div class="panel-body">             
+   #{if list?.size() > 0}
+      #{if sessionuser instanceof models.Admin}
+      <p class="alert alert-danger">
+         &{'core.user.is.admin.can.change.rights'}
+      </p>
+      #{/if}
+       %{def formname = 'mod-access'+moduleId; }%
+       #{form @ModuleController.saveUserAccess(moduleId,userId),'role':'form', id:formname, onsubmit:'return false;'} 
+
+           #{list items:list?.keySet(), as:'name'}
+               *{<!-- Beräknar om användaren har rättigheten -->}*
+               %{            
+                   def checked = userRights==null||userRights&0x01<<(((int)list.get(name))-1)
+               }%
+               <div class="form-group">
+               <input${checked?' checked="checked"'.raw():''} name="list" type="checkbox" value="${list.get(name)}" id="rights-${list.get(name)}">
+               <label for="rights-${list.get(name)}">[&{name}]</label>
+               </div>
+           #{/list}
+
+           <div class="form-group">
+
+               <button class="btn btn-default pull-right" type="submit">
+                  &{'save'}<img id="wait" style="display: none;" src="/public/images/wait20.gif" alt="wait"></img>
+               </button>        
+
+           </div>
+
+       #{/form}
+   #{/if}
+   #{else}
+   <p class="alert alert-info">&{'module.has.no.rights.settings'}</p>
+   #{/else}
+   </div>
+</div> 

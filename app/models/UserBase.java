@@ -95,6 +95,7 @@ public class UserBase extends Model
    public String token;
    @Column(nullable = false)
    public boolean activated = false;
+   public boolean showTooltip = true;
    //public String lang;
    @Transient
    public Language language;

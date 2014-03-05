@@ -3,74 +3,76 @@
 <h2>Moduler</h2>
 
 <script type="text/javascript">
-jQuery(document).ready(function(){
-	jQuery("form.delete").submit(
-		function(){
-			var username = jQuery(this).attr('username');
-			var module = jQuery(this).attr('module');
-			return confirm('&{'sure.remove.module'}'+' '+module);
-		}
-	);
-});
+   jQuery(document).ready(function() {
+      jQuery("form.delete").submit(
+              function() {
+                 var username = jQuery(this).attr('username');
+                 var module = jQuery(this).attr('module');
+                 return confirm('&{'sure.remove.module'}' + ' ' + module);
+              }
+      );
+   });
 </script>
 
 <style>
-table.listtable{
-	margin:0 0 0 100px;
-}
+   table.listtable{
+      margin:0 0 0 100px;
+   }
 
-table.listtable td{
-	padding: 0 20px;
-	min-width:100px;
-}
+   table.listtable td{
+      padding: 0 20px;
+      min-width:100px;
+   }
 
-span.open{}
-span.locked{
-	color:red;
-	text-decoration:line-through;
-}
+   span.open{}
+   span.locked{
+      color:red;
+      text-decoration:line-through;
+   }
 </style>
 
 #{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
+   *{<!-- Välj användare -->}*
+   <div class="col-sm-6">
+   <h2>&{'admin.GiveUserModuleAccess'}</h2>
+   #{form @admin.AdminController.modules() ,'role':'form'}
+   <select name="userid" class="form-control" >
+      <option value="">&{'admin.choose.user'}:</option>
+      #{list items:sessionuser.company.users, as:'u'}
+      <option value="${u.id}" #{if user}${user.id==u.id?'selected="selected"'.raw():''}#{/if}>${u.name}</option>
+      #{/list}
+   </select>
+   <button type="submit" class="btn btn-default pull-right">&{'Get'}</button>
+   #{/form}
 
-	*{<!-- Välj användare -->}*
-	<h2>&{'admin.GiveUserModuleAccess'}</h2>
-	#{form @admin.AdminController.modules()}
-		<select name="userid" >
-			<option value="">&{'admin.choose.user'}:</option>
-			#{list items:sessionuser.company.users, as:'u'}
-				<option value="${u.id}" #{if user}${user.id==u.id?'selected="selected"'.raw():''}#{/if}>${u.name}</option>
-			#{/list}
-		</select>
-		<input type="submit" value="&{'Get'}" />
-	#{/form}
+   #{set user:user /}
+   #{set usermodules:usermodules /}
+   #{set companymodules:companymodules /}
+   <div class="col-sm-12">
+   #{include 'admin/users/modules.html' /}
+   </div>
+   </div>
+   <div class="col-sm-6">
 
-	#{set user:user /}
-	#{set usermodules:usermodules /}
-	#{set companymodules:companymodules /}
+   *{<!-- Välj grupp -->}*
+   <h2>&{'admin.GiveGroupModuleAccess'}</h2>
+   #{form @admin.GruppController.modules(), 'role':'form'}
+   <select name="groupid" class="form-control">
+      <option value="">&{'admin.choose.group'}:</option>
+      #{list items:sessionuser.company.getCompanyGroups(), as:'g'}
+      <option value="${g.id}" #{if group}${group.id==g.id?'selected="selected"'.raw():''}#{/if}>${g.name}</option>
+      #{/list}
+   </select>
+   <button type="submit" class="btn btn-default pull-right">&{'Get'}</button>
+   #{/form}
 
-	#{include 'admin/users/modules.html' /}
-
-	<hr />
-	
-	*{<!-- Välj grupp -->}*
-	<h2>&{'admin.GiveGroupModuleAccess'}</h2>
-	#{form @admin.GruppController.modules()}
-		<select name="groupid" >
-			<option value="">&{'admin.choose.group'}:</option>
-			#{list items:sessionuser.company.getCompanyGroups(), as:'g'}
-				<option value="${g.id}" #{if group}${group.id==g.id?'selected="selected"'.raw():''}#{/if}>${g.name}</option>
-			#{/list}
-		</select>
-		<input type="submit" value="&{'Get'}" />
-	#{/form}
-	
-	*{<!-- Gruppmoduler-->}*
-	#{set group:group /}
-	#{set groupmodules:groupmodules /}
-
-	#{include 'admin/groups/modules.html' /}
-
+   *{<!-- Gruppmoduler-->}*
+   #{set group:group /}
+   #{set groupmodules:groupmodules /}
+   <div class="col-sm-12">
+   #{include 'admin/groups/modules.html' /}
+   </div>
+   </div>
 #{/if}
 
 

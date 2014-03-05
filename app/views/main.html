@@ -34,6 +34,10 @@
     <script>
 		//stäng av all autocomplete i HTML5 kompitibla webbläsare
         jQuery(document).ready(function(){
+           
+                #{if sessionuser?.showTooltip}
+                  jQuery('button[data-toggle="tooltip"]').tooltip();
+                #{/if}
                 jQuery("input").attr("autocomplete","off");
 
                 //Huvudmenyn
@@ -67,19 +71,6 @@
                                   jQuery(this).removeClass("divmenu-hover");
                           });
                 });
-                
-                 /*
-		jQuery(".menu-object-holder").each(
-                  function(){
-                          jQuery(this).mouseover(function(){
-                                  jQuery(this).addClass("divmenu-hover");
-                          });
-
-                          jQuery(this).mouseout(function(){
-                                  jQuery(this).removeClass("divmenu-hover");
-                          });
-                  })*/
-
 	});
 	</script>
 
@@ -103,31 +94,42 @@ div.module-hover{
 
 *{<!-- HELP-->}*
 <script>
-         jQuery(document).ready(function(){
-                 jQuery(".wee-dialog").each(function(){
-                        jQuery(this).click(function(){
-                                var title = jQuery(this).attr('title');
-                                if(title === undefined) title = '&nbsp;';
-                                var source = jQuery(this).attr('src');
+   jQuery(document).ready(function(){
+      #{if showLoginform}
+         openModal('&{'user.login'}', '@{Application.loginform()}');
+      #{/if}
+            
+      jQuery(".wee-dialog").each(function(){
+         jQuery(this).click(function(){
+           var title = jQuery(this).attr('title');
+           if(title === undefined) title = '&nbsp;';
+           var source = jQuery(this).attr('src');
 
-                                jQuery.ajax({
-                                        url:source,
-                                        success:function(result){
-                                          
-                                                jQuery('.modal-body').html(result);
-                                                jQuery('h4.modal-title').html(title);
-                                                jQuery('#helpModal').modal('toggle');
-                                                jQuery("img").addClass('img-responsive');
-                                        },
-                                        error:function(){
-                                                alert("Error");
-                                        }
-                                })
-
-
-                        });
-                 });
+           openModal(title, source);
          });
+      });
+   });
+         
+   function openModal(title, source)
+   {
+      jQuery.ajax({
+         url:source,
+         success:function(result){
+
+                 jQuery('.modal-body').html(result);
+                 jQuery('h4.modal-title').html(title);
+                 jQuery('#helpModal').modal('toggle');
+                 jQuery("img").addClass('img-responsive');
+         },
+         error:function(){
+                 jQuery('h4.modal-title').html('&{'core.content.missing'}');
+                 jQuery('.modal-body').html('<p class="alert alert-danger">&{'core.we.have.made.a.mistake'}</p>');
+                 jQuery('#helpModal').modal('toggle');
+         }
+       });
+   }
+         
+        
  </script>
  <style>
    .help{
@@ -230,7 +232,7 @@ div.module-hover{
                     #{/if}                    
                     *{<!--#{elseif !loginform}-->}*
                     #{else}
-                    <li><a title="&{'user.login'}" class="wee-dialog" src="@{Application.loginform()}">&{'user.login'}</a></li>
+                    <li><a title="&{'user.login'}" href="#" class="wee-dialog" src="@{Application.loginform()}">&{'user.login'}</a></li>
                     <li><a href="@{Application.signup()}">&{'user.signup'}</a></li>
                     #{/else} 
                         *{<!-- Hjälpmeny -->}*

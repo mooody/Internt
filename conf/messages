@@ -52,6 +52,9 @@ you.need.to.login.again = Du måste logga in igen
 ChooseCompany = Välj företag
 spamprotection.activated.to.many.tries.wait.30.min = Skydd aktiverat, vänta 30 minuter innan nästa inloggningsförsök
 
+#Module
+user.has.no.access.to.module = Användaren %s har inte access till modulen %s i företaget %s
+
 #Users
 add.user.to.group = Lägg till användaren till gruppen
 users.saved.ok = Användaren sparad
@@ -134,6 +137,7 @@ you.cant.erase.yourself = Du kan inte radera dig själv
 Accessable.modules.to = Tillgängliga grupper för %s
 module.has.no.rights.settings = Modulen har inte några rättighetssättningar
 set.access = Hantera rättigheter
+core.remove.module = Spärra modulen för användaren
 
 #Admin -groups
 is.your.headgroup.cant.erase = %s är din huvudgrupp och du kan inte radera denna
@@ -142,6 +146,7 @@ group.is.created = Gruppen %s är skapad
 core.GroupName = Gruppnamn
 core.GroupParentName = Huvudgrupp
 core.securitycode = Säkerhetskod
+core.user.is.admin.can.change.rights = Användaren har grundläggande administratörsrättigheter och kan själv ändra dessa inställningar
 
 #SuperAdmin - company
 core.settings.avalible = Det finns inte några inställningar tillgängliga för modulen
@@ -171,6 +176,8 @@ Account.created.successful = Ditt konto är skapat. Kontrollera din epost efter 
 #help
 help = Hjälp
 modulehelp = Moduler
+core.we.have.made.a.mistake = Vi har gjort ett misstag så innehållet kan inte visas
+core.content.missing = Innehållet saknas
 
 
 

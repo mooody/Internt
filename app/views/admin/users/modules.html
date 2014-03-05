@@ -1,92 +1,86 @@
-<!--
-#{get 'user' /}
-#{get 'usermodules' /}
-#{get 'companymodules' /}
--->
+*{<!-- Denna includeras i adminmoduls -->}*
 <script>
-    jQuery(document).ready(function(){
-        jQuery("a.rights-button").each(function(){
-            jQuery(this).click(function(){
-                var id = jQuery(this).attr("but-id");
-                var uid = jQuery(this).attr("user-id");
-                jQuery("tr.rights-row").css("display","none");
-                jQuery("tr#"+id).css("display","block");
-                jQuery("#mod"+id).load('/setUserAccess/'+id+'/'+uid);
-                
-                submitForm();
-            });
-        });
-        
-        
-    });
+   jQuery(document).ready(function() {
+      
+      jQuery("a.rights-button").each(function() {
+         jQuery(this).click(function() {
+            var id = jQuery(this).attr("but-id");
+            var uid = jQuery(this).attr("user-id");
+            var open = (jQuery('#mod'+id).css('display') == 'block')
+            jQuery('div[id^="mod"]').hide(1000);   
+            if(!open){
+            jQuery('#mod'+id).show(1000);
+            jQuery("#mod" + id).load('/setUserAccess/' + id + '/' + uid);
+            }//submitForm();
+         });
+      });
+   });
 </script>
 <style>
-    .rights-row{
-        display:none;
-        overflow-style: auto;
-        overflow-y: auto;
-            
-    }
-    
-    a.rights-button{
-        
-    }
+   .rights-row{
+      display:none;
+      overflow-style: auto;
+      overflow-y: auto;
+   }
+   a.rights-button{
+
+   }
 </style>
 *{<!-- Anv�ndarmoduler-->}*
-	#{if user}
-		*{<!-- Listar anv�ndarens ing�ende moduler-->}*
-		#{if usermodules!=null && usermodules.size() != 0}
-			<h2>&{'Got.access.to.modules', user.name}</h2>
-			<table class="listtable">
-				#{list items:usermodules, as:'module'}
-					<tr>
-						<td><span class="${user.company.modules.contains(module)?'open':'locked'}">${module.name}</span></td>
-						
-						<td>
-							#{form @admin.AdminController.removeModuleFromUser(), class:'delete', username:user.name, module:module.name}				
-							<input type="hidden" name="userid" value="${user.id}" />
-							<input type="hidden" name="moduleid" value="${module.id}" />
-							<input type="submit" class="deletebutton" value="" alt="delete group" />
-							#{/form}
-						</td>
-                                                <td><a class="rights-button" but-id="${module.id}" user-id="${user.id}" href="javascript:void(0);">&{'set.access'}</a></td>
-						
-					</tr>
-                                        *{<!-- Visar vy med rättighetssättning-->}*
-                                        <tr class="rights-row" id="${module.id}">
-                                            <td colspan="3">
-                                                <div id="mod${module.id}" style="border:1px solid #eee;width:500px; padding:7px;"></div>
-                                            </td>
-                                        </tr>
-				#{/list}
-			</table>
-		#{/if}
-		
-		#{if modules != null && modules.size() > 0 && usermodules.size()!=modules.size()}
-		<h2>&{'Accessable.modules.to', user.name}</h2>
+#{if user}
+   *{<!-- Listar anv�ndarens ing�ende moduler-->}*
+   #{if usermodules!=null && usermodules.size() != 0}
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <div class="panel-title">&{'Got.access.to.modules', user.name}</div>
+      </div>
+      <div class="panel-body">
+      #{list items:usermodules, as:'module'}
+         <div class="row">
+            <span style="padding-left: 20px;" class="${user.company.modules.contains(module)?'open':'locked'}">&{module.name}</span>
+            *{<!-- delete knappen -->}*
+            #{form @admin.AdminController.removeModuleFromUser(), class:'delete', username:user.name, module:module.name}				
+            <input type="hidden" name="userid" value="${user.id}" />
+            <input type="hidden" name="moduleid" value="${module.id}" />
+            <button type="submit" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="left" title="&{'core.remove.module'}" alt="delete">
+               <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            #{/form}
+            *{<!-- Öppna rättigheter-->}*
+            <a class="rights-button btn btn-default pull-right" but-id="${module.id}" user-id="${user.id}" href="javascript:void(0);">&{'set.access'}</a>
+         </div>
+         <div id="mod${module.id}" class="row" style="display:none">               
+         </div>         
+      #{/list}
+      </div>
+   </div>
+   #{/if}
+   #{if modules != null && modules.size() > 0 && usermodules.size()!=modules.size()}
+   <div class="panel panel-default">
+      <div class="panel-heading">
+           <b>&{'Accessable.modules.to', user.name}</b>
+      </div>
+      <div class="panel-body">
+          #{form @admin.AdminController.addModuleToUser() }
+      <input type="hidden" value="${user.id}" name="uId" />
+     
+         #{list items:modules, as:'module'}  
+            #{if !usermodules?.contains(module)}
+            <div class="form-group">
+               <input type="checkbox"id="m${module.id}" name="modid[${module.id}]" value="${module.id}" />
+               <label for="m${module.id}">&{module.name}</label>
+            </div>
+               
+            #{/if}
+         #{/list}
+         <div class="form-group">
+         <button class="btn btn-default pull-right" type="submit">&{'Save'}</button>
+         </div>
+      #{/form}
+      </div>
+   </div>
+ 
 
-		#{form @admin.AdminController.addModuleToUser() }
-		<input type="hidden" value="${user.id}" name="uId" />
-		<table class="listtable">
-			#{list items:modules, as:'module'}  
-				#{if !usermodules?.contains(module)}
-				<tr>
-					<td>
-						<input type="checkbox"id="m${module.id}" name="modid[${module.id}]" value="${module.id}" />
-					</td>
-					<td>
-						<label for="m${module.id}">${module.name}</id>
-					</td>
-				</tr>
-				#{/if}
-			#{/list}
-			<tr>
-				<td colspan="2" style="text-align:right">
-				<br />
-					<input type="submit" value="&{'Save'}" />
-				</td>
-			</tr>
-		</table>
-		#{/form}
-		#{/if} *{<!-- modules != null && modules.size() > 0 -->}*
-	#{/if} *{<!-- if user -->}*
+     
+   #{/if} *{<!-- modules != null && modules.size() > 0 -->}*
+#{/if} *{<!-- if user -->}*
