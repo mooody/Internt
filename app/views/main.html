@@ -1,319 +1,284 @@
 ﻿<!DOCTYPE html>
-
 <html>
-    <head>
-        <title>#{get 'title' /}</title>
-        <meta http-equiv="content-type" content="text/html; charset="${_response_encoding}">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-        <link rel="stylesheet" media="screen" href="@{'/public/bootstrap/css/bootstrap.min.css'}">
-        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
-        *{<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/blocks.css'}">
-        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/menu.css'}">
-	}*<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/modules.css'}">
-        #{get 'moreStyles' /}
-        
-        
-        <link rel="stylesheet" href="/public/javascripts/jquery-ui/jquery-ui.css" />
-        <script src="/public/javascripts/jquery-ui/jquery-1.9.1.js"></script>
-        <script src="/public/javascripts/jquery-ui/jquery-ui.js"></script>
-        <script src="/public/javascripts/jquery-ui/jquery-migrate-1.2.1.min.js"></script>
-        <script src="/public/bootstrap/js/bootstrap.min.js"></script>
-        
-        <script type="text/javascript" src="@{'/public/javascripts/tinymce/tinymce.min.js'}"></script>
-        
-        *{<!--
-         <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/jquery-ui/jquery-ui.css'}">
-        <script src="@{'/public/javascripts/jquery-1.8.2.min.js'}" type="text/javascript" charset="${_response_encoding}"></script>
-        <script src="@{'/public/javascripts/jquery-ui/jquery-ui.js'}" type="text/javascript" charset="${_response_encoding}"></script>
-          -->}*
-        #{get 'moreScripts' /}
-        #{script 'main.js' /}
-	</head>
+   <head>
+      <title>#{get 'title' /}</title>
+      <meta http-equiv="content-type" content="text/html; charset="${_response_encoding}">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+      <link rel="stylesheet" media="screen" href="@{'/public/bootstrap/css/bootstrap.min.css'}">
+      <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+      <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/modules.css'}">
+      #{get 'moreStyles' /}       
 
-    <script>
-		//stäng av all autocomplete i HTML5 kompitibla webbläsare
-        jQuery(document).ready(function(){
-           
-                #{if sessionuser?.showTooltip}
-                  jQuery('button[data-toggle="tooltip"]').tooltip();
-                #{/if}
-                jQuery("input").attr("autocomplete","off");
+      <link rel="stylesheet" href="/public/javascripts/jquery-ui/jquery-ui.css" />
+      <script src="/public/javascripts/jquery-ui/jquery-1.9.1.js"></script>
+      <script src="/public/javascripts/jquery-ui/jquery-ui.js"></script>
+      <script src="/public/javascripts/jquery-ui/jquery-migrate-1.2.1.min.js"></script>
+      <script src="/public/bootstrap/js/bootstrap.min.js"></script>
 
-                //Huvudmenyn
-                jQuery("ul#headmenu li").mouseover(function(){
-                        jQuery(this).addClass("m-over");
-                });
-                jQuery("ul#headmenu li").mouseout(function(){
-                        jQuery(this).removeClass("m-over");
-                });
+      <script type="text/javascript" src="@{'/public/javascripts/tinymce/tinymce.min.js'}"></script>
 
-                //modulemenyn
-                jQuery("ul#mainmenu li").mouseover(function(){
-                        jQuery(this).addClass("m-over");
-                });
-                jQuery("ul#mainmenu li").mouseout(function(){
-                        jQuery(this).removeClass("m-over");
-                });
-		//hanterar rutor i menyer
-                
-                //n�r man klickar p� modulen
-                jQuery(".divmenu-holder").each(function(){
-                     jQuery(this).click(function(){
-                             var href = jQuery(this).attr("goal");                             
-                             location.href=href;
-                     });
-                     jQuery(this).mouseover(function(){
-                                  jQuery(this).addClass("divmenu-hover");
-                          });
+      #{get 'moreScripts' /}
+   #{script 'main.js' /}
+      
+   <script>
 
-                          jQuery(this).mouseout(function(){
-                                  jQuery(this).removeClass("divmenu-hover");
-                          });
-                });
-	});
-	</script>
+      jQuery(document).ready(function(){
+         *{//sätter på tooltip om använd aren}*
+         #{if sessionuser?.showTooltip}
+            jQuery('button[data-toggle="tooltip"]').tooltip();
+         #{/if}
+         *{//stäng av all autocomplete i HTML5 kompitibla webbläsare}*
+         jQuery("input").attr("autocomplete", "off");
 
-        <style>
-           /*
-div.module-holder{
-	padding:2%;
-	/*width:45%;*/
-	margin:2px 0 2px 0;
-	cursor:pointer;
-	border:1px solid #ccc;
-	display:inline;
-	display:inline-block;
-}
-*/
-div.module-hover{
-	border:1px solid #eee;
-	background-color:#ccc;
-}
-</style>
-
-*{<!-- HELP-->}*
-<script>
-   jQuery(document).ready(function(){
-      #{if showLoginform}
-         openModal('&{'user.login'}', '@{Application.loginform()}');
-      #{/if}
-            
-      jQuery(".wee-dialog").each(function(){
-         jQuery(this).click(function(){
-           var title = jQuery(this).attr('title');
-           if(title === undefined) title = '&nbsp;';
-           var source = jQuery(this).attr('src');
-
-           openModal(title, source);
+         //när man klickar på modulen
+         jQuery(".divmenu-holder").each(function(){
+            jQuery(this).click(function(){
+               var href = jQuery(this).attr("goal");
+               location.href = href;
+            });         
+            jQuery(this).mouseover(function(){
+               jQuery(this).addClass("divmenu-hover");
+            });
+            jQuery(this).mouseout(function(){
+               jQuery(this).removeClass("divmenu-hover");
+            });
          });
-      });
-   });
+         /* *{ 
+          * Modalfönstret
+            För att öppna modaldialogen så taggar du upp något med klassen
+            wee-dialog.
+            Parametrar 
+
+            title = "text" 
+            src = [optional] href till html-fil
+            html = [optional] text | function() till text, visas som html.
+
+            ex 1: <span class="wee-dialog" title="title" src="/public/test.html">[tryck här]</span>
+            function test(){return "<h1>Test</h1><div>Hejsan</div>";}
+            ex 2: <span class="wee-dialog" title="title" html="test()">[tryck här]</span>
+            Om html är satt går den före src
+          * }* */
+         jQuery(".wee-dialog").each(function(){
+            jQuery(this).click(function(){
+              var title = jQuery(this).attr('title');
+              if(title === undefined) title = '&nbsp;';
+              var source = jQuery(this).attr('src');
+              var html = jQuery(this).attr('html');
+              openModal(title, source, eval(html));
+            });
+         });
          
-   function openModal(title, source)
+         #{if showLoginform}
+            openModal('&{'user.login'}', '@{Application.loginform()}');
+         #{/if}
+ 
+      });
+  function openModal(title, source, html)
+  {
+   if(!(html === undefined))
    {
+      jQuery('h4.modal-title').html(title);
+      jQuery('.modal-body').html(html);
+      jQuery('#helpModal').modal('toggle');
+   }
+   else
+   { 
       jQuery.ajax({
          url:source,
          success:function(result){
-
-                 jQuery('.modal-body').html(result);
-                 jQuery('h4.modal-title').html(title);
-                 jQuery('#helpModal').modal('toggle');
-                 jQuery("img").addClass('img-responsive');
+             jQuery('.modal-body').html(result);
+             jQuery('h4.modal-title').html(title);
+             jQuery('#helpModal').modal('toggle');
+             jQuery("img").addClass('img-responsive');
          },
          error:function(){
-                 jQuery('h4.modal-title').html('&{'core.content.missing'}');
-                 jQuery('.modal-body').html('<p class="alert alert-danger">&{'core.we.have.made.a.mistake'}</p>');
-                 jQuery('#helpModal').modal('toggle');
+             jQuery('h4.modal-title').html('&{'core.content.missing'}');
+             jQuery('.modal-body').html('<p class="alert alert-danger">&{'core.we.have.made.a.mistake'}</p>');
+             jQuery('#helpModal').modal('toggle');
          }
        });
-   }
-         
+  }
+  }
+     
         
- </script>
- <style>
-   .help{
-           cursor:pointer;
-           color:#111;
-   }
- </style>
- *{<!--
-   Spara hjälpfilerna i eg public/help
-   <span class="pull-right help glyphicon glyphicon-question-sign" title="Hjälp" src="/public/help/files/files.html"></span>
+   </script>
+   <style>
+      div.module-hover{
+         border:1px solid #eee;
+         background-color:#ccc;
+      }
+      .help{
+         cursor:pointer;
+         color:#111;
+      }
+   </style>
+</head>
+   *{<!--
+     Spara hjälpfilerna i eg public/help
+     <span class="pull-right help glyphicon glyphicon-question-sign" title="Hjälp" src="/public/help/files/files.html"></span>
    -->}*
- *{<!-- END HELPMODAL-->}*
-<body ng-app="HomeApp" ng-controller="MenuCtrl">
-   <!-- Start HELP-Modal -->
-	<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
-		<div class="modal-dialog">
-			<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title"></h4>
-			</div>
-			<div class="modal-body">
-
-			</div>
-                        
-                           *{<!--
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">&{'close'}</button>
-			</div>
-                        -->}*
-                        
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-        *{<!-- SLUT modalfönstret för hjälp -->}*
-
-    <div class="container">
-        <div class="logo">           
+   *{<!-- END HELPMODAL-->}*
+   <body ng-app="HomeApp" ng-controller="MenuCtrl">
+      <!-- Start HELP-Modal -->
+      <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title"></h4>
+               </div>
+               <div class="modal-body">
+               </div>              
+            </div><!-- /.modal-content -->
+         </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+      *{<!-- SLUT modalfönstret för hjälp -->}*
+      <div class="container">
+         <div class="logo">           
             <h1>${sessionuser!=null?sessionuser?.company?.name:'Internt.nu'}</h1>            
-        </div>
-        
-        <nav class="navbar navbar-${sessionuser?'default':'inverse'}" role="navigation">
+         </div>
+         *{<!-- MENY START -->}*
+         <nav class="navbar navbar-${sessionuser?'default':'inverse'}" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainmenu">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span> 
-              </button>
-              
-              <div>
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainmenu">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span> 
+               </button>
+
+               <div>
                   #{if home}
-                    <a class="navbar-brand" href="/pages/article/${home.frontpage.id}">${home.frontpage.title}</a>
+                     <a class="navbar-brand" href="/pages/article/${home.frontpage.id}">${home.frontpage.title}</a>
                   #{/if}
                   #{else}
                      #{if sessionuser!=null}
-                     <a class="navbar-brand" href="@{Users.mypage()}">&{'mypage'}</a>
-                    #{/if}
-                    #{else}
-                     <a class="navbar-brand" href="@{Application.start()}">&{'mypage'}</a>
-                    #{/else}
+                        <a class="navbar-brand" href="@{Users.mypage()}">&{'mypage'}</a>
+                     #{/if}
+                     #{else}
+                        <a class="navbar-brand" href="@{Application.start()}">&{'mypage'}</a>
+                     #{/else}
                   #{/else}
-              </div>
+               </div>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            
-            <div class="collapse navbar-collapse" id="mainmenu">
-                <ul class="nav navbar-nav">
-                    *{<!-- menu links here-->}*
-                    #{list items:articles, as:'article'}
-                    <li><a href="/pages/article/${article.id}">${article.title}</a></li>
-                    #{/list}
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    #{list items:globalArticles, as:'global'}
-                    <li><a href="/pages/article/${global.id}">${global.title}</a></li>
-                    #{/list}                 
-                    
-                    *{<!-- Användarmenu-->}*
-                    
-                    #{if sessionuser}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">&{'logged.in.as'} ${sessionuser.name}<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                #{include 'Users/menu.html' /}
-                                #{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
-                                    #{include 'admin/menu.html' /}
-                                #{/if}
-                                #{if sessionuser.getClass() == models.SuperAdmin.class}
-                                    #{include 'bigadmin/menu.html' /}
-                                #{/if}
-                                <li class="divider"></li>                           
-                                
-                                <li><a href="@{Application.logout()}">&{'user.logout'}</a></li>
-                            </ul>
-                        </li>
-                        
-                    #{/if}                    
-                    *{<!--#{elseif !loginform}-->}*
-                    #{else}
-                    <li><a title="&{'user.login'}" href="#" class="wee-dialog" src="@{Application.loginform()}">&{'user.login'}</a></li>
-                    <li><a href="@{Application.signup()}">&{'user.signup'}</a></li>
-                    #{/else} 
-                        *{<!-- Hjälpmeny -->}*
-                    <li><a href="@{Application.helpfiles()}"><span class="glyphicon glyphicon-question-sign"></span></a></li>
-                    *{<!-- Företagsmeny -->}*
-                        #{if sessionuser && multipleCompanies}
-                        <li class="dropdown">
-                           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-home"></span></a>
-                           <ul class="dropdown-menu"  style="max-height:200px;overflow-y: scroll;">
-                              #{list items:sessionuser.companies, as:'c'}
-                               <li><a href="@{Application.loadCompany(c.id)}">${c.name}</a></li>
-                               #{/list}
-                           </ul>
-                        </li>
-                        #{/if}
-                </ul>
-            </div>
-        </nav>
 
-        <div style="clear:both;"></div>
-	
-        *{<!-- Messagebox -->}*
-		
-        <div class="alert alert-info" style=" display:${flash['message']?'block':'none'};">
+            <div class="collapse navbar-collapse" id="mainmenu">
+               <ul class="nav navbar-nav">
+                  *{<!-- menu links here-->}*
+                  #{list items:articles, as:'article'}
+                  <li><a href="/pages/article/${article.id}">${article.title}</a></li>
+                  #{/list}
+               </ul>
+               <ul class="nav navbar-nav navbar-right">
+                  #{list items:globalArticles, as:'global'}
+                  <li><a href="/pages/article/${global.id}">${global.title}</a></li>
+                  #{/list}                 
+
+                  *{<!-- Användarmenu-->}*
+                  #{if sessionuser}
+                  <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">&{'logged.in.as'} ${sessionuser.name}<b class="caret"></b></a>
+                     <ul class="dropdown-menu">
+                        #{include 'Users/menu.html' /}
+                        #{if sessionuser.getClass() == models.Admin.class || sessionuser.getClass() == models.SuperAdmin.class}
+                           #{include 'admin/menu.html' /}
+                        #{/if}
+                        #{if sessionuser.getClass() == models.SuperAdmin.class}
+                           #{include 'bigadmin/menu.html' /}
+                        #{/if}
+                        <li class="divider"></li>
+                        <li><a href="@{Application.logout()}">&{'user.logout'}</a></li>
+                     </ul>
+                  </li>
+                  #{/if}                    
+                  *{<!-- EJ INLOGGAD -->}*
+                  #{else}
+                  <li><a title="&{'user.login'}" href="#" class="wee-dialog" src="@{Application.loginform()}">&{'user.login'}</a></li>
+                  <li><a href="@{Application.signup()}">&{'user.signup'}</a></li>
+                  #{/else} 
+                  *{<!-- Hjälpmeny -->}*
+                  <li><a href="@{Application.helpfiles()}"><span class="glyphicon glyphicon-question-sign"></span></a></li>
+                  *{<!-- Företagsmeny -->}*
+                  #{if sessionuser && multipleCompanies}
+                  <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-home"></span></a>
+                     <ul class="dropdown-menu"  style="max-height:200px;overflow-y: scroll;">
+                        #{list items:sessionuser.companies, as:'c'}
+                        <li><a href="@{Application.loadCompany(c.id)}">${c.name}</a></li>
+                        #{/list}
+                     </ul>
+                  </li>
+                  #{/if}
+               </ul>
+            </div>
+         </nav>
+         *{<!-- MENY END -->}*
+
+         <div style="clear:both;"></div>
+
+         *{<!-- Messagebox -->}*		
+         <div class="alert alert-info" style=" display:${flash['message']?'block':'none'};">
             <span class="glyphicon glyphicon-info-sign"></span>
             ${flash['message']}
             *{<!-- Återaktivering -->}*
             #{if flash['resend']}
-                <span style="margin: 20px 0;">
-                        <a href="@{Application.resendActivationMail(flash['resend'])}"><b>&{'resend.activationmail'}</b></a>
-                </span>
+            <span style="margin: 20px 0;">
+               <a href="@{Application.resendActivationMail(flash['resend'])}"><b>&{'resend.activationmail'}</b></a>
+            </span>
             #{/if}
             *{<!-- invite mail -->}*
             #{if flash['invite']}
-                <span style="margin: 20px 0;">
-                        <a href="@{admin.UsersController.sendInvitationMail(flash['invite'])}"><b>&{'send.invitationnmail'}</b></a>
-                </span>
+            <span style="margin: 20px 0;">
+               <a href="@{admin.UsersController.sendInvitationMail(flash['invite'])}"><b>&{'send.invitationnmail'}</b></a>
+            </span>
             #{/if}		
-        </div>
-		
-*{<!--
-        #{if flash['hasInvites'] }
-                <div class="message ui-state-highlight ui-corner-all" style="width:95%">
-                %{def invitations = models.mail.Invite.getInvites(sessionuser); }%
-                <ul>
-                        #{list items:invitations, as:'invite'}
-                                ${invite.getFrom().name} &{'invites.you.to'} ${invite.getCompany().name} 
-                                <a href="javascript:void(0)">&{'accept.invite'}</a>
-                                <a href="javascript:void(0)">&{'erase.invite'}</a>
-                        #{/list}
+         </div>
+         *{<!-- Messagebox END -->}*	
 
-                </ul>
-                </div>
+         *{<!--
+                 #{if flash['hasInvites'] }
+                         <div class="message ui-state-highlight ui-corner-all" style="width:95%">
+                         %{def invitations = models.mail.Invite.getInvites(sessionuser); }%
+                         <ul>
+                                 #{list items:invitations, as:'invite'}
+                                         ${invite.getFrom().name} &{'invites.you.to'} ${invite.getCompany().name} 
+                                         <a href="javascript:void(0)">&{'accept.invite'}</a>
+                                         <a href="javascript:void(0)">&{'erase.invite'}</a>
+                                 #{/list}
+         
+                         </ul>
+                         </div>
+         
+                 #{/if}
+         -->}*				
 
-        #{/if}
--->}*				
-	
-        *{<!-- Messagebox ERROR -->}*
-        #{if errors }
-            <div class="alert alert-danger">
-                #{errors}
-                <span id="errortext" class="glyphicon glyphicon-wrench"></span> ${error}<br />
-                #{/errors}
-            </div>
-        #{/if}
-        <div class="content" #{if loginform}style="clear:both; border:none;background-color:transparent;"#{/if}>
-                #{doLayout /}
-        </div>
-        
-        <div class="panel panel-default" style="clear:both; margin-top:20px;">
-            <div class="panel-body">
-                #{if sessionuser}
-                        &{'logged.in.as'} ${sessionuser.name}
-                        ( &{sessionuser.getClass().getSimpleName()} )<br />
-                        &{'Company'}: ${sessionuser?.company?.name}
-                #{/if}
-             </div>
-        </div>
-    </div>
-    
-    <!-- class="col-md-6 col-xs-12" -->
-
+         *{<!-- Messagebox ERROR -->}*
+         #{if errors }
+         <div class="alert alert-danger">
+            #{errors}
+            <span id="errortext" class="glyphicon glyphicon-wrench"></span> ${error}<br />
+            #{/errors}
+         </div>
+         #{/if}
+         <div class="content" #{if loginform}style="clear:both; border:none;background-color:transparent;"#{/if}>
+              #{doLayout /}
+      </div>
+      *{<!-- Messagebox ERROR END -->}*        
+      *{<!-- FOOTER -->}*
+      <div class="panel panel-default" style="clear:both; margin-top:20px;">
+         <div class="panel-body">
+            #{if sessionuser}
+            &{'logged.in.as'} ${sessionuser.name}
+            ( &{sessionuser.getClass().getSimpleName()} )<br />
+            &{'Company'}: ${sessionuser?.company?.name}
+            #{/if}
+         </div>
+      </div>
+      *{<!-- FOOTER END -->}*
+   </div>
 </body>
 </html>

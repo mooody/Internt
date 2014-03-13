@@ -208,6 +208,7 @@ public class Application extends Controller
    //Sätter användarens företag till valt företag
    public static void loadCompany(long id)
    {
+      try{
       long userid = new Long(session.get("userid")).longValue();
       Company company = Company.find("select c from models.UserBase u left join u.companies c where u.id = :uid and c.id = :cid")
               .bind("cid", id).bind("uid", userid).first();
@@ -223,6 +224,10 @@ public class Application extends Controller
       loadComanyUserSetting(user, company);
 
       redirect("users.mypage");
+      } catch(Exception ex){
+         Logger.error("Error in Application.loadCompany");
+         Application.showLoginForm();
+      }
    }
 
    /**

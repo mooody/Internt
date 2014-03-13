@@ -3,6 +3,7 @@
 #
 
 upload = Ladda upp
+some.error.occord = Ett oväntat fel inträffade. Kontakta kundtjänst!
 
 #Application
 user.logout = Logga ut

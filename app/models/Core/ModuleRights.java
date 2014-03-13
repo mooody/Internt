@@ -1,7 +1,6 @@
 package models.Core;
 
 import java.util.SortedMap;
-import java.util.TreeMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,18 +11,28 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 import models.Company;
 import models.UserBase;
-import models.booking.Rights;
 import play.Logger;
-import play.Play;
-import play.cache.Cache;
-import play.db.jpa.Model;
 
 
 /**
  * Klass som håller i rättigheter mellan användare och modul.
+ * 
+ * Eg. booking ex. Initilized class with only one permission. (of maximum 32, (32 bit in db))
+   public class Rights extends ModuleRights
+   {
+
+      public static final int ACCOUNTS_ALL = 1;
+
+      public Rights()
+      {
+         listOfRights = new TreeMap<String, Integer>();
+         //translate: 'booking.rights.accounts.all' in conf/message
+         listOfRights.put("booking.rights.accounts.all", ACCOUNTS_ALL);
+
+      }
+   }
  * 
  * ex use in controller (booking.HeadBookingController)
  * Rights rights = Cache.get(session.getId() + "booking_rights", Rights.class);
@@ -34,6 +43,11 @@ import play.db.jpa.Model;
    }
 
    renderArgs.put("premissions", rights);
+   * 
+   * When to check the permissions in views eg
+   * #{if permissions == null || permissions?.hasRight(permissions?.ACCOUNTS_ALL)}
+   * 
+   * And in controllers the same... Default is permissions null = all permissions
  */
 @Entity
 @Table(name="core_modulerights")
