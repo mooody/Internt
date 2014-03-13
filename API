@@ -1,0 +1,12 @@
+JAVASCRIPT
+
+Modalfönstret
+För att öppna modaldialogen så taggar du upp något med klassen
+wee-dialog.
+Parametrar 
+
+title = "text" 
+src = [optional] href till html-fil
+html = [optional] text | function() till text, visas som html.
+
+Om html är satt går den före src
