@@ -90,13 +90,14 @@ POST    /saveUserAccess/{module_id}/{user_id}     ModuleController.saveUserAcces
 #MailController
 
 #Modules
-*   /messages                                   module:messages
-*   /reminder                                   module:reminder
+#*   /messages                                   module:messages
+#*   /reminder                                   module:reminder
 *   /booking                                    module:booking
 *   /project                                    module:project
 *   /passwords                                  module:passwords
 *   /files                                  	module:files
 *   /mail                                  	module:mail
+*  /customer                                    module:customer
 #----------------------
 #groups
 

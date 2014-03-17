@@ -108,10 +108,85 @@ public class UserBase extends Model
            inverseJoinColumns ={@JoinColumn(name = "company_id")
    })
    public List<Company> companies;
+   
+   private String sign;
+
+   /**
+    * Om användaren inte har en signature, skapa en
+    *
+    * @return this.sign
+    * @throws Exception om det är 100 som har samma signature. Troligen ett fel
+    * då!
+    */
+   public String getSign() throws Exception
+   {
+      Logger.info("UserBase.getSign");
+      if (this.sign != null)
+      {
+         return this.sign;
+      } else
+      {
+         //Skapa initialer av anv�ndaren         
+         String[] initials_arr = this.name.split(" ");
+
+
+         //för räkneverket endast, deklareras utanför pga whileloopen
+         long count = 0;
+         //om användarens sign redan finns, lägg till en siffra
+         int signer = 0;
+         do
+         {
+            StringBuilder sb = new StringBuilder();
+            signer++;
+
+            for (String s : initials_arr)
+            {
+               sb.append(s.toLowerCase().charAt(0));
+               sb.append(s.toLowerCase().charAt(s.length() - 1));
+
+            }
+
+            if (signer > 1)
+            {
+               sb.append(signer);
+            }
+
+            this.sign = sb.toString();
+
+            count = User.count("select count(u) from User u where u.sign = ?1 and u.company = ?2", this.sign, this.company);
+
+
+            if (signer > 100)
+            {
+               throw new Exception("To many users with same sign, max 100");
+            }
+         } while (count > 0);
+
+         this.save();
+         return this.sign;
+      }
+   }
   
    public void setCompany(Company _company)
    {
       this.company = _company;
+   }
+   
+   public boolean isUsersCompany(Company _company)
+   {
+      try
+      {
+         if(this.company.id.equals(_company.id))
+         {
+            return true;
+         }
+      } 
+      catch(Exception ex)
+      {
+         Logger.error("UserBase.isUserCompany: user %s tried to check company %s\n\t%s", this, _company, ex.getMessage()); 
+      }
+      
+      return false;
    }
    /*
     @Basic(fetch=FetchType.LAZY)
@@ -272,63 +347,7 @@ public class UserBase extends Model
    {
       return this.name + " " + this.id;
    }
-   private String sign;
-
-   /**
-    * Om användaren inte har en signature, skapa en
-    *
-    * @return this.sign
-    * @throws Exception om det är 100 som har samma signature. Troligen ett fel
-    * då!
-    */
-   public String getSign() throws Exception
-   {
-      Logger.info("UserBase.getSign");
-      if (this.sign != null)
-      {
-         return this.sign;
-      } else
-      {
-         //Skapa initialer av anv�ndaren         
-         String[] initials_arr = this.name.split(" ");
-
-
-         //för räkneverket endast, deklareras utanför pga whileloopen
-         long count = 0;
-         //om användarens sign redan finns, lägg till en siffra
-         int signer = 0;
-         do
-         {
-            StringBuilder sb = new StringBuilder();
-            signer++;
-
-            for (String s : initials_arr)
-            {
-               sb.append(s.toLowerCase().charAt(0));
-               sb.append(s.toLowerCase().charAt(s.length() - 1));
-
-            }
-
-            if (signer > 1)
-            {
-               sb.append(signer);
-            }
-
-            this.sign = sb.toString();
-
-            count = User.count("select count(u) from User u where u.sign = ?1 and u.company = ?2", this.sign, this.company);
-
-
-            if (signer > 100)
-            {
-               throw new Exception("To many users with same sign, max 100");
-            }
-         } while (count > 0);
-
-         this.save();
-         return this.sign;
-      }
-   }
+   
    //<editor-fold defaultstate="collapsed" desc=" Grupper">
 
    /**
