@@ -66,6 +66,11 @@ public class SuperAdminController extends PlanController {
         render("bigadmin/modules.html", companies, modules, company);
     }
     
+    public static void updateModule(Module module){
+        module.save();
+        modules();
+    }
+    
     /** 
      * Visar superadministratörspanelen för grupper
      */

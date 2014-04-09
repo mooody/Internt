@@ -43,6 +43,26 @@ public class Module extends Model{
     @ManyToMany(mappedBy="modules")
     public List<ModuleController> controllers;
     
+    //<editor-fold defaultstate="collapsed" desc=" siteadministration">
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public boolean isReleased() {
+        return released;
+    }
+
+    public void setReleased(boolean released) {
+        this.released = released;
+    }
+    
+    double cost = 0;
+    boolean released = false;
+    //</editor-fold>
     //@ManyToMany(mappedBy="modules")
     //public List<UserBase> users;
     
@@ -130,6 +150,6 @@ public class Module extends Model{
 		return this.name.toString();
 	}
     
-   
+
        
 }

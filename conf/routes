@@ -69,6 +69,7 @@ GET     /super/groups                           SuperAdminController.groups
 POST    /super/modules/addAdmin                 SuperAdminController.addAdminToModule
 POST 	/super/modules/addCompany		SuperAdminController.addModuleToCompany
 POST 	/super/modules/removeCompany		SuperAdminController.removeModuleFromCompany
+POST	/super/module/update			SuperAdminController.updateModule
 GET	/super/company/all                      SuperAdminController.showCompanies
 GET	/super/company/{id}                     SuperAdminController.showCompany
 POST	/super/company/update			SuperAdminController.updateCompany
@@ -97,7 +98,7 @@ POST    /saveUserAccess/{module_id}/{user_id}     ModuleController.saveUserAcces
 *   /passwords                                  module:passwords
 *   /files                                  	module:files
 *   /mail                                  	module:mail
-*  /customer                                    module:customer
+*  /invoice                                    module:invoice
 #----------------------
 #groups
 

@@ -1,46 +1,277 @@
 
-#{mainpage title:'Signup' /}
-
-
-<div class="alert alert-danger">
-   <span class="glyphicon glyphicon-warning-sign"></span>
-   Om du har hittat hit nu så är du tyvärr lite för tidigt ute. Vi har inte öppnat ännu så det kommer inte att komma något mail till dig även om webbsidan säger så!
-</div>
+#{mainpage title:'Skapa access' /}
+*{
 <div class="center-block">
-   #{form @Application.createAccount(), 'role':'form'}
+    #{form @Application.createAccount(), 'role':'form'}
 
-      <div class="form-group">
-         <label for="name" class="control-label">Namn:</label>
-         <input id="name" type="text" class="form-control" name="user.name" value="${flash['user.name']}"/>
-      </div>
-      <div class="form-group">
-         <label for="email" class="control-label">Email:</label>
-         <input type="email" id="email" class="form-control" name="user.email"  value="${flash['user.email']}" />
-      </div>
-      <div class="form-group">
-         <div class="col-sm-6">
-            <label for="pw" class="control-label">Lösenord:</label>
-            <input type="password" id="pw" class="form-control" name="user.password" />
-         </div>
-         <div class="col-sm-6">
-            <label for="pw2" class="control-label">Repetera lösenordet:</label>
-           <input type="password" id="pw2" class="form-control" name="password" />
-         </div>
-      </div>
-   
-      <div class="form-group">
-         <img src="@{Application.captcha(codeid)}" alt="spam-control" />
-         <label for="captcha" class="control-label" />&{'core.securitycode'}</label>
-         <input type="text" class="form-control" name="captcha" id="captcha" />
-         <input type="hidden" name="codeid" value="${codeid}" />
-      </div>
-      <div class="form-group">
-         <input type="submit" class="btn btn-default" value="&{'user.signup'}" />
-      </div>
-   #{/form}
+
+    <div class="form-group">
+        <img src="@{Application.captcha(codeid)}" alt="spam-control" />
+        <label for="captcha" class="control-label" />&{'core.securitycode'}</label>
+        <input type="text" class="form-control" name="captcha" id="captcha" />
+        <input type="hidden" name="codeid" value="${codeid}" />
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="&{'user.signup'}" />
+    </div>
+    #{/form}
+</div>
+}*
+
+*{<!-- Moduler-->}*
+#{form @Application.createAccount(), 'role':'form'}
+<div class="col-sm-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">&{'core.choose.modules'}
+            <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="" src="/public/help/modules.html"></span>
+            </h4>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>&{'core.module.minUserType'}</th>
+                    <th style="text-align: right;">&{'core.module.cost'}</th>
+                    <th>&nbsp;</th>
+                </tr>
+                #{list items:modules, as:'module'}
+                <tr id="mod-row-${module.id}">
+                    <td><input id="mod-${module.id}" data-cost="${module.cost}" data-module="${module.id}" type="checkbox" value="${module.id}" name="modules"></td>
+                    <td><label for="mod-${module.id}">&{module.name}</label></td>
+                    <td>&{module.userAccessType}</td>
+                    <td style="text-align: right;">${module.cost.format("0")} / &{'core.month'}</td>
+                    <td>
+                        <span class="glyphicon glyphicon-question-sign help wee-dialog" title="&{module.name}" src="/public/modulehelp/${module.name}.html"></span>
+                    </td>
+                </tr>
+
+                #{/list}
+            </table>
+            
+            <div class="alert alert-info"><span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.usertypes'}" src="/public/modulehelp/usertypes.html"></span>
+                &{'core.signup.info.users'}
+                
+            </div>
+             <table class="table table-striped">
+                <tr>
+                    <th colspan="2">&{'core.signup.licenses'}</th>
+                                   
+                    <th style="text-align: right;">&{'core.module.cost'}</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <td>&{'core.extra.administrator'}</td>
+                    <td><input type="number" step="1" id="admins" name="admins" /></td>                    
+                    <td style="text-align: right;">49</td>
+                    <td>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>&{'core.extra.users'}</td>
+                    <td><input type="number" step="1" id="users" name="users" /></td>                    
+                    <td style="text-align: right;">9</td>
+                    <td>
+                        
+                    </td>
+                </tr>
+            </table>
+            <hr />
+            <h4>&{'core.module.invoice.period'}</h4>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input id="period-1" value="1" type="radio" name="period">
+                    </span>
+                    <label for="period-1" class="form-control">&{'core.1.month'}</label>
+                </div><!-- /input-group -->
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input id="period-3" value="3" type="radio" name="period">
+                    </span>
+                    <label for="period-3" class="form-control">&{'core.3.month'}</label>
+                </div><!-- /input-group -->
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input id="period-12" value="12" type="radio" checked="checked" name="period">
+                    </span>
+                    <label for="period-12" class="form-control">&{'core.12.month'} <small class="badge pull-right alert-danger">&{'core.1.month.free'}</small></label>
+                </div><!-- /input-group -->
+            </div>
+
+            <small id="mod-discount" style="color:red;"></small>
+            <span class="pull-right">
+                <h4>Fakturabelopp <span id="mod-total">0</span> SEK</h4>
+            </span>
+        </div>
+    </div>
 </div>
 
 
+*{<!-- Användare-->}*
+<div class="col-sm-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">&{'core.userAccount'}
+            <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="" src="/public/help/modules.html"></span>
+            </h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="name" class="control-label">Namn:</label>
+                <input id="name" type="text" class="form-control" name="user.name" value="${flash['user.name']}"/>
+            </div>
+            <div class="form-group">
+                <label for="email" class="control-label">Email:</label>
+                <input type="email" id="email" class="form-control" name="user.email"  value="${flash['user.email']}" />
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label for="pw" class="control-label">Lösenord:</label>
+                    <input type="password" id="pw" class="form-control" name="user.password" />
+                </div>
+                <div class="col-sm-6">
+                    <label for="pw2" class="control-label">Repetera lösenordet:</label>
+                    <input type="password" id="pw2" class="form-control" name="password" />
+                </div>
+            </div>
+        
+            <div class="form-group">
+
+                *{<!-- Organisationsnamn -->}*
+                <label for="name" class="control-label">Organisationsnamn:</label>
+
+                <input id="name" class="form-control" type="text" name="company.name" value="${flash['company.name']?flash['company.name']:company?.name}"/>
+
+                <label for="orgnr" class="control-label">Organisationsnummer:</label>
+
+                <input id="orgnr" class="form-control"  type="text" name="company.orgnr" value="${flash['company.orgnr']?flash['company.orgnr']:company?.orgnr}"/>
+                
+            </div>
+            <div class="form-group">
+                <label for="street" class="control-label">Gatuadress:</label>
+
+                <input id="street" class="form-control"  type="text" name="company.street" value="${company?.street}"/>
 
 
+                <label for="zipcode" class="control-label">Postnr:</label>
+
+                <input id="zipcode" class="form-control"  type="text" name="company.zipcode" value="${company?.zipcode}"/>
+
+
+                <label for="city" class="control-label">Stad:</label>
+
+                <input id="city" class="form-control"  type="text" name="company.city" value="${company?.city}"/>
+
+            </div>
+        </div>
+    </div>
+</div>
+*{<!-- Avtal-->}*
+
+<div class="col-sm-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">&{'core.agrement'}
+            <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="" src="/public/help/modules.html"></span>
+            </h4>
+        </div>
+        <div class="panel-body">
+            <input type="checkbox" name="agrement" id="agrement" />
+            <label for="agrement">&{'core.agrement.text'}</label>
+            <a class="wee-dialog pull-right" src="public/agrement.html" title="agrement">&{'core.read.agrement'}</a>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="" src="/public/help/modules.html"></span>
+            </h4>
+        </div>
+        <div class="panel-body">
+
+        </div>
+    </div>
+</div>
+<div class="col-sm-12">
+    <button class="pull-right btn btn-lg btn-success">&{'core.signup.order'}</button>
+</div>
+ #{/form}
+
+
+<script>
+    jQuery(document).ready(function() {
+        jQuery('input[data-module]').change(function() {
+            sumeraizeModules();
+        });
+        jQuery('input[name="period"]').change(function() {
+            sumeraizeModules();
+        });                
+        jQuery('#admins').keyup(function() {
+            sumeraizeModules();
+        });
+        jQuery('#users').keyup(function() {
+            sumeraizeModules();
+        });
+        jQuery('#admins').change(function() {
+            sumeraizeModules();
+        });
+        jQuery('#users').change(function() {
+            sumeraizeModules();
+        });
+    });
+
+    function sumeraizeModules() {
+        var total = 0.0;
+        jQuery('input[data-module]').each(function() {
+            if (jQuery(this).attr('checked'))
+            {
+                total += new Number(jQuery(this).attr("data-cost"));
+            }
+        });
+
+        var period = new Number(jQuery('input[name="period"]:checked').val());
+        var usercost = calculateExtraUsers();
+        if (period < 12)
+        {
+            showCost(period * (total + usercost));            
+            hideDiscount();
+        }
+        else
+        {
+            showCost(period * (total + usercost) - (total + usercost) );
+            showDiscount(total + usercost);
+        }
+    }
+    
+    function calculateExtraUsers(){
+        var admins = new Number(jQuery("#admins").val());
+        var users = Number(jQuery("#users").val());
+        return admins*49 + users*9;
+    }
+    function hideDiscount() {
+        jQuery("#mod-discount").text('');
+        jQuery("#mod-discount").hide();
+    }
+    function showDiscount(discount)
+    {
+        jQuery("#mod-discount").text('&{'core.signup.discount'} ' + discount.toFixed(2) + " SEK");
+        jQuery("#mod-discount").show();
+    }
+
+    function showCost(totalcost) {
+
+        jQuery("#mod-total").text(totalcost);
+    }
+
+</script>
 

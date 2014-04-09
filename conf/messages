@@ -172,6 +172,7 @@ validation.email.is.required = Din email är obligatoriskt
 validation.email.exists.in.system = Din email finns redan i systemet. Begär nytt lösen.
 validation.password.failed = Lösenordet är ogiltigt, minst en siffra samt minst en bokstav (a-z) och minst 6 tecken
 validation.password.error = Lösenords error
+validation.need.a.module = Du måste välja åtminstonde en app
 Account.created.successful = Ditt konto är skapat. Kontrollera din epost efter aktiveringsmailet. (Kontrollera även skräpposten)
 
 #help
@@ -179,6 +180,29 @@ help = Hjälp
 modulehelp = Moduler
 core.we.have.made.a.mistake = Vi har gjort ett misstag så innehållet kan inte visas
 core.content.missing = Innehållet saknas
+
+core.module.cost = Pris (SEK)
+core.module.minUserType = Användartyp
+core.signup.discount Erhållen rabatt
+core.choose.modules = Välj appar
+core.userAccount = Kontouppgifter
+core.extra.administrator = Extra administratörskonton
+core.extra.users = Extra användare
+core.module.invoice.period = Faktureringsperiod
+core.1.month = 1 Månad
+core.3.month = 3 Månader
+core.12.month = 12 Månader
+core.1.month.free = Betala bara för 11
+core.agrement = Avtal
+core.agrement.text = Jag godkänner avtalet
+core.read.agrement = Läs avtalet
+core.signup.licenses = Extra användarlicenser
+core.month = månad
+core.signup.order = Beställ
+you.need.a.company.street = Du måste fylla i en faktureringsadress
+ you.need.a.company.zipcode = Du måste fylla i ett postnr
+ you.need.a.company.city = Du måste fylla i stad
+core.signup.info.users = Det finns olika användarlicenser. Vissa appar kräver motsvarande Administratörsrättigheter. Du ser i listan vilken användartyps som krävs till vilken app. <br />I grundutförandet ingår det 5 användarkonton varav 1 är administratörskonto. 
 
 
 

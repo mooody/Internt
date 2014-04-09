@@ -1,0 +1,47 @@
+<h2>ERROR in ${cause}</h2>
+<h3>${ex}</h3>
+<h3>- ${ex.getLocalizedMessage()}</h3>
+<table style="width:100%">
+    <tr>
+        <td>Cause</td>
+        <td>${ex.getCause()}</td>
+    </tr>    
+     <tr>
+        <td>Class</td>
+        <td>${ex.getClass()}</td>
+    </tr>
+</table>
+       
+       
+       <table style="width:100%">  
+       <tr>
+           <th>Filename</th>
+             <th>ClassName</th>
+             <th>Method</th>
+             <th>Line</th>
+       </tr>
+       #{list items:ex.getStackTrace(), as:'st'}
+       <tr>
+           <td>
+               ${st.getFileName()}
+           </td>           
+           
+           <td>
+               ${st.getClassName()}
+           </td>           
+           <td>
+               ${st.getMethodName()}
+           </td>   
+           <td>               
+               ${st.getLineNumber()}
+           </td>         
+       </tr>
+       #{/list}
+       </table>
+<pre>
+${ex.printStackTrace()}
+</pre>
+<p><b>${ex.getLocalizedMessage()}</b></p>
+      #{list items:ex.getSuppressed(), as:'t'}
+       <hr />${t.printStackTrace()}   
+       #{/list}

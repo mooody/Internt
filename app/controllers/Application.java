@@ -3,19 +3,20 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
-import play.*;
-import play.mvc.*;
 import java.util.*;
 import java.util.logging.Level;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import models.*;
-import play.cache.Cache;
-import play.i18n.Messages;
 import models.Core.*;
 import models.mail.Invite;
+import play.*;
+import play.cache.Cache;
+import play.data.validation.Valid;
+import play.i18n.Messages;
 import play.libs.Codec;
 import play.libs.Images;
+import play.mvc.*;
 
 /**
  * Application controllern har hand om inloggning. och här är även startpunkten
@@ -184,7 +185,8 @@ public class Application extends Controller
    public static void signup()
    {
       String codeid = Codec.UUID();
-      render(codeid);
+      List<Module> modules = Module.find("byReleased", true).fetch();
+      render(codeid, modules);
    }
 
    /**
@@ -286,11 +288,11 @@ public class Application extends Controller
     *
     * @param user
     */
-   public static void createAccount(Admin user)
+   public static void createAccount(@Valid Admin user, @Valid Company company, List<Long> modules)
    {
-      String codeid = params.get("codeid");
-      String captcha = params.get("captcha");
-      String code = (String) Cache.get(codeid);
+//      String codeid = params.get("codeid");
+//      String captcha = params.get("captcha");
+//      String code = (String) Cache.get(codeid);
 
       if (UserBase.find("byEmail", user.email).first() != null)
       {
@@ -331,15 +333,20 @@ public class Application extends Controller
          }
       }
 
-      validation.valid(user);
-      validation.equals(captcha, code).message("validation.wrong.captcha.code");
+      
+//      validation.equals(captcha, code).message("validation.wrong.captcha.code");
 
+      if(modules==null || modules.isEmpty()){
+          validation.addError("modules.error","validation.need.a.module");
+      }
       if (validation.hasErrors())
       {
          validation.keep();
          params.flash();
          Application.signup();
       }
+      
+      
 
       user.activated = false;
       user.save();

@@ -31,8 +31,11 @@ public class Company extends Model{
     @Required(message="you.need.a.company.orgnr")
     public String orgnr;
     public String mail;
+     @Required(message="you.need.a.company.street")
     public String street;
+      @Required(message="you.need.a.company.zipcode")
     public String zipcode;
+       @Required(message="you.need.a.company.city")
     public String city;
     public String phone;
     public String cellphone;

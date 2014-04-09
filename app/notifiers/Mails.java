@@ -28,7 +28,7 @@ public class Mails extends Mailer {
 	public static void lostPassword(UserBase user) 
 	{
 		String newpassword = "test";
-		setFrom("Robot <robot@thecompany.com>");
+		setFrom("Robot <robot@internt.nu>");
 		setSubject("Your password has been reset");
 		addRecipient(user.email);
 
@@ -51,8 +51,23 @@ public class Mails extends Mailer {
    {
       setFrom(invite.getFrom().name+" <"+invite.getFrom().email+">");
       addRecipient(invite.getTo().email);
-	  setSubject(invite.getFrom().name+" "+Messages.get("invites.you.to")+" "+invite.getCompany().name);
+        setSubject(invite.getFrom().name+" "+Messages.get("invites.you.to")+" "+invite.getCompany().name);
       send(invite);
+   }
+   
+   public static void sendErrorMsg(String cause, Exception ex)
+   {
+       setFrom("Robot <robot@internt.nu>");
+       
+       addRecipient(play.Play.configuration.getProperty("defaultuser.email"));
+       setSubject("Error : "+ cause);
+       ex.getCause().fillInStackTrace();     
+       for(Throwable t: ex.getSuppressed())
+       {
+           t.fillInStackTrace();
+       }
+       
+       send(ex, cause);
    }
  
 }
