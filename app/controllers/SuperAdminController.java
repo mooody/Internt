@@ -5,18 +5,20 @@
 package controllers;
 
 import controllers.admin.AdminController;
+import java.util.ArrayList;
 import java.util.List;
 import models.Admin;
+import models.Company;
+import models.Core.Internt;
 import models.Core.Module;
 import models.Grupp;
 import models.SuperAdmin;
 import models.UserBase;
+import models.invoice.InvoiceProfile;
 import play.Logger;
 import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.Controller;
-import models.Company;
-import java.util.ArrayList;
 
 /**
  * Hanterar alla superadminfunktioner. 
@@ -62,14 +64,11 @@ public class SuperAdminController extends PlanController {
 		Company company = Company.findById(id!=null?id.longValue():(flashid!=null?new Long(flashid).longValue():0));
 		List<Company> companies = Company.findAll();
 		List<Module> modules = Module.findAll();
-                Logger.info("HER");
+
         render("bigadmin/modules.html", companies, modules, company);
     }
     
-    public static void updateModule(Module module){
-        module.save();
-        modules();
-    }
+    
     
     /** 
      * Visar superadministratörspanelen för grupper
@@ -223,4 +222,29 @@ public class SuperAdminController extends PlanController {
 		flash.put("message", Messages.get("Company.updated"));
 		showCompany(company.id);
 	}
+        
+        public static void billing()
+        {
+            Internt internt = Internt.findById(1L);
+            
+            if(internt == null)
+            {
+                internt = new Internt();                
+            }
+            List<Module> modules = Module.findAll();
+            
+            List<InvoiceProfile> profiles = InvoiceProfile.find("select p from InvoiceProfile p where p.company.id = ?",1L).fetch();
+            render(internt, modules,profiles);
+        }
+        
+        public static void updateModule(Module module){
+            module.save();
+            billing();
+        }
+        
+        public static void saveInternt(Internt internt)
+        {
+            internt.save();
+            billing();
+        }
 }

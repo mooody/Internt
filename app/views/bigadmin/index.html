@@ -15,6 +15,16 @@ $("li#superadmin").addClass("active");
 </div>
 
 <div class="col-sm-6">
+   <div class="panel panel-default divmenu-holder" goal="@{SuperAdminController.billing()}">
+      <div class="panel-body">
+         <a href="@{SuperAdminController.billing()}"/>
+            <h2>Hantera prissättning</h2>
+         </a>
+      </div>
+   </div>
+</div>
+
+<div class="col-sm-6">
    <div class="panel panel-default divmenu-holder" goal="@{SuperAdminController.users()}">
       <div class="panel-body">
          <a href="@{SuperAdminController.users()}"/>

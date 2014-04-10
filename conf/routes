@@ -73,7 +73,9 @@ POST	/super/module/update			SuperAdminController.updateModule
 GET	/super/company/all                      SuperAdminController.showCompanies
 GET	/super/company/{id}                     SuperAdminController.showCompany
 POST	/super/company/update			SuperAdminController.updateCompany
-
+GET	/super/billing                          SuperAdminController.billing
+POST	/super/billing/update			SuperAdminController.updateModule
+POST    /super/billing/internt                  SuperAdminController.saveInternt
 #user regular
 GET     /mypage                                 Users.mypage
 GET     /myaccount                              Users.myaccount

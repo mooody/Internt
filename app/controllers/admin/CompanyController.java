@@ -77,7 +77,8 @@ public class CompanyController extends AdminController {
                 admin.company = company;
                 admin.save();
 
-                CompanyController.createDefaultGroup(admin,company);
+                //CompanyController.createDefaultGroup(admin,company);
+                company.createDefaultGroup(admin);
                 
                 flash.put("message",Messages.get("company.created",company.name));
             } catch (Exception ex)
@@ -113,7 +114,8 @@ public class CompanyController extends AdminController {
            Admin admin = Admin.findById(user().id);
            try
            {
-               CompanyController.createDefaultGroup(admin,company);
+               //CompanyController.createDefaultGroup(admin,company);
+               company.createDefaultGroup(admin);
            } catch(Exception ex)
            {
                Logger.error("CompanyController.addMultipleCompany %s", ex.getMessage());
@@ -122,54 +124,54 @@ public class CompanyController extends AdminController {
            CompanyController.index();
    }
 	
-    private static void createDefaultGroup(Admin admin, Company company) throws Exception
-    {	
-        /*
-        String defaultgrupp = play.Play.configuration.getProperty("defaultuser.grupp");
-        String defaultmail = play.Play.configuration.getProperty("defaultuser.email");
-        
-        //Hämta ut superadmin
-        SuperAdmin superadmin = SuperAdmin.find("byEmail", defaultmail).first();
-        Logger.info("CompanyController.createDefaultgroupp superadmin is %s", superadmin.name);
-        //Hämta superAdmins grupper
-        List<Grupp> groups = superadmin.getGroups();
-            
-        Logger.info("CompanyController.createDefaultgroupp 1");
-        //Hämta huvudgruppen
-        Grupp topGroup = null;
-        for(Grupp g: groups)
-        {
-            if(g.name.equals(defaultgrupp))
-            {
-               topGroup = g;
-               break;
-            }
-        }
-        
-        Logger.info("CompanyController.createDefaultgroupp 2");
-        
-        if(topGroup==null)
-        {
-            throw new Exception("NO DEFAULT GROUP!");
-        }
-        */
-        //Skapa nya användarens topgrupp
-        Grupp newGroup = new Grupp(company.id);
-        newGroup.name = company.name;
-        newGroup.users = new ArrayList();
-        newGroup.users.add(admin);
-        newGroup.save();
-        
-        
-        //lägg till den till default gruppen
-       /* if(topGroup.childs == null) topGroup.childs = new ArrayList();
-        topGroup.childs.add(newGroup);
-        newGroup.parent = topGroup;
-        newGroup.save(); 
-        topGroup.save();
-        */
-   
-    }
+//    private static void createDefaultGroup(Admin admin, Company company) throws Exception
+//    {	
+//        /*
+//        String defaultgrupp = play.Play.configuration.getProperty("defaultuser.grupp");
+//        String defaultmail = play.Play.configuration.getProperty("defaultuser.email");
+//        
+//        //Hämta ut superadmin
+//        SuperAdmin superadmin = SuperAdmin.find("byEmail", defaultmail).first();
+//        Logger.info("CompanyController.createDefaultgroupp superadmin is %s", superadmin.name);
+//        //Hämta superAdmins grupper
+//        List<Grupp> groups = superadmin.getGroups();
+//            
+//        Logger.info("CompanyController.createDefaultgroupp 1");
+//        //Hämta huvudgruppen
+//        Grupp topGroup = null;
+//        for(Grupp g: groups)
+//        {
+//            if(g.name.equals(defaultgrupp))
+//            {
+//               topGroup = g;
+//               break;
+//            }
+//        }
+//        
+//        Logger.info("CompanyController.createDefaultgroupp 2");
+//        
+//        if(topGroup==null)
+//        {
+//            throw new Exception("NO DEFAULT GROUP!");
+//        }
+//        */
+//        //Skapa nya användarens topgrupp
+//        Grupp newGroup = new Grupp(company.id);
+//        newGroup.name = company.name;
+//        newGroup.users = new ArrayList();
+//        newGroup.users.add(admin);
+//        newGroup.save();
+//        
+//        
+//        //lägg till den till default gruppen
+//       /* if(topGroup.childs == null) topGroup.childs = new ArrayList();
+//        topGroup.childs.add(newGroup);
+//        newGroup.parent = topGroup;
+//        newGroup.save(); 
+//        topGroup.save();
+//        */
+//   
+//    }
     
     public static void index()
     {

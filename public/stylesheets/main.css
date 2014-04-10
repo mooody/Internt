@@ -13,9 +13,9 @@ body{
     width:100%;
     margin:0px;
     padding:0px;
-    /*background-image: url('/public/images/background.png');*/
-   background-position: top;
-   background-repeat: repeat-x;
+background-color: #708090;
+   background-image: url('/public/images/pattern.png');
+   
 	
     
 }

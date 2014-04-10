@@ -186,7 +186,9 @@ public class Application extends Controller
    {
       String codeid = Codec.UUID();
       List<Module> modules = Module.find("byReleased", true).fetch();
-      render(codeid, modules);
+      Internt internt = Internt.findById(1L);
+      if(internt == null) internt = new Internt();
+      render(codeid, modules, internt);
    }
 
    /**
@@ -288,7 +290,7 @@ public class Application extends Controller
     *
     * @param user
     */
-   public static void createAccount(@Valid Admin user, @Valid Company company, List<Long> modules)
+   public static void createAccount(@Valid Admin user, @Valid Company company, List<Long> modules) throws CloneNotSupportedException
    {
 //      String codeid = params.get("codeid");
 //      String captcha = params.get("captcha");
@@ -339,6 +341,12 @@ public class Application extends Controller
       if(modules==null || modules.isEmpty()){
           validation.addError("modules.error","validation.need.a.module");
       }
+      
+      if(params.get("agrement")==null){
+          validation.addError("modules.error","validation.need.agrement");
+      }
+      
+      
       if (validation.hasErrors())
       {
          validation.keep();
@@ -350,6 +358,27 @@ public class Application extends Controller
 
       user.activated = false;
       user.save();
+      
+      //setting upp company and cus
+      company.save();
+      CompanyUserSettings cus = company.attachUserToCompanyToGetCUS(user);
+      company.createDefaultGroup(user);
+      user.save();
+      
+      cus.setUserType(user.getClass().getSimpleName());
+      
+      
+      List<Module> mods = Module.find("select m from Module m where m.id in :list").bind("list", modules).fetch();
+      company.modules = mods;      
+      company.save();
+      cus.modules = mods;
+      cus.save();
+      //addModules
+      
+      //create invoice
+      Internt internt = Internt.findById(1L);
+      if(internt == null) internt = new Internt();
+      internt.createInvoice(company, mods, 12);
 
       notifiers.Mails.welcome(user);
       flash.put("message", Messages.get("Account.created.successful"));

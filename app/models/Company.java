@@ -7,9 +7,10 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
-import play.db.jpa.Model;
+import models.Core.CompanyUserSettings;
 import models.Core.Module;
 import play.data.validation.Required;
+import play.db.jpa.Model;
 
 /**
  *
@@ -134,6 +135,26 @@ public class Company extends Model{
     public static List<PrivilegeUser> getPrivilegeUsers(Company company)
     {
             return PrivilegeUser.find("byCompany", company).fetch();
+    }
+    
+    public void createDefaultGroup(Admin admin){
+    
+        Grupp newGroup = new Grupp(this.id);
+        newGroup.name = this.name;
+        newGroup.users = new ArrayList();
+        newGroup.users.add(admin);
+        newGroup.save();
+    }
+    
+    public CompanyUserSettings attachUserToCompanyToGetCUS(UserBase user){
+        
+        //addUserToCompany
+        this.addUser(user);
+        user.addCompany(this);
+        CompanyUserSettings cus = new CompanyUserSettings(user, this);
+
+        return cus;
+        //CreateCUS
     }
 
 }

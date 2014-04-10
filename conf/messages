@@ -181,7 +181,8 @@ modulehelp = Moduler
 core.we.have.made.a.mistake = Vi har gjort ett misstag så innehållet kan inte visas
 core.content.missing = Innehållet saknas
 
-core.module.cost = Pris (SEK)
+core.invoice.data = Faktureringsuppgifter
+core.module.cost = Pris
 core.module.minUserType = Användartyp
 core.signup.discount Erhållen rabatt
 core.choose.modules = Välj appar
@@ -189,7 +190,7 @@ core.userAccount = Kontouppgifter
 core.extra.administrator = Extra administratörskonton
 core.extra.users = Extra användare
 core.module.invoice.period = Faktureringsperiod
-core.1.month = 1 Månad
+core.6.month = 6 Månader
 core.3.month = 3 Månader
 core.12.month = 12 Månader
 core.1.month.free = Betala bara för 11
@@ -203,6 +204,19 @@ you.need.a.company.street = Du måste fylla i en faktureringsadress
  you.need.a.company.zipcode = Du måste fylla i ett postnr
  you.need.a.company.city = Du måste fylla i stad
 core.signup.info.users = Det finns olika användarlicenser. Vissa appar kräver motsvarande Administratörsrättigheter. Du ser i listan vilken användartyps som krävs till vilken app. <br />I grundutförandet ingår det 5 användarkonton varav 1 är administratörskonto. 
+superAdmin.module.settings = Prissättning per modul
+module.released = Aktiverad
+module.cost = Kostnad per månad
+superAdmin.module.extra.licenses = Extra licenser
+core.billing.admincost = Administratörskostnad per månad
+core.billing.usercost = Användarkostnad per månad
+superAdmin.billing.invoice.profile = Faktureringsprofil
+core.billing.profile = Välj profil...
+superAdmin.billing = Övrigt
+superAdmin.billing.valuta = SEK
+core.signup.marked = Fält markerade med
+core.is.mandatory = är obligatoriska
+validation.need.agrement = Du har inte godkänt avtalet
 
 
 

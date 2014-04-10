@@ -521,4 +521,10 @@ public class UserBase extends Model
             
         }
     }
+   
+   public void addCompany(Company company)
+   {
+       if(this.companies == null) this.companies = new ArrayList<Company>();
+       this.companies.add(company);
+   }
 }
