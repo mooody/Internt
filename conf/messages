@@ -39,9 +39,9 @@ mail.lostPassword = Glömt lösenord
 application.RecoveryPassword = Återställning av lösenord
 type.your.email.to.get.recoverymail = Skriv in din epost för att få ett återställningsmail
 Send = Skicka
-validation.email.not.found = Epostadressen hittades inte! Har du skrivit rätt?
+validation.email.not.found = Epostadressen hittades inte i systemet! Har du skrivit rätt epostadress?
 Wrong.token.not.able.to.recovery.resend.mail  = Felaktigt token, skicka återställningsmail igen!
-email.sent = Ett email är skickat. Kontollera din mail (även skräpposten)
+core.recoveryemail.sent = Ett email med återställningsuppgifter är skickat. Kontollera din mail (även skräpposten)
 Account.created.successful = Kontot är skapat. Ett aktiveringsmail är skickat till din epost. (Kontrollera även skräpposten)
 user.name.is.empty = Användarennamn får inte vara tomt
 user.email.is.empty = Användarens emailadress måste anges
@@ -52,6 +52,7 @@ core.pass2 = Ange nytt lösenord igen
 you.need.to.login.again = Du måste logga in igen
 ChooseCompany = Välj företag
 spamprotection.activated.to.many.tries.wait.30.min = Skydd aktiverat, vänta 30 minuter innan nästa inloggningsförsök
+core.restore.new.pw.sent = Ett nytt temporärt lösenord är skickat till din epost
 
 #Module
 user.has.no.access.to.module = Användaren %s har inte access till modulen %s i företaget %s
@@ -97,6 +98,14 @@ mypage = Hem
 user.groups = Användarens grupper
 User.inready.in.parent.group = Användaren är redan med i gruppen %s (Kan vara en grupp med högre nivå)
 forbidden.task = Förbjuden åtgärd
+validation.oldpassword.dont.match = Ditt gamla lösenord stämmer inte
+validation.password.dont.match.criteria = Lösenordet är ogiltigt, minst en siffra samt minst en bokstav (a-z) och minst 6 tecken
+core.user.temporarypw = Du har ett temporärt lösenord, vad vänlig och gå in och byt det under mitt konto i menyn uppe till höger
+core.admin.existing.groups = Grupper i företaget
+core.admin.create.group = Skapa ny grupp
+core.sure.to.delete.group = Är du säker på att du vill radera gruppen
+
+
 #Company
 first.company.info = Var vänlig att fyll i nedanstående uppgifter.
 other.companies.account.attached.to = Andra företag kontot är kopplat till
@@ -128,7 +137,7 @@ core.no.avalible.global.settings = Det finns inte några globala inställningar 
 
 #Admin - module
 admin.GiveUserModuleAccess = Ge användaren modul access
-admin.choose.user = Välj användare
+admin.choose.user = Välj användare...
 sure.remove.module = Är du säker på att du vill spärra modulen 
 module.removed = Modulen %s är nu spärrad för användaren %s
 Modules.added.to.user = Modulerna %s är nu tillgängliga för användaren %s
@@ -139,6 +148,7 @@ Accessable.modules.to = Tillgängliga grupper för %s
 module.has.no.rights.settings = Modulen har inte några rättighetssättningar
 set.access = Hantera rättigheter
 core.remove.module = Spärra modulen för användaren
+admin.choose.group = Välj grupp...
 
 #Admin -groups
 is.your.headgroup.cant.erase = %s är din huvudgrupp och du kan inte radera denna
@@ -171,6 +181,7 @@ validation.name.is.required = Namn är obligatoriskt
 validation.email.is.required = Din email är obligatoriskt
 validation.email.exists.in.system = Din email finns redan i systemet. Begär nytt lösen.
 validation.password.failed = Lösenordet är ogiltigt, minst en siffra samt minst en bokstav (a-z) och minst 6 tecken
+
 validation.password.error = Lösenords error
 validation.need.a.module = Du måste välja åtminstonde en app
 Account.created.successful = Ditt konto är skapat. Kontrollera din epost efter aktiveringsmailet. (Kontrollera även skräpposten)

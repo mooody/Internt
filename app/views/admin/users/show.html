@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'admin/users/main.html' /}
 #{stylesheet 'login.html.css' /}
 #{set title}&{'handle.user'}#{/set}
 
@@ -14,7 +14,7 @@ jQuery(document).ready(function(){
 </script>
 
 <br />
-<a class="btn btn-default" href="@{admin.UsersController.create()}">&{'create.user'}</a>
+<a class="btn btn-warning" href="@{admin.UsersController.create()}">&{'create.user'}</a>
 <br />
 <hr />
 
@@ -53,7 +53,7 @@ jQuery(document).ready(function(){
          <td><a href="@{admin.UsersController.edit(user.id)}"><span class="glyphicon glyphicon-edit"></span></a></td>
          <td>
          #{form @admin.UsersController.deleteUser(user.id), class:'delete', username:user.name}
-            <button type="submit" alt="&{'delete'}"><span class="glyphicon glyphicon-trash"></span></button>
+            <button type="submit" class="btn btn-sm btn-danger" alt="&{'delete'}"><span class="glyphicon glyphicon-trash"></span></button>
          #{/form}
          </td>
       </tr>

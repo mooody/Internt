@@ -1,11 +1,26 @@
 #{extends 'main.html' /}
 #{stylesheet 'login.html.css' /}
-<fieldset class="loginform">
-    <legend>&{'application.RecoveryPassword'}</legend>
-	<p>&{'type.your.email.to.get.recoverymail'}</p>
-	
-	#{form @Application.sendRecovory()}
-		<input type="email" class="form-control" type="text" name="email" value="" />
-		<input type="submit" class="btn btn-default" value="&{'Send'}" />
-	#{/form}
-</fieldset>
+
+<div class="col-md-6 center-block" style="float:none !important">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">&{'application.RecoveryPassword'}</h4>
+        </div>
+        <div class="panel-body">
+            <p>&{'type.your.email.to.get.recoverymail'}</p>
+            #{form @Application.sendRecovory()}
+            <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon">@</div>
+                <input type="email" class="form-control" name="email" value="" />
+            </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-default pull-right" value="&{'Send'}" />
+            </div>
+            
+            #{/form}
+        </div>
+    </div>
+</div>
+

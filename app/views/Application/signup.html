@@ -1,6 +1,6 @@
 
 #{mainpage title:'Skapa access' /}
-*{
+*{<!--
 <div class="center-block">
     #{form @Application.createAccount(), 'role':'form'}
     <div class="form-group">
@@ -9,21 +9,16 @@
         <input type="text" class="form-control" name="captcha" id="captcha" />
         <input type="hidden" name="codeid" value="${codeid}" />
     </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-default" value="&{'user.signup'}" />
-    </div>
     #{/form}
 </div>
-}*
+-->}*
 
 <style>
     .required{
         color:red;
     }
 </style>
-<div class="alert alert-info">
-    &{'core.signup.marked'} <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small> &{'core.is.mandatory'}
-</div>
+
 *{<!-- Moduler-->}*
 #{form @Application.createAccount(), 'role':'form'}
 <div class="col-md-6">
@@ -44,10 +39,10 @@
                 </tr>
                 #{list items:modules, as:'module'}
                 <tr id="mod-row-${module.id}">
-                    <td><input #{if flash['modules']?.contains(""+module.id)}checked="checked" #{/if}id="mod-${module.id}" data-cost="${module.cost}" data-module="${module.id}" type="checkbox" value="${module.id}" name="modules"></td>
+                    <td><input #{if (flash['modules'] == null && module.cost == 0.0) || flash['modules']?.contains(""+module.id)}checked="checked" #{/if}id="mod-${module.id}" data-cost="${module.cost}" data-module="${module.id}" type="checkbox" value="${module.id}" name="modules"></td>
                     <td><label for="mod-${module.id}">&{module.name}</label></td>
                     <td>&{module.userAccessType}</td>
-                    <td style="text-align: right;">${module.cost.format("0")} / &{'core.month'}</td>
+                    <td style="text-align: right;#{if module.cost == 0.0}color:red;#{/if}" >${module.cost.format("0")} / &{'core.month'}</td>
                     <td>
                         <span class="glyphicon glyphicon-question-sign help wee-dialog" title="&{module.name}" src="/public/modulehelp/${module.name}.html"></span>
                     </td>
@@ -135,6 +130,11 @@
                 <label for="email" class="control-label">Email: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label><small class="badge pull-right">Till denna mail skickas uppgifter</small>
                 <input type="email" id="email" class="form-control" name="user.email"  value="${flash['user.email']}" />
             </div>
+             <div class="form-group">
+                 <label for="email2" class="control-label">Repetera email: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
+                <input type="email" id="email" class="form-control" name="email2"  value="${flash['email2']}" />
+            </div>
+            *{<!--
             <div class="row">
                 <div class="col-md-6">
                     <label for="pw" class="control-label">Lösenord: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
@@ -145,38 +145,32 @@
                     <input type="password" id="pw2" class="form-control" name="password" />
                 </div>
             </div>
-
+              -->}*
             *{<!-- Företaget -->}*
             <h4>&{'core.invoice.data'}</h4>
             <div class="well">
                 <div class="form-group">
                     *{<!-- Organisationsnamn -->}*
                     <label for="name" class="control-label">Organisationsnamn: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
-
                     <input id="name" class="form-control" type="text" name="company.name" value="${flash['company.name']?flash['company.name']:company?.name}"/>
-
                     <label for="orgnr" class="control-label">Organisationsnummer: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
-
                     <input id="orgnr" class="form-control"  type="text" name="company.orgnr" value="${flash['company.orgnr']?flash['company.orgnr']:company?.orgnr}"/>
-
-
                 </div>
                 <div class="form-group">
-                    <label for="street" class="control-label">Gatuadress: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
-
-                    <input id="street" class="form-control"  type="text" name="company.street" value="${flash['company.street']?flash['company.street']:company?.street}"/>
-
-
-                    <label for="zipcode" class="control-label">Postnr: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
-
-                    <input id="zipcode" class="form-control"  type="text" name="company.zipcode" value="${flash['company.zipcode']?flash['company.zipcode']:company?.zipcode}"/>
-
-
-                    <label for="city" class="control-label">Stad: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
-
-                    <input id="city" class="form-control"  type="text" name="company.city" value="${flash['company.city']?flash['company.city']:company?.city}"/>
-
-                </div></div>
+                    <label for="street" class="control-label">Adress: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
+                    <input id="street" class="form-control"  type="text" name="company.street" value="${flash['company.street']?flash['company.street']:company?.street}"/> 
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="zipcode" class="control-label">Postnr: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
+                        <input id="zipcode" class="form-control"  type="text" name="company.zipcode" value="${flash['company.zipcode']?flash['company.zipcode']:company?.zipcode}"/>
+                    </div>   
+                    <div class="col-sm-6">    
+                        <label for="city" class="control-label">Stad: <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></label>
+                        <input id="city" class="form-control"  type="text" name="company.city" value="${flash['company.city']?flash['company.city']:company?.city}"/>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -199,7 +193,7 @@
     <div class="panel panel-default">
 
         <div class="panel-body">
-
+            &{'core.signup.marked'} <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small> &{'core.is.mandatory'}
             <button class="pull-right btn btn-lg btn-success">&{'core.signup.order'}</button>
 
         </div>
@@ -211,67 +205,65 @@
 
 <script>
     jQuery(document).ready(function() {
-        jQuery('input[data-module]').change(function() {
-            sumeraizeModules();
-        });
-        jQuery('input[name="period"]').change(function() {
-            sumeraizeModules();
-        });
-        jQuery('#admins').keyup(function() {
-            sumeraizeModules();
-        });
-        jQuery('#users').keyup(function() {
-            sumeraizeModules();
-        });
-        jQuery('#admins').change(function() {
-            sumeraizeModules();
-        });
-        jQuery('#users').change(function() {
-            sumeraizeModules();
-        });
+    jQuery('input[data-module]').change(function() {
+    sumeraizeModules();
     });
-
-    function sumeraizeModules() {
-        var total = 0.0;
-        jQuery('input[data-module]').each(function() {
+            jQuery('input[name="period"]').change(function() {
+    sumeraizeModules();
+    });
+            jQuery('#admins').keyup(function() {
+    sumeraizeModules();
+    });
+            jQuery('#users').keyup(function() {
+    sumeraizeModules();
+    });
+            jQuery('#admins').change(function() {
+    sumeraizeModules();
+    });
+            jQuery('#users').change(function() {
+    sumeraizeModules();
+    });
+    });
+            function sumeraizeModules() {
+            var total = 0.0;
+                    jQuery('input[data-module]').each(function() {
             if (jQuery(this).attr('checked'))
             {
-                total += new Number(jQuery(this).attr("data-cost"));
+            total += new Number(jQuery(this).attr("data-cost"));
             }
-        });
-
-        var period = new Number(jQuery('input[name="period"]:checked').val());
-        var usercost = calculateExtraUsers();
-        if (period < 12)
-        {
+            });
+                    var period = new Number(jQuery('input[name="period"]:checked').val());
+                    var usercost = calculateExtraUsers();
+                    if (period < 12)
+            {
             showCost(period * (total + usercost));
-            hideDiscount();
-        }
-        else
-        {
+                    hideDiscount();
+            }
+            else
+            {
             showCost(period * (total + usercost) - (total + usercost));
-            showDiscount(total + usercost);
-        }
-    }
+                    showDiscount(total + usercost);
+            }
+            }
 
     function calculateExtraUsers() {
-        var admins = new Number(jQuery("#admins").val());
-        var users = Number(jQuery("#users").val());
-        return admins * ${internt.adminCost} + users * ${internt.userCost};
+    var admins = new Number(jQuery("#admins").val());
+            var users = Number(jQuery("#users").val());
+            return admins * ${internt.adminCost} + users * ${internt.userCost};
     }
     function hideDiscount() {
-        jQuery("#mod-discount").text('');
-        jQuery("#mod-discount").hide();
+    jQuery("#mod-discount").text('');
+            jQuery("#mod-discount").hide();
     }
     function showDiscount(discount)
     {
-        jQuery("#mod-discount").text('&{'core.signup.discount'} ' + discount.toFixed(2) + " SEK");
-        jQuery("#mod-discount").show();
+    jQuery("#mod-discount").text('&{'core.signup.discount'} ' + discount.toFixed(2) + " SEK");
+            jQuery("#mod-discount").show();
     }
 
     function showCost(totalcost) {
 
-        jQuery("#mod-total").text(totalcost);
+    jQuery("#mod-total").text(totalcost);
     }
 
 </script>

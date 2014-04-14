@@ -2,6 +2,8 @@
 <h1>&{'Welcome'}</h1>
 <p>Hej ${user.name}<p>
 
-<p>V�lkommen till @@{Application.start()}. Tryck p� nedanst�ende l�nk f�r att aktivera ditt konto.<p>
+<p>Välkommen till @@{Application.start()}. Tryck på nedanstående lånk för att aktivera ditt konto.<p>
 
-<a href="@@{Application.start()}/activate/${user.token}">@@{Application.start()}/activate/${user.token}</a>
+<a href="@@{Application.start()}activate/${user.token}">@@{Application.start()}activate/${user.token}</a>
+
+När ditt konto är aktiverat så loggar du in med din epostadress (${user.email}) och med ditt temporära lösenord <b>(${user.password})</b>

@@ -1,27 +1,75 @@
 
-#{extends 'main.html' /}
+#{extends 'admin/main.html' /}
 #{stylesheet 'login.html.css' /}
-#{set title:'Logga in' /}
 
-<ul>
-#{list items:groups, as:'grupp'}
-<li>
-#{if grupp.parent!= null && grupp.parent.companyId == sessionuser.company.id}
-    ${grupp.parent.name}:
-#{/if}
-${grupp.name} 
+<script>
+jQuery(document).ready(function(){
+    jQuery("form[data-group]").submit(function(){
+        var group = jQuery(this).attr('data-group');
+        return confirm("&{'core.sure.to.delete.group'} "+group);
+    });
+});
+</script>
 
-#{form @admin.GruppController.delete(), class:'delete'}
-    <input type="hidden" name="groupid" value="${grupp.id}" />
-    <input type="submit" class="deletebutton" value="" alt="delete group" />
-#{/form}
+<div class="col-md-6">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">&{'core.admin.existing.groups'}</h4>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+        <table class="table">
+            #{list items:groups, as:'grupp'}
+            <tr>
+                <td style="font-weight: bold">
+                    #{if grupp.parent!= null && grupp.parent.companyId == sessionuser.company.id}
+                    ${grupp.parent.name}:
+                    #{/if}
+                    ${grupp.name} 
+                </td>
+                <td>
+                    #{form @admin.GruppController.delete(), 'role':'form', 'data-group':grupp.name }
+                    <input type="hidden" name="groupid" value="${grupp.id}" />
+                    <button type="submit" class="btn btn-default pull-right"><span class="glyphicon glyphicon-trash"></span></button>
+                    #{/form}
+                </td>
+            </tr>
+            #{/list}
+        </table> 
+            </div>
+    </div>
+</div>
+</div>
+<div class="col-md-6">
 
-</li>
-#{/list}
-</ul>
-<h2>skapa ny grupp</h2>
-#{include "admin/groups/show.html" /}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">&{'core.admin.create.group'}</h4>
+    </div>
+    <div class="panel-body">
 
-<hr />
+        #{form @admin.GruppController.save() }
+        <div class="form-group">
+        <label for="name" class="control-label">&{'core.GroupName'}</label>
+       <input id="name" class="form-control" type="text" style="width:200px;" name="grupp.name" value=""/>
+        </div>
+        <div class="form-group">
+       <label for="head" class="control-label">&{'core.GroupParentName'}</label>
+            <select id="head" class="form-control" name="grupp.parent.id">
+                #{list items:groups, as:'group'}
+                <option value="${group.id}">${group.name}</option>
+                #{/list}
+            </select>
+       </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-info pull-right">&{'save'}</button>
+        </div>
+               
+        #{/form}
+
+    </div>
+</div>
+    </div>
+
 
 

@@ -1,0 +1,36 @@
+﻿#{extends 'main.html' /}
+
+#{set title:'Administrators vy' /}
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#adminmenu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span> 
+        </button>
+
+        <div>
+
+            <a class="navbar-brand" href="@{admin.AdminController.index()}">Start</a>
+
+        </div>
+    </div>
+
+    <div class="collapse navbar-collapse" id="adminmenu">
+        <ul class="nav navbar-nav">            
+            <li id="users"><a href="@{admin.Userscontroller.index()}">Hantera användare</a></li>
+            <li id="groups"><a href="@{admin.GruppController.index()}">Hantera grupper</a></li>
+            <li id="company"><a href="@{admin.CompanyController.index()}">Hantera Företag</a></li>
+            <li id="modules"><a href="@{admin.AdminController.modules()}">Hantera Moduler</a></li>
+        </ul>
+    </div>
+
+
+</nav>
+<div class="panel panel-default" style="padding-top: 10px;">
+    <div class="panel-body">
+        #{doLayout /}
+ </div>
+</div>

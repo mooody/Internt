@@ -31,6 +31,12 @@ public class Application extends Controller
    public static void getSessionUser()
    {
       UserBase user = Cache.get(session.getId() + "user", UserBase.class);
+      
+      if(user!= null && user.hasTemporaryPw())
+      {
+          flash.put("message", Messages.get("core.user.temporarypw"));
+      }
+     
       if(user != null)
       {
          renderArgs.put("sessionuser", user);
@@ -63,6 +69,7 @@ public class Application extends Controller
       render("Application/index.html");
    }
    
+   //<editor-fold defaultstate="collapsed" desc=" login">
    public static void showLoginForm()
    {
       flash.put("showLoginform", "true");
@@ -170,7 +177,7 @@ public class Application extends Controller
       //render("Application/login.html");
       Application.start();
    }
-
+   
    /**
     * Logger ut och skickar vidare till startsidan.
     */
@@ -181,16 +188,7 @@ public class Application extends Controller
       flash.put("message", Messages.get("you.have.been.logged.out"));
       Application.start();
    }
-
-   public static void signup()
-   {
-      String codeid = Codec.UUID();
-      List<Module> modules = Module.find("byReleased", true).fetch();
-      Internt internt = Internt.findById(1L);
-      if(internt == null) internt = new Internt();
-      render(codeid, modules, internt);
-   }
-
+   
    /**
     * Om användaren har mera än 1 företag kopplat till sig så kommer denna vy
     * att visas. Användaren får här välja vilket företag denne vill agera i
@@ -283,7 +281,19 @@ public class Application extends Controller
       }
       user.save();
    }
-
+   //</editor-fold>
+   
+   //<editor-fold defaultstate="collapsed" desc=" signup">
+   public static void signup()
+   {
+      String codeid = Codec.UUID();
+      List<Module> modules = Module.find("byReleased", true).fetch();
+      Internt internt = Internt.findById(1L);
+      if(internt == null) internt = new Internt();
+      boolean hidemodulecontent = true;
+      render(codeid, modules, internt, hidemodulecontent);
+   }
+   
    /**
     * Create an adminaccount Skapar ett adminkonto. Detta för registreringen
     * Kontrollerar först så kontot inte redan finns.
@@ -305,36 +315,11 @@ public class Application extends Controller
       }
 
       boolean pwerror = false;
-      try
+    
+      if(!user.email.equals(params.get("email2")))
       {
-         if (!user.getPassword().equals(params.get("password")))
-         {
-            pwerror = true;
-         }
-      } catch (InvalidKeyException ex)
-      {
-         pwerror = true;
-         java.util.logging.Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-      } catch (IllegalBlockSizeException ex)
-      {
-         pwerror = true;
-         java.util.logging.Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-      } catch (BadPaddingException ex)
-      {
-         pwerror = true;
-         java.util.logging.Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-      } catch (IOException ex)
-      {
-         pwerror = true;
-         java.util.logging.Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-      } finally
-      {
-         if (pwerror)
-         {
-            validation.addError("user.password", Messages.get("validation.signup.pw.not.equal"));
-         }
+          validation.addError("email","validation.emails.dont.match");
       }
-
       
 //      validation.equals(captcha, code).message("validation.wrong.captcha.code");
 
@@ -357,6 +342,7 @@ public class Application extends Controller
       
 
       user.activated = false;
+      user.generatePassword();
       user.save();
       
       //setting upp company and cus
@@ -383,7 +369,7 @@ public class Application extends Controller
       notifiers.Mails.welcome(user);
       flash.put("message", Messages.get("Account.created.successful"));
       params.data.clear();
-      Application.loginform();
+      Application.showLoginForm();
    }
 
    /**
@@ -413,7 +399,7 @@ public class Application extends Controller
       user.save();
       notifiers.Mails.welcome(user);
       flash.put("message", Messages.get("Activationmail.sent"));
-      Application.loginform();
+      Application.showLoginForm();
    }
 
    public static void activate(String token)
@@ -429,9 +415,11 @@ public class Application extends Controller
       user.token = null;
       user.save();
       flash("message", Messages.get("you.are.activated", user.name));
-      Application.loginform();
+      Application.showLoginForm();
    }
-
+   //</editor-fold>
+   
+   //<editor-fold defaultstate="collapsed" desc=" password recovery">
    /**
     * Visar vyn för återställning av lösenord.
     */
@@ -472,13 +460,35 @@ public class Application extends Controller
       if (user != null)
       {
          notifiers.Mails.lostPassword(user);
-         flash("message", Messages.get("email.sent"));
-      } else
+         flash("message", Messages.get("core.recoveryemail.sent"));
+      } 
+      else
       {
          validation.addError("email.not.found", "validation.email.not.found");
+         validation.keep();
       }
-      render("Application/login.html");
+      Application.start();
    }
+   
+   public static void restore(String token)
+   {
+       User user = User.find("byToken", token).first();
+       if(user != null)
+       {
+           user.generatePassword();
+           user.save();
+           notifiers.Mails.newPassword(user);
+           flash.put("message","core.restore.new.pw.sent");
+       }
+       else
+       {
+           validation.addError("error", "validation.wrong.token");
+           validation.keep();
+       }
+       
+       Application.start();
+   }
+   //</editor-fold>
 
    public static void captcha(String codeid)
    {
@@ -488,7 +498,7 @@ public class Application extends Controller
       renderBinary(captcha);
    }
 
-   //<editor-fold default-state="collapsed" desc=" helpmenu">
+   //<editor-fold defaultstate="collapsed" desc=" helpmenu">
    public static void helpfiles(String module, String dir)
    { 
       File path = Play.applicationPath;

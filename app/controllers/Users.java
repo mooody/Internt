@@ -4,6 +4,8 @@
  */
 package controllers;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.util.List;
 import java.util.logging.Level;
 import models.Admin;
@@ -18,6 +20,8 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.*;
 import java.util.ArrayList;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import models.Core.Module;
 
 /**
@@ -66,6 +70,24 @@ public class Users extends PlanController{
             Controller.forbidden("Not allowed!");
         }
         
+        String old = params.get("oldpassword");
+        
+        try {
+            if(!user.getPassword().equals(old))
+            {
+                validation.addError("error",Messages.get("validation.oldpassword.dont.match"));
+                validation.keep();
+                myaccount();
+            }
+        } catch (InvalidKeyException ex) {
+            java.util.logging.Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            java.util.logging.Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            java.util.logging.Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String pw2 = params.get("password2");
         String pw1 = params.get("password1");
         
@@ -76,13 +98,18 @@ public class Users extends PlanController{
                 validation.addError("password.error",Messages.get("user.password.dont.match"));
             }
              
-			try {
-				user.setPassword(pw1);
-			} catch (Exception ex) {
-				validation.addError("error",Messages.get("could.not.set.new.password.contact.site.helpdesk"));
-				validation.keep();
-				myaccount();
-			}	
+            try {
+                    user.setUserPassword(pw1);
+            }
+            catch(UserBase.PassWordCreteriaException pwe)
+            {
+                validation.addError("error",pwe.getMessage());
+            }
+            catch (Exception ex) {
+                    validation.addError("error",Messages.get("could.not.set.new.password.contact.site.helpdesk"));
+                    validation.keep();
+                    myaccount();
+            }	
         }
         else if(pw1.isEmpty()^pw2.isEmpty())
         {

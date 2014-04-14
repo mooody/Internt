@@ -128,6 +128,7 @@
    -->}*
    *{<!-- END HELPMODAL-->}*
    <body ng-app="HomeApp" ng-controller="MenuCtrl">
+
       <!-- Start HELP-Modal -->
       <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
          <div class="modal-dialog">
@@ -272,9 +273,13 @@
             #{/errors}
          </div>
          #{/if}
-         <div class="content" #{if loginform}style="clear:both; border:none;background-color:transparent;"#{/if}>
-              #{doLayout /}
-      </div>
+         *{<!--<div class="content" #{if loginform}style="clear:both; border:none;background-color:transparent;"#{/if}>-->}*
+         <div class="content">
+            <div class="#{if !hidemodulecontent}modulecontent#{/if}">             
+                 #{doLayout /}   
+                 <div style="clear: both;"></div>
+            </div>                                     
+         </div>
       *{<!-- Messagebox ERROR END -->}*        
       *{<!-- FOOTER -->}*
       <div class="panel panel-default" style="clear:both; margin-top:20px;">

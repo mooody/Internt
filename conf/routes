@@ -20,6 +20,7 @@ GET	/reactivate/{email}						Application.resendActivationMail
 GET	/system-mail/recovery/{token}                                   Application.recoveryView
 GET	/system-mail/recovery 						Application.recoveryView
 POST    /system-mail/recovery                                           Application.sendRecovory
+GET	/restore/{token} 						Application.restore
 GET     /help                                                           Application.helpfiles
 GET     /userhelp                                                           PlanController.help
 

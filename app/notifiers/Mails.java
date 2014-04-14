@@ -1,12 +1,13 @@
 package notifiers;
  
-import play.*;
-import play.mvc.*;
 import java.util.*;
-import org.apache.commons.mail.*; 
+import models.User; 
 import models.UserBase;
 import models.mail.Invite;
+import org.apache.commons.mail.*; 
+import play.*;
 import play.i18n.Messages;
+import play.mvc.*;
  
 public class Mails extends Mailer {
  
@@ -53,6 +54,14 @@ public class Mails extends Mailer {
       addRecipient(invite.getTo().email);
         setSubject(invite.getFrom().name+" "+Messages.get("invites.you.to")+" "+invite.getCompany().name);
       send(invite);
+   }
+   
+   public static void newPassword(User user)
+   {
+      setFrom("Robot <robot@internt.nu>");
+      addRecipient(user.email);
+      setSubject(Messages.get("new.password.from.us"));
+      send(user);
    }
    
    public static void sendErrorMsg(String cause, Exception ex)

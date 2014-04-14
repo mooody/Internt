@@ -1,11 +1,11 @@
-#{extends 'main.html' /}
+#{extends 'admin/users/main.html' /}
 #{set title}&{'edit.user'}#{/set}
 #{stylesheet 'login.html.css' /}
 
 
 
 *{<!-- Visa / ändra användaruppgifter -->}*
-
+<div class="row">
 <div class="col-sm-6">
    <div class="panel panel-default">
       <div class="panel-heading">
@@ -36,7 +36,7 @@
          <label for="phone" class="control-label">&{'phone'}:</label>
          <input id="phone" class="form-control" type="text" name="user.phone" value="${user.phone}"/>
 
-         <input class="btn btn-default pull-right" type="submit" value="&{'Save'}" />
+         <input class="btn btn-info pull-right" type="submit" value="&{'Save'}" />
          #{/form}
       </div>
    </div>
@@ -57,7 +57,7 @@
                 #{if (sessionuser.getClass() == models.Admin.class && user.getClass() != models.SuperAdmin.class) || sessionuser.getClass() == models.SuperAdmin.class }
                 <td>
                    #{form @admin.UsersController.removeUserFromGroup(user.id, group.id), class:'delete'}
-                     <button type="submit" class="" alt="remove group" value="" />
+                     <button type="submit" class="btn btn-default" alt="remove group" value="" />
                         <span class="glyphicon glyphicon-trash"></span>
                      </button>
                   #{/form}
@@ -74,10 +74,10 @@
          #{form @admin.UsersController.addGroupToUser()}
             <input type="hidden" name="userid" value="${user.id}" />       
             <div class="input-group">
-               #{group.showgroups groups:sessionuser.company.getCompanyGroups(), key:'groupId', option:'Choose.group.dots' /} 
+              
                <div class="input-group-btn">
                   <input type="submit" class="btn btn-default" value="&{'add.user.to.group'}" />
-               </div>
+               </div> #{group.showgroups groups:sessionuser.company.getCompanyGroups(), key:'groupId', option:'Choose.group.dots' /} 
             </div>        
          #{/form}
       </div>
@@ -108,12 +108,13 @@
             <input type="radio" id="superadmin" name="usertype" value="2" #{if user.getClass() == models.SuperAdmin.class}checked="checked"#{/if}/>
             <label for="superadmin">&{'SuperAdmin'}</label>
             #{/if}
-            <input type="submit" class="btn btn-default pull-right" value="&{'change.usertype'}"/>			
+            <input type="submit" class="btn btn-info pull-right" value="&{'change.usertype'}"/>			
          #{/form}
          #{/if} 
       </div>
    </div>    
 </div>
+    </div>
 
 
 

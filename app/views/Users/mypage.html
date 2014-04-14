@@ -22,7 +22,7 @@ $("li#mypage").addClass("active");
   -->}*
 #{list items:modules, as:'module'}
 <div class="col-sm-6">
-   <div class="panel panel-default divmenu-holder"  goal="@{ModuleController.index(module.id)}">
+   <div class="panel panel-info divmenu-holder"  goal="@{ModuleController.index(module.id)}">
       <div class="panel-heading">
          <a href="@{ModuleController.index(module.id)}" id="a-${module.name}" />
             <h2>&{module.name}</h2>

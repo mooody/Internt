@@ -1,11 +1,5 @@
-﻿#{extends 'main.html' /}
-<script>
-$("li#admin").addClass("active");
-</script>
-#{set title:'Admin' /}
 
-<h1>Administratör</h1>
-
+*{<!--
 <div class="col-sm-6">
    <div class="panel panel-default divmenu-holder" goal="@{admin.Userscontroller.index()}">
       <div class="panel-body">
@@ -55,3 +49,18 @@ $("li#admin").addClass("active");
       </div>
    </div>
 </div>
+-->}*
+
+    
+#{extends 'admin/main.html' /}
+<script>
+jQuery(document).ready(function(){
+    jQuery("#admin").addClass("active");
+})
+</script>
+Här kan du som administratör hantera ditt företag.
+
+
+
+
+

@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'admin/users/main.html' /}
 #{set title}&{'create.user'}#{/set}
 
 <style>
@@ -18,12 +18,21 @@
 
 <h2>&{'create.user'}</h2>
 #{form @admin.UsersController.save(), 'data-role':'form' } 
+<div class="form-group">
 <label for="name" class="control-label">&{'Name'}:</label>
 <input id="name"class="form-control" type="text" name="user.name" />
+</div>
+<div class="form-group">
 <label for="email" class="control-label">&{'Email'}:</label>
 <input id="email" class="form-control" type="text" name="user.email"/>
+</div>
+<div class="form-group">
 <label for="pw" class="control-label">&{'Password'}:</label>
 <input id="pw" class="form-control" type="text" name="user.password"/>
-<input class="btn btn-default" type="submit" value="Spara" />	
+</div>
+<div class="form-group">    
+        <input class="btn btn-info pull-right"  type="submit" value="Spara" />	    
+</div>
 #{/form}
+<div style="clear:both;"></div>
 

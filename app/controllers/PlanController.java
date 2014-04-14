@@ -87,7 +87,7 @@ public class PlanController extends Application
       {
          Logger.info("planController.getArgs() USER = NULL");
          renderArgs.put("loginform", 1);
-         Application.loginform();
+         Application.showLoginForm();
       } 
       else
       {
