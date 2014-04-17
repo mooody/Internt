@@ -12,7 +12,10 @@
             <tr>
                 <th>&{'module.name'}</th>
                 <th>&{'module.released'}</th>
+                <th>&{'UserType'}</th>
                 <th>&{'module.cost'}</th>
+                
+                <th></th>
             </tr>
             #{list items:modules, as:'module'}
             #{form @SuperAdminController.updateModule()}
@@ -20,14 +23,22 @@
             <tr>
                 <td>&{module.name}</td>
                 <td><input type="checkbox" #{if module.released}checked="checked" #{/if}name="module.released" /></td>
+                 <td>
+                    <select name="module.userAccessType" class="form-control" style="min-width: 200px;">
+                    <option value="User" #{if "User".equals(module.userAccessType)}selected="selected"#{/if}>&{'User'}</option>
+                    <option value="PrivilegeUser" #{if "PrivilegeUser".equals(module.userAccessType)}selected="selected"#{/if}>&{'PrivilegeUser'}</option>
+                    <option value="Admin" #{if "Admin".equals(module.userAccessType)}selected="selected"#{/if}>&{'Admin'}</option>
+                     </select>
+                </td>
                 <td>
-                    <div class="input-group">
-                        <input type="number" class="form-control" step="0.01" name="module.cost" value="${module.cost?.format("0.00")}"/>
+                    <div class="input-group input-group-sm">
+                        <input type="number" class="form-control input-sm" step="0.01" name="module.cost" value="${module.cost?.format("0.00")}"/>
                         <div class="input-group-addon">
                             &{'superAdmin.billing.valuta'}
                         </div>
                     </div>
                 </td>
+               
                 <td>
                     <button class="btn btn-info" type="submit">&{'save'}</button>
                 </td>
@@ -108,3 +119,9 @@
          </div> 
      #{/form}
 #{/if}
+
+
+
+         
+
+           

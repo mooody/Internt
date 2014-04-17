@@ -39,7 +39,7 @@ public class Module extends Model{
     @Column(nullable=false)
     private String userAccessType="User";
     public String getUserAccessType(){return this.userAccessType;}
-    
+    public void setUserAccessType(String _usertype){this.userAccessType=_usertype;}
     @ManyToMany(mappedBy="modules")
     public List<ModuleController> controllers;
     

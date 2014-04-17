@@ -25,7 +25,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">&{'core.choose.modules'} <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small>
-                <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="" src="/public/help/modules.html"></span>
+                <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.signup.apps'}" src="/public/help/signup/apps.html"></span>
             </h4>
         </div>
         <div class="panel-body table-responsive">
@@ -44,23 +44,32 @@
                     <td>&{module.userAccessType}</td>
                     <td style="text-align: right;#{if module.cost == 0.0}color:red;#{/if}" >${module.cost.format("0")} / &{'core.month'}</td>
                     <td>
-                        <span class="glyphicon glyphicon-question-sign help wee-dialog" title="&{module.name}" src="/public/modulehelp/${module.name}.html"></span>
+                        <span class="glyphicon glyphicon-question-sign help wee-dialog" title="&{module.name}" src="/public/modulehelp/${module.moduleName}/${module.moduleName}.html"></span>
                     </td>
                 </tr>
 
                 #{/list}
             </table>
 
-            <div class="alert alert-info"><span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.usertypes'}" src="/public/modulehelp/usertypes.html"></span>
-                &{'core.signup.info.users'}
-
-            </div>
+         
+            <div class="well">
             <table class="table table-striped">
                 <tr>
-                    <th>&{'core.signup.licenses'}</th>
+                    <th>&{'core.signup.licenses'}
+                    <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.signup.usertypes'}" src="/public/help/signup/usertypes.html"></span>
+                    </th>
 
                     <th style="text-align: right;">&{'core.module.cost'} (&{'superAdmin.billing.valuta'})</th>
 
+                </tr>
+                <tr>
+                    <td colspan="2">
+                         <div class="alert alert-info">
+                        &{'core.signup.info.users'}
+                        <span class="help wee-dialog pull-right" title="&{'core.signup.ex'}" src="/public/help/signup/exempel.html">(&{'core.signup.exemple'})</span>
+
+            </div>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -77,8 +86,12 @@
 
                 </tr>
             </table>
+                </div>
             <hr />
-            <h4>&{'core.module.invoice.period'} <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small></h4>
+            <h4>
+                &{'core.module.invoice.period'} <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small>
+                <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.signup.invoiceperiod'}" src="/public/help/signup/invoiceperiod.html"></span>
+            </h4>
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">
@@ -118,7 +131,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">&{'core.userAccount'}
-                <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="" src="/public/help/modules.html"></span>
+                <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.signup.account'}" src="/public/help/signup/account.html"></span>
             </h4>
         </div>
         <div class="panel-body">

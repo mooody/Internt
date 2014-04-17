@@ -80,6 +80,7 @@ public class UserBase extends Model {
 
     public void setUserPassword(String _pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, PassWordCreteriaException {
         temporaryPw = false;
+        Logger.info("PW: %s", _pw);
         if (_pw != null) {
             if (_pw.length() < 6 || !((_pw.matches("(.*)[0-9](.*)")) && _pw.matches("(.*)[a-zA-Z](.*)"))) {
                 throw new PassWordCreteriaException("validation.password.dont.match.criteria");
@@ -87,7 +88,10 @@ public class UserBase extends Model {
             }
             this.password = Cryptography.encrypt(_pw, DES_ENCRYPTION_KEY);
         }
-        this.password = null;
+        else{
+            throw new PassWordCreteriaException("validation.password.dont.match.criteria");
+        }
+        
     }
 
     public void generatePassword() {

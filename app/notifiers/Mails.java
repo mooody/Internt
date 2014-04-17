@@ -71,10 +71,10 @@ public class Mails extends Mailer {
        addRecipient(play.Play.configuration.getProperty("defaultuser.email"));
        setSubject("Error : "+ cause);
        ex.getCause().fillInStackTrace();     
-       for(Throwable t: ex.getSuppressed())
-       {
-           t.fillInStackTrace();
-       }
+//       for(Throwable t: ex.getSuppressed())
+//       {
+//           t.fillInStackTrace();
+//       }
        
        send(ex, cause);
    }

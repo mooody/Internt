@@ -181,11 +181,16 @@ validation.name.is.required = Namn är obligatoriskt
 validation.email.is.required = Din email är obligatoriskt
 validation.email.exists.in.system = Din email finns redan i systemet. Begär nytt lösen.
 validation.password.failed = Lösenordet är ogiltigt, minst en siffra samt minst en bokstav (a-z) och minst 6 tecken
-
+core.signup.apps = Valbara appar
+core.signup.account = Ange Kontouppgifter
+core.signup.usertypes = Vad innebär användartyper
+core.signup.invoiceperiod = Vad innebär faktureringsperiod
 validation.password.error = Lösenords error
+validation.emails.dont.match = Kontrollera din email, båda fälten måste vara identiska för att minimera fel
 validation.need.a.module = Du måste välja åtminstonde en app
 Account.created.successful = Ditt konto är skapat. Kontrollera din epost efter aktiveringsmailet. (Kontrollera även skräpposten)
-
+core.signup.exemple = Läs exempel uppsättning av ett företag
+core.signup.ex = Exempel
 #help
 help = Hjälp
 modulehelp = Moduler

@@ -506,18 +506,33 @@ public class Application extends Controller
       getMenu(menus,".html");
       SortedMap<File,Integer> map = (SortedMap<File, Integer>) new TreeMap<File, Integer>();
       
+      //sök igenom alla kataloger i planningmodules
+      // booking -
+      // passwords - osv...
       for(File file:(new File(path, "planningmodules")).listFiles())
       {
+         //plocka ut modulehelp katalogen
          File modulehelp = new File(file, "public/modulehelp");
-         if(modulehelp.isDirectory())
+         //Kolla om det finns en katalog där, detta ska vara huvudkatalogen
+         //Ex booking
+         if(modulehelp != null && modulehelp.isDirectory())
          {
-            MenuItem menu = new MenuItem(modulehelp);
-            getMenu(menu,".html");
-            menus.childs.add(menu);
+             //Listar alla filer i katalogen
+            for(File file2:modulehelp.listFiles())
+            {
+                if(file2.isDirectory())
+                {
+                   MenuItem menu = new MenuItem(file2);
+                   getMenu(menu,".html");
+                   menus.childs.add(menu);
+                }
+                else{
+                   Logger.info("Not Exists %s", modulehelp.getPath());
+                }
+            }
          }
-         else{
-            Logger.info("Not Exists %s", modulehelp.getPath());
-         }
+         
+         
       }
       
       get(map,menus,1);

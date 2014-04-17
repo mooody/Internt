@@ -98,7 +98,8 @@ public class Users extends PlanController{
                 validation.addError("password.error",Messages.get("user.password.dont.match"));
             }
              
-            try {
+            try 
+            {
                     user.setUserPassword(pw1);
             }
             catch(UserBase.PassWordCreteriaException pwe)
@@ -116,23 +117,23 @@ public class Users extends PlanController{
 			validation.addError("password.error",Messages.get("user.password.dont.match"));
         }
 		
-		if(user.name.isEmpty())
-		{
-			validation.addError("user.name",Messages.get("user.name.is.empty"));
-		}
-		
-		if(user.email.isEmpty())
-		{
-			validation.addError("user.email",Messages.get("user.email.is.empty"));
-		}
-		
-		if(validation.hasErrors())
-		{
-			validation.keep();
-                        myaccount();
-		}
+        if(user.name.isEmpty())
+        {
+                validation.addError("user.name",Messages.get("user.name.is.empty"));
+        }
+
+        if(user.email.isEmpty())
+        {
+                validation.addError("user.email",Messages.get("user.email.is.empty"));
+        }
+
+        if(validation.hasErrors())
+        {
+                validation.keep();
+                myaccount();
+        }
         
-                UserBase userToSave = User.findById(user.id);
+                //UserBase userToSave = User.findById(user.id);
         user.save();
         flash.put("message", Messages.get("user.updated"));
         myaccount();
