@@ -102,6 +102,7 @@ POST    /saveUserAccess/{module_id}/{user_id}     ModuleController.saveUserAcces
 *   /files                                  	module:files
 *   /mail                                  	module:mail
 *  /invoice                                    module:invoice
+*  /contacts                                    module:contacts
 #----------------------
 #groups
 
