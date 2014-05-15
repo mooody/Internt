@@ -6,6 +6,7 @@ package controllers.admin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import models.Admin;
 import models.Company;
 import models.Grupp;
@@ -97,31 +98,39 @@ public class CompanyController extends AdminController {
 	
    private static void addMultipleCompany(Company company)
    {
-           if(!user().companies.contains(user().company))
-           {
-               user().companies.add(user().company);
-           }
-           company.addUser(user());
-           user().companies.add(company);
-           company.save();
-           CompanyUserSettings cus = new CompanyUserSettings(user(), company);
-           if(company.users.size() == 1)
-           {
-                   cus.setUserType(user().getClass().getSimpleName());
-           }
-           flash.put("message",Messages.get("core.company.created",company.name));
-
-           Admin admin = Admin.findById(user().id);
            try
            {
-               //CompanyController.createDefaultGroup(admin,company);
-               company.createDefaultGroup(admin);
-           } catch(Exception ex)
+               if(!user().companies.contains(user().company))
+               {
+                   user().companies.add(user().company);
+               }
+               company.addUser(user());
+               user().companies.add(company);
+               company.save();
+               CompanyUserSettings cus = new CompanyUserSettings(user(), company);
+               if(company.users.size() == 1)
+               {
+                   cus.setUserType(user().getClass().getSimpleName());
+               }
+               flash.put("message",Messages.get("core.company.created",company.name));
+               
+               Admin admin = Admin.findById(user().id);
+               try
+               {
+                   //CompanyController.createDefaultGroup(admin,company);
+                   company.createDefaultGroup(admin);
+               } catch(Exception ex)
+               {
+                   Logger.error("CompanyController.addMultipleCompany %s", ex.getMessage());
+               }
+               
+               CompanyController.index();
+           } 
+           catch(CompanyUserSettings.CUSException ex)
            {
-               Logger.error("CompanyController.addMultipleCompany %s", ex.getMessage());
+               flash.put("message", Messages.get("core.user.already.in.that.company"));
+               CompanyController.index();
            }
-
-           CompanyController.index();
    }
 	
 //    private static void createDefaultGroup(Admin admin, Company company) throws Exception

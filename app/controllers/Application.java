@@ -9,7 +9,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import models.*;
 import models.Core.*;
-import models.mail.Invite;
+import models.Core.Invite;
 import play.*;
 import play.cache.Cache;
 import play.data.validation.Valid;
@@ -125,10 +125,11 @@ public class Application extends Controller
 
             if (user != null && !user.activated)
             {               
-               validation.addError("error", "account.not.activated");               
+               validation.addError("error", "account.not.activated");
                flash.put("resend", user.email);
-               validation.keep();
-               Application.start();
+//               validation.keep();
+//               Application.start();
+               render("Application/index.html");
             }
 
          } 
@@ -139,12 +140,13 @@ public class Application extends Controller
          }
          if (user != null)
          {
-            /*List<Invite> invites = Invite.getInvites(user);
+            List<Invite> invites = Invite.getInvites(user);
              if(invites != null && invites.size() > 0)
              {
-             flash.put("hasInvites", true);
+                flash.put("hasInvites", true);
+                renderArgs.put("invites",invites);
              }
-             */
+             
             flash.put("message", Messages.get("login.ok"));
             //Vi sätter användaren som inloggad
             session.put("userid", user.id);
@@ -152,7 +154,7 @@ public class Application extends Controller
 
             //om användaren har varit användare i flera företag och borttaget från ett.
             //fixa med företaget
-            if (user.company == null && user.companies.size() == 1)
+            if (user.company == null  || user.companies.size() == 1)
             {
                user.company = user.companies.get(0);
                user.save();
@@ -252,8 +254,16 @@ public class Application extends Controller
       //Om det inte finns en cus (Exempelvis vid inbjudan)
       if (cus == null)
       {
+          try
+          {
          cus = new CompanyUserSettings(user, company);
+              
          cus.save();
+          }
+          catch(CompanyUserSettings.CUSException ce)
+          {
+              Logger.error("NO ERROR BUT check code in Application.loadComanyUserSetting");
+          }
       }
 
       String usertype = cus.getUserType();
@@ -272,12 +282,15 @@ public class Application extends Controller
          user.save();
       }
 
+      if(modules != null)
+      {
       for (Module module : modules)
       {
          if (!modules.contains(module) && company.modules.contains(module)) //så företaget fortfarande har access till modulen
          {
             user.addModule(module);
          }
+      }
       }
       user.save();
    }
@@ -348,6 +361,7 @@ public class Application extends Controller
       //setting upp company and cus
       company.save();
       CompanyUserSettings cus = company.attachUserToCompanyToGetCUS(user);
+      user.addCompany(company);
       company.createDefaultGroup(user);
       user.save();
       
@@ -408,14 +422,16 @@ public class Application extends Controller
 
       if (user == null)
       {
-         renderText("NO USER");
+         validation.addError("error", Messages.get("core.activation.failed"));
+         validation.keep();
+         Application.start();
       }
 
       user.activated = true;
       user.token = null;
       user.save();
-      flash("message", Messages.get("you.are.activated", user.name));
-      Application.showLoginForm();
+      flash("message", Messages.get("you.are.activated.please.login", user.name));
+      Application.start();
    }
    //</editor-fold>
    

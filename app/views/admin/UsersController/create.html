@@ -1,0 +1,72 @@
+#{extends 'admin/UsersController/main.html' /}
+#{set title}&{'create.user'}#{/set}
+
+<style>
+    span.halfwidth{
+        width:49%;
+    }
+    span.fullwidth{
+        width:100%;
+    }
+
+    input.deleteSubmitButton{
+        background-image: url();
+        width:20px;
+        height:15px;
+    }
+</style>
+
+<h2>&{'create.user'}</h2>
+#{form @admin.UsersController.save(), 'data-role':'form' } 
+<div class="col-sm-6">
+    <div class="form-group">
+        <label for="name" class="control-label">&{'Name'}:</label>
+        <input id="name"class="form-control" type="text" name="user.name" />
+    </div>
+    <div class="form-group">
+        <label for="email" class="control-label">&{'Email'}:</label>
+        <input id="email" class="form-control" type="text" name="user.email"/>
+    </div> 
+    <div class="form-group">
+        <input type="radio" id="user" name="usertype" value="User" #{if user.getClass() == models.User.class}checked="checked"#{/if} />
+               <label for="user">&{'User'}</label>
+        <br />
+        <input type="radio" id="prev" name="usertype" value="PrivilegeUser" #{if user.getClass() == models.PrivilegeUser.class}checked="checked"#{/if}/>
+               <label for="prev">&{'PrivilegeUser'}</label>
+        <br />
+        <input type="radio" id="admin" name="usertype" value="Admin" #{if user.getClass() == models.Admin.class}checked="checked"#{/if}/>
+               <label for="admin">&{'Admin'}</label>
+
+        *{<!-- bara en superadmin kan tilldela en annan superadmin-->}*
+        #{if sessionuser.getClass() == models.SuperAdmin.class}
+        <br />
+        <input type="radio" id="superadmin" name="usertype" value="2" #{if user.getClass() == models.SuperAdmin.class}checked="checked"#{/if}/>
+               <label for="superadmin">&{'SuperAdmin'}</label>
+        #{/if}
+    </div>
+</div>
+<div class="col-sm-6">
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">&{''}</h4>
+        </div>
+        <div class="panel-body">
+        #{list items:modules, as:'module'}
+            <input type="checkbox" name="moduleIds" value="${module.id}" id="module_${module.id}">
+            <label for="module_${module.id}">&{module.name}</label>
+        <br />
+        #{/list}
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-12">
+    <div class="form-group">    
+        <input class="btn btn-info pull-right"  type="submit" value="Spara" />	    
+    </div>
+</div>
+#{/form}
+<div style="clear:both;"></div>
+

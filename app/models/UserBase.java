@@ -75,12 +75,12 @@ public class UserBase extends Model {
     }
 
     public String getPassword() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
+        
         return Cryptography.decrypt(this.password, DES_ENCRYPTION_KEY);
     }
 
     public void setUserPassword(String _pw) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, PassWordCreteriaException {
         temporaryPw = false;
-        Logger.info("PW: %s", _pw);
         if (_pw != null) {
             if (_pw.length() < 6 || !((_pw.matches("(.*)[0-9](.*)")) && _pw.matches("(.*)[a-zA-Z](.*)"))) {
                 throw new PassWordCreteriaException("validation.password.dont.match.criteria");
@@ -509,6 +509,24 @@ public class UserBase extends Model {
             this.companies = new ArrayList<Company>();
         }
         this.companies.add(company);
+    }
+    
+    public void removeCompany(Company company)
+    {
+        this.companies.remove(company);
+        
+        CompanyUserSettings cus = CompanyUserSettings.findByUserAndCompany(this, company);
+        cus.delete();
+        
+        if(this.companies.size() > 0)
+        {
+            this.company = this.companies.get(0);
+            this.save();
+        }
+        else
+        {
+            this.delete();
+        }
     }
 
     public class PassWordCreteriaException extends Exception {

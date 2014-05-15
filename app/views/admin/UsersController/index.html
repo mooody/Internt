@@ -1,0 +1,119 @@
+#{extends 'admin/UsersController/main.html' /}
+#{stylesheet 'login.html.css' /}
+#{set title}&{'handle.user'}#{/set}
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("form.delete").submit(
+		function(){
+			var username = jQuery(this).attr('username');
+			return confirm('&{'sure.remove.user'}'+' '+username);
+		}
+	);
+});
+</script>
+
+<br />
+<a class="btn btn-warning" href="@{admin.UsersController.create()}">&{'create.user'}</a>
+<br />
+<hr />
+#{if (invites != null &&!invites.isEmpty()) || userNotActivated} 
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">&{'core.waiting.invitations'}</h4>
+    </div>
+<div class="panel-body">
+<div class="table-responsive">
+   <table class="table table-hover table-striped">
+      <tr>
+         <th>${'name'}</th>
+         <th>&{'email'}</th> 
+         <th>&nbsp;</th>
+         <th>&nbsp;</th>
+      </tr>
+      #{if !invites.isEmpty()}
+        #{list items:invites, as:'invite'}
+        <tr>
+            <td>${invite.to.name}</td>
+            <td>${invite.to.email}</td>
+            <td>${invite.created?.format("yyyy-MM-dd")}</td>
+            <td>
+                #{form @admin.UsersController.removeInvitation(invite.id)}
+                <button class="btn btn-danger pull-right" type="submit">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                #{/form}
+            </td>
+            
+        </tr>
+        #{/list}
+      #{/if}
+      #{list items:users, as:'user'}
+        #{if !user.activated }
+         <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>
+                #{form @admin.UsersController.removeUser(user.id)}
+                <button class="btn btn-danger pull-right" type="submit">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                #{/form}
+            </td>
+        </tr>
+        #{/if}
+      #{/list}
+   </table>
+</div>
+#{/if}
+</div></div>
+*{<!-- #{if user.id!=sessionuser.id } -->}*
+<!-- NEW USER -->
+<div class="panel panel-default">
+<div class="panel-body">
+<div class="table-responsive">
+   <table class="table table-hover table-striped">
+      <tr>
+         <th>${'name'}</th>
+         <th>&{'info'}</th> 
+         <th>&{'type'}</th>                 
+         <th>&nbsp</th>            
+      </tr>
+      #{list items:users, as:'user'}
+      #{if user.activated }
+      <tr>
+         <td class="wee-dialog" src="@{Users.viewSingelUser(user.id)}"> ${user.name} ( ${user.getSign()} )</td>
+         <td class="wee-dialog" src="@{Users.viewSingelUser(user.id)}">
+            #{if user.email != null && !user.email.isEmpty() }
+               <span class="glyphicon glyphicon-envelope"></span>
+            #{/if}            
+            #{if user.cellphone != null && !user.cellphone.isEmpty() }
+               <span class="glyphicon glyphicon-phone"></span>
+            #{/if}
+            #{if user.phone != null && !user.phone.isEmpty() }
+               <span class="glyphicon glyphicon-earphone"></span>
+            #{/if}
+            #{if user.street != null && !user.street.isEmpty() }
+               <span class="glyphicon glyphicon-road"></span>
+            #{/if}
+            #{if user.city != null && !user.city.isEmpty() }
+               <span class="glyphicon glyphicon-home"></span>
+            #{/if}
+         </td>       
+         <td>&{usertypes.get(user.id)} *{!<-- ${user.getClass().getSimpleName()}-->}*</td>
+         <td>
+             
+            #{form @admin.UsersController.deleteUser(user.id), class:'delete', username:user.name, 'style':'display:inline'}
+               <button type="submit" class="btn btn-danger pull-right" alt="&{'delete'}"><span class="glyphicon glyphicon-trash"></span></button>
+            #{/form}
+            <a class="btn btn-default pull-right" href="@{admin.UsersController.edit(user.id)}"><span class="glyphicon glyphicon-edit"></span></a>
+         </td>
+      </tr>
+      #{/if}
+      #{/list}
+   </table>
+
+  </div>
+</div>
+</div>
+*{<!-- #{/if}  -->}*

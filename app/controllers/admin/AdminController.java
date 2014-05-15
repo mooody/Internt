@@ -151,7 +151,7 @@ public class AdminController extends PlanController
       modules();
    }
 
-   private static boolean addModuleToCompanyUserSettings(UserBase user, Module module)
+   protected static boolean addModuleToCompanyUserSettings(UserBase user, Module module)
    {
       boolean companyHasAccessToModule = false;
       for (Module mod : user().company.modules)

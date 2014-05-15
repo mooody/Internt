@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import static controllers.PlanController.user;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.util.List;
@@ -22,6 +23,8 @@ import play.*;
 import java.util.ArrayList;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import models.Core.CompanyUserSettings;
+import models.Core.Invite;
 import models.Core.Module;
 
 /**
@@ -36,25 +39,24 @@ public class Users extends PlanController{
 	*/
     public static void mypage()
     {
-		UserBase user = user();
-		Company company = user.company;
-		List<Module> useraccess = user.getUserAndGroupModules();
-                if(useraccess==null)
+            UserBase user = user();
+            Company company = user.company;
+            List<Module> useraccess = user.getUserAndGroupModules();
+            
+            List<Module> modules = null;
+            if(useraccess!=null)
+            {
+              modules = new ArrayList<Module>();
+              for(Module module: useraccess)
+              {
+                if(!modules.contains(module)&&company.modules.contains(module))
                 {
-                   render();
+                            modules.add(module);
                 }
-                else
-                {
-                  List<Module> modules = new ArrayList<Module>();
-                  for(Module module: useraccess)
-                  {
-                          if(!modules.contains(module)&&company.modules.contains(module))
-                          {
-                                      modules.add(module);
-                          }
-                  }
-                  render(modules);
-                }
+              }
+              
+            }
+            render(modules);
     }
     
     public static void myaccount()
@@ -153,6 +155,59 @@ public class Users extends PlanController{
           forbidden(Messages.get("core.user.not.in.compay"));
        }
     }
+    
+    /**
+    * Avböjer en inbjudan
+    * @param id 
+    */
+   public static void rejectInvitation(long id)
+   {
+        try
+        {
+            Invite invite = Invite.findById(id);
+            invite.delete();
+//            Company company = invite.getCompany();
+//            UserBase user = invite.getTo();
+//            
+//            CompanyUserSettings cus = CompanyUserSettings.find("byCompanyAndTo", company, user).first();
+//            cus.delete();
+            
+            notifiers.Mails.rejectedInvitation(invite);
+        } 
+        catch(Exception ex)
+        {
+            Controller.error(ex);
+        }
+        mypage();
+   }
+   
+   /**
+    * Accepterar en inbjudan
+    * @param id 
+    */
+   public static void acceptInvitation(long id){
+       Invite invite = Invite.findById(id);
+       
+       notFoundIfNull(invite);
+       
+       if(invite.getTo().equals(user()))
+       {    
+           CompanyUserSettings cus = invite.getCompany().attachUserToCompanyToGetCUS(invite.getTo());
+           cus.setUserType(invite.getUsertype());
+           for(Module m : invite.getModules())
+           {
+                cus.addModule(m);
+           }
+           cus.save();
+           invite.delete();
+       }
+       else
+       {
+           forbidden();
+       }
+       
+       mypage();
+   }
     
     
 }

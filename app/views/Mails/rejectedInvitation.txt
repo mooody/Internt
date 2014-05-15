@@ -1,0 +1,4 @@
+Inbjudan avböjd
+
+${invite.to.name} avböjde din inbjudan till företaget ${invite.company.name}
+på @@{Application.start()}

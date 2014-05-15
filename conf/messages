@@ -28,7 +28,8 @@ user.updated = Användaren är uppdaterad
 login.ok = Inloggad korrekt
 You.need.to.login.as.administrator = Du måste logga in som administratör
 Get = Hämta
-you.are.activated = Ditt konto är nu aktiverat och du kan logga in. Välkommen %s
+you.are.activated.please.login = Ditt konto är nu aktiverat och du kan logga in med de uppgifter som fanns i välkomstmailet. Välkommen %s
+core.activation.failed = Aktiveringen misslyckades! Är du redan aktiverad. Prova att logga in med de uppgifter som fanns i välkomstmailet
 account.not.activated = Ditt konto är inte aktiverat
 resend.activationmail = Skicka aktiveringsmailet igen
 Activationmail.sent = Aktiveringsmailet skickat. Kontrollera din mail, även i skräpposten
@@ -65,6 +66,9 @@ user.deleted = Användaren raderad
 user.created = Användaren skapad
 user.removed.from.company = Användaren raderad från företaget
 send.invite = Mailadressen finns redan i systemet. Du måste skicka en inbjudan.
+core.invite.removed = Inbjudan till %s är raderad
+core.restore.new.pw.sent  = Ett nytt lösenord är skickat till din mail
+core.waiting.invitations = Väntande inbjudningar
 user.has.no.groups = Användaren har inte kopplad till någon grupp ännu
 Admin = Administratör
 User = Användare
@@ -104,6 +108,7 @@ core.user.temporarypw = Du har ett temporärt lösenord, vad vänlig och gå in 
 core.admin.existing.groups = Grupper i företaget
 core.admin.create.group = Skapa ny grupp
 core.sure.to.delete.group = Är du säker på att du vill radera gruppen
+core.invited.to.company = Du är inbjuden av %s till företaget %s
 
 
 #Company

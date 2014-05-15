@@ -234,12 +234,6 @@
          <div class="alert alert-info" style=" display:${flash['message']?'block':'none'};">
             <span class="glyphicon glyphicon-info-sign"></span>
             ${flash['message']}
-            *{<!-- Återaktivering -->}*
-            #{if flash['resend']}
-            <span style="margin: 20px 0;">
-               <a href="@{Application.resendActivationMail(flash['resend'])}"><b>&{'resend.activationmail'}</b></a>
-            </span>
-            #{/if}
             *{<!-- invite mail -->}*
             #{if flash['invite']}
             <span style="margin: 20px 0;">
@@ -249,22 +243,32 @@
          </div>
          *{<!-- Messagebox END -->}*	
 
-         *{<!--
-                 #{if flash['hasInvites'] }
-                         <div class="message ui-state-highlight ui-corner-all" style="width:95%">
-                         %{def invitations = models.mail.Invite.getInvites(sessionuser); }%
-                         <ul>
-                                 #{list items:invitations, as:'invite'}
-                                         ${invite.getFrom().name} &{'invites.you.to'} ${invite.getCompany().name} 
-                                         <a href="javascript:void(0)">&{'accept.invite'}</a>
-                                         <a href="javascript:void(0)">&{'erase.invite'}</a>
-                                 #{/list}
          
-                         </ul>
-                         </div>
-         
-                 #{/if}
-         -->}*				
+         #{if flash['hasInvites'] }
+         %{def invitations = models.Core.Invite.getInvites(sessionuser); }%
+         #{list items:invitations, as:'invite'}
+         *{<!--<div class="alert alert-success">
+             <div class="row">
+                 <div class="col-sm-12">
+                     <h3></h3> 
+                 </div>
+             </div>
+             <div class="row">
+                 <div class="col-sm-6"><a class="btn btn-success center-block" href="javascript:void(0)">&{'accept.invite'}</a></div>
+                 <div class="col-sm-6"><a class="btn btn-danger center-block" href="javascript:void(0)">&{'erase.invite'}</a></div>
+             </div>
+         </div>-->}*
+         <div class="alert alert-success fade in">
+             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+             <h4>${invite.getFrom().name} &{'invites.you.to'} ${invite.getCompany().name}</h4>
+             <div class="row">
+                 <div class="col-sm-6"><a class="btn btn-success center-block" href="@{Users.acceptInvitation(invite.id)}">&{'accept.invite'}</a></div>
+                 <div class="col-sm-6"><a class="btn btn-danger center-block" href="Users.rejectInvitation(invite.id)">&{'erase.invite'}</a></div>
+             </div>
+         </div>
+         #{/list}
+         #{/if}
+         				
 
          *{<!-- Messagebox ERROR -->}*
          #{if errors }
@@ -273,7 +277,13 @@
             <span id="errortext" class="glyphicon glyphicon-wrench"></span> ${error}<br />
             #{/errors}
          </div>
-         #{/if}
+         #{/if}         
+        *{<!-- Återaktivering -->}*
+        #{if flash['resend']}
+        <div class="alert alert-success">
+           <a href="@{Application.resendActivationMail(flash['resend'])}"><b>&{'resend.activationmail'}</b></a>
+        </div>
+        #{/if}
          *{<!--<div class="content" #{if loginform}style="clear:both; border:none;background-color:transparent;"#{/if}>-->}*
          <div class="content">
             <div class="#{if !hidemodulecontent}modulecontent#{/if}">             

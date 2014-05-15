@@ -42,13 +42,20 @@ public class PlanController extends Application
 
       if (user == null)
       {
-         play.Logger.info("USER=NULL");
+         play.Logger.info("USER=NULL*");
          try
          {
             Long id = new Long(session.get("userid"));
 
-            user = UserBase.find("byId", id).first();
-            Cache.set(session.getId() + "user", user, "30mn");
+            user = UserBase.findById(id);
+            if(user !=null)
+            {                
+                Cache.set(session.getId() + "user", user, "30mn");
+            }  
+            else
+            {
+                session.clear();
+            }
          } catch (Exception ex)
          {
             play.Logger.error("PlanController.user() = %s", ex.getMessage());

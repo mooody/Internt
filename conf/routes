@@ -30,12 +30,15 @@ GET     /admin                                    admin.AdminController.index
 GET     /users                                    admin.UsersController.index
 GET     /users/create                             admin.UsersController.create
 POST    /users/save                               admin.UsersController.save
+#DEPRECATED - same as removeUser
 POST    /users/delete/{id}                        admin.UsersController.deleteUser
+POST    /users/remove/{id}                        admin.UsersController.removeUser
 POST    /users/type                               admin.UsersController.setUserType
 GET     /users/edit/{id}                          admin.UsersController.edit
 POST    /users/addgrouptouser                     admin.UsersController.addGroupToUser
 POST    /users/removefromgroup                    admin.UsersController.removeUserFromGroup
 GET     /users/sendinvite/{id}                    admin.UsersController.sendInvitationMail
+POST    /users/removeinvite/{id}                  admin.UsersController.removeInvitation
 
 
 #AdminController
@@ -77,11 +80,14 @@ POST	/super/company/update			SuperAdminController.updateCompany
 GET	/super/billing                          SuperAdminController.billing
 POST	/super/billing/update			SuperAdminController.updateModule
 POST    /super/billing/internt                  SuperAdminController.saveInternt
+
 #user regular
 GET     /mypage                                 Users.mypage
 GET     /myaccount                              Users.myaccount
 POST    /myaccount                              Users.save
-GET     /user/show/{userId}                    Users.viewSingelUser
+GET     /user/show/{userId}                     Users.viewSingelUser
+GET    /users/invitation/accept/{id}                Users.acceptInvitation
+GET    /users/invitation/reject/{id}                Users.rejectInvitation
 
 #ModuleController
 GET     /getmodule/{moduleId}                     ModuleController.index                  

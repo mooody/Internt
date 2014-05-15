@@ -6,6 +6,8 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.*;
 import models.Core.CompanyUserSettings;
 import models.Core.Module;
@@ -151,7 +153,12 @@ public class Company extends Model{
         //addUserToCompany
         this.addUser(user);
         user.addCompany(this);
-        CompanyUserSettings cus = new CompanyUserSettings(user, this);
+        CompanyUserSettings cus;
+        try {
+            cus = new CompanyUserSettings(user, this);
+        } catch (CompanyUserSettings.CUSException ex) {
+            cus=ex.getCus();
+        }
 
         return cus;
         //CreateCUS

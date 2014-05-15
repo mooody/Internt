@@ -3,7 +3,7 @@ package notifiers;
 import java.util.*;
 import models.User; 
 import models.UserBase;
-import models.mail.Invite;
+import models.Core.Invite;
 import org.apache.commons.mail.*; 
 import play.*;
 import play.i18n.Messages;
@@ -63,6 +63,15 @@ public class Mails extends Mailer {
       setSubject(Messages.get("new.password.from.us"));
       send(user);
    }
+   
+   public static void rejectedInvitation(Invite invite)
+   {
+       setFrom("Robot <robot@internt.nu>");
+       addRecipient(invite.getFrom().email);
+       setSubject(Messages.get("core.rejected.invitation"));
+       send(invite);
+   }
+   
    
    public static void sendErrorMsg(String cause, Exception ex)
    {
