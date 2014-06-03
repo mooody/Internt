@@ -107,7 +107,9 @@
             </div>
         </div>
 
-        *{<!-- om vi laddar vårt nuvarande företag visa länken till att skapa ett nytt -->}*
+        #{list items:company.modules, as:'module'}
+        <div class="col-sm-12">&{module.name}</div>
+        #{/list}
 
         #{/form}          
     </div>
@@ -146,6 +148,7 @@
 #{/if}
 <div style="clear:both"></div>
 *{<!-- newCompany kommer från action addCompany -->}*
+*{<!-- om vi laddar vårt nuvarande företag visa länken till att skapa ett nytt -->}*
 #{if newCompany==null}
 <a class="btn btn-info" href="@{admin.CompanyController.addCompany()}">&{'core.CreateNewCompany'}</a>
 #{/if}
