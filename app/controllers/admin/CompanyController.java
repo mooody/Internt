@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.logging.Level;
 import models.Admin;
 import models.Company;
+import models.Core.CompanyUserSettings;
+import models.Core.Internt;
+import models.Core.Module;
 import models.Grupp;
 import models.SuperAdmin;
 import play.Logger;
-import play.i18n.Messages;
-import models.Core.CompanyUserSettings;
 import play.data.validation.Valid;
+import play.i18n.Messages;
 
 /**
  * Vid skapande av ett företag kommer företaget först och främst läggar in i multiple_companies
@@ -33,7 +35,7 @@ public class CompanyController extends AdminController {
      * @param company 
      */
     public static void create(@Valid Company company)
-    {
+    {        
             if(validation.hasErrors())
             {
                     validation.keep();
@@ -197,8 +199,11 @@ public class CompanyController extends AdminController {
 				.bind("uid", user().id)
 				.fetch();
 		}
-		
-        render("admin/company/create.html", company, companies);
+	
+        List<Module> modules = Module.find("select m from Module m where m.released = 1").fetch();
+        Internt internt = Internt.findById(1L);
+        if(internt == null) internt = new Internt();
+        render("admin/company/create.html", company, companies, modules,internt);
     }
 	
 	public static void addCompany()
@@ -214,6 +219,9 @@ public class CompanyController extends AdminController {
                 }
 		
 		boolean newCompany = true;
-                render("admin/company/create.html", companies,newCompany);
+                List<Module> modules = Module.find("select m from Module m where m.released = 1").fetch();
+                Internt internt = Internt.findById(1L);
+                if(internt == null) internt = new Internt();
+                render("admin/company/create.html", companies,newCompany, modules, internt);
 	}
 }

@@ -107,13 +107,128 @@
             </div>
         </div>
 
-        #{list items:company.modules, as:'module'}
-        <div class="col-sm-12">&{module.name}</div>
-        #{/list}
-
+        #{if company?.modules?.size() > 0}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Dina appar</h4>
+            </div>
+            <div class="panel-body">
+                #{list items:company?.modules, as:'module'}
+                <div class="col-sm-12"> <span class="glyphicon glyphicon-ok"></span>&{module.name}</div>
+                #{/list}
+            </div>
+        </div>
+        #{/if}
         #{/form}          
     </div>
 </div>
+        
+        #{if modules != null}
+ 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">&{'core.choose.modules'} <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small>
+                <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.signup.apps'}" src="/public/help/signup/apps.html"></span>
+            </h4>
+        </div>
+
+        <div class="panel-body table-responsive">
+            <table class="table table-striped">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>&{'core.module.minUserType'}</th>
+                    <th style="text-align: right;">&{'core.module.cost'} (&{'superAdmin.billing.valuta'})</th>
+                    <th>&nbsp;</th>
+                </tr>
+                #{list items:modules, as:'module'}
+                #{if !company?.modules?.contains(module)}
+                <tr id="mod-row-${module.id}">
+                    <td><input #{if (flash['modules'] == null && module.cost == 0.0) || flash['modules']?.contains(""+module.id)}checked="checked" #{/if}id="mod-${module.id}" data-cost="${module.cost}" data-module="${module.id}" type="checkbox" value="${module.id}" name="modules"></td>
+                    <td><label for="mod-${module.id}">&{module.name}</label></td>
+                    <td>&{module.userAccessType}</td>
+                    <td style="text-align: right;#{if module.cost == 0.0}color:red;#{/if}" >${module.cost.format("0")} / &{'core.month'}</td>
+                    <td>
+                        <span class="glyphicon glyphicon-question-sign help wee-dialog" title="&{module.name}" src="/public/modulehelp/${module.moduleName}/${module.moduleName}.html"></span>
+                    </td>
+                </tr>
+                #{/if}
+                #{/list}
+            </table>
+            *{<!-- END company-->}*
+
+         
+            *{<!-- USERS start-->}*
+            <table class="table table-striped">
+                <tr>
+                    <th>&{'core.signup.licenses'}
+                    <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.signup.usertypes'}" src="/public/help/signup/usertypes.html"></span>
+                    </th>
+
+                    <th style="text-align: right;">&{'core.module.cost'} (&{'superAdmin.billing.valuta'})</th>
+
+                </tr>
+               
+                <tr>
+                    <td>
+                        <label for="admins" class="control-label">&{'core.extra.administrator'}</label>
+                        <input class="form-control input-xs" type="number" step="1" min="0" id="admins" name="admins" value="${flash['admins']?flash['admins']:'0'}"/></td>                    
+                    <td style="text-align: right;">${internt.adminCost?.format("0")} / &{'core.month'}</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <label for="users">&{'core.extra.users'}</label>
+                        <input class="form-control input-xs"  type="number" step="1" min="0" id="users" name="users" value="${flash['users']?flash['users']:'0'}" /></td>                    
+                    <td style="text-align: right;">${internt.userCost?.format("0")} / &{'core.month'}</td>
+
+                </tr>
+            </table>
+                *{<!-- END users-->}*
+
+     
+            <h4>
+                &{'core.module.invoice.period'} <small class="required"><span class="glyphicon glyphicon-asterisk"></span></small>
+                <span class="glyphicon glyphicon-question-sign help wee-dialog pull-right" title="&{'core.signup.invoiceperiod'}" src="/public/help/signup/invoiceperiod.html"></span>
+            </h4>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input id="period-3" value="3" type="radio" #{if "3".equals(flash['period'])}checked="checked"#{/if} name="period">
+                    </span>
+                    <label for="period-3" class="form-control">&{'core.3.month'}</label>
+                </div><!-- /input-group -->
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input id="period-6" value="6" type="radio" #{if "6".equals(flash['period'])}checked="checked"#{/if} name="period">
+                    </span>
+                    <label for="period-6" class="form-control">&{'core.6.month'}</label>
+                </div><!-- /input-group -->
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input id="period-12" value="12" type="radio" #{if flash['period']==null||"12".equals(flash['period'])}checked="checked"#{/if} name="period">
+                    </span>
+                    <label for="period-12" class="form-control">&{'core.12.month'} <small class="badge pull-right alert-danger">&{'core.1.month.free'}</small></label>
+                </div><!-- /input-group -->
+            </div>
+
+            <small id="mod-discount" style="color:red;"></small>
+            <span class="pull-right">
+                <h4>Fakturabelopp <span id="mod-total">0</span> &{'superAdmin.billing.valuta'}</h4>
+            </span>
+        
+        </div>
+    </div>
+
+        #{/if}
+        
+        
+
+        
 
 #{if newCompany==null && companies.size()>1}
 *{<!-- Lista alla företag -->}*
@@ -154,4 +269,87 @@
 #{/if}
 
 #{/if}
+
+<script>
+    jQuery(document).ready(function() {
+    jQuery('input[data-module]').change(function() {
+        sumeraizeModules();
+        });
+            jQuery('input[name="period"]').change(function() {
+        sumeraizeModules();
+        });
+            jQuery('#admins').keyup(function() {
+                alert("a");
+    sumeraizeModules();
+    });
+            jQuery('#users').keyup(function() {
+                alert("u");
+    sumeraizeModules();
+    });
+            jQuery('#admins').change(function() {
+    sumeraizeModules();
+    });
+            jQuery('#users').change(function() {
+    sumeraizeModules();
+    });
+    });
+            function sumeraizeModules() {
+            var total = 0.0;
+                    jQuery('input[data-module]').each(function() {
+            if (jQuery(this).attr('checked'))
+            {
+            total += new Number(jQuery(this).attr("data-cost"));
+            }
+            });
+                    var period = new Number(jQuery('input[name="period"]:checked').val());
+                    var usercost = calculateExtraUsers();
+                    if (period < 12)
+            {
+            showCost(period * (total + usercost));
+                    hideDiscount();
+            }
+            else
+            {
+            showCost(period * (total + usercost) - (total + usercost));
+                    showDiscount(total + usercost);
+            }
+            }
+
+    function calculateExtraUsers() {
+        try
+        {
+            var admins = new Number(jQuery("#admins").val());            
+        } 
+        catch(ex) 
+        {
+            admins=0;
+        }
+        
+        try 
+        {
+            var users = Number(jQuery("#users").val());
+        } 
+        catch(ex)
+        {
+            users = 0;
+        }
+        return admins * ${internt.adminCost} + users * ${internt.userCost};
+    }
+    function hideDiscount() {
+    jQuery("#mod-discount").text('');
+            jQuery("#mod-discount").hide();
+    }
+    function showDiscount(discount)
+    {
+    jQuery("#mod-discount").text('&{'core.signup.discount'} ' + discount.toFixed(2) + " SEK");
+            jQuery("#mod-discount").show();
+    }
+
+    function showCost(totalcost) {
+
+    jQuery("#mod-total").text(totalcost);
+    }
+
+</script>
+
 
