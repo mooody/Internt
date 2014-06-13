@@ -238,6 +238,10 @@ public class SuperAdminController extends PlanController {
         }
         
         public static void updateModule(Module module){
+            if(params.get("module.released")==null)
+            {
+                module.setReleased(false);
+            }
             module.save();
             billing();
         }

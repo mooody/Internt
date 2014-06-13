@@ -139,21 +139,22 @@ public class UsersController extends AdminController
      */
     private static void createInvitation(UserBase invited, List<Long> moduleIds)
     {
-
         String usertype = params.get("usertype") != null ? params.get("usertype") : "User";
         Invite invite = new Invite(user().company, invited, user(), Messages.get("core.invited.to.company", user(), user().company), usertype);
         
         notifiers.Mails.sendInvite(invite);
         
         //Lägg till modulerna till användaren
-        for (Long moduleId : moduleIds)
+        if(moduleIds != null)
         {
-            Module m = Module.findById(moduleId);
-            invite.addModule(m);
+            for (Long moduleId : moduleIds)
+            {
+                Module m = Module.findById(moduleId);
+                invite.addModule(m);
+            }
         }
 
         invite.save();
-  
     }
     
     /**
