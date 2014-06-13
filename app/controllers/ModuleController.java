@@ -23,6 +23,7 @@ import play.Logger;
 import play.data.validation.Validation;
 import play.i18n.Messages;
 import play.mvc.Controller;
+import play.mvc.Scope.Params;
 
 /**
  * ModuleController.
@@ -107,7 +108,6 @@ public class ModuleController extends PlanController
                Logger.info("Users modules %s (%s = %s)", m.name, moduleId, m.id);
                if (m.id == moduleId.longValue())
                {
-                  Logger.info("Found");
                   redirect(module.getModuleControllerActionRoute("index"));
                }
             }

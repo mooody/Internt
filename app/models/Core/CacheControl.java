@@ -1,7 +1,6 @@
 package models.Core;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import models.booking.BookingYear;
 import play.Logger;
 import play.db.jpa.Model;
 
