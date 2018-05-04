@@ -242,7 +242,9 @@ validation.need.agrement = Du har inte godkänt avtalet
 
 
 
-
+validation.minSize = %s måste ha minst %2$d bokstäver
+validation.maxSize = %s måste ha max %2$d bokstäver
+validation.range = %s måste vara mellan %2$d-%3$d tecken
 
 
 
